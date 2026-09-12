@@ -1,0 +1,193 @@
+/*
+  WagStack — local Phosphor Duotone motion system
+  Maps BrewedOps-style layered hover behavior onto Phosphor's two-path SVGs.
+  Phosphor Icons are MIT licensed; see /assets/phosphor/LICENSE.txt.
+*/
+
+.ph-duo{
+  display:block;
+  flex:none;
+  overflow:visible;
+  color:currentColor;
+  shape-rendering:geometricPrecision;
+  transform-origin:50% 50%;
+  transition:transform .32s cubic-bezier(.2,.82,.24,1),color .22s ease,filter .3s ease;
+  will-change:transform;
+}
+.ph-duo path{
+  transform-box:fill-box;
+  transform-origin:center;
+  transition:transform .36s cubic-bezier(.2,.82,.24,1),opacity .28s ease,fill .22s ease;
+  will-change:transform,opacity;
+}
+.ph-duo path[opacity]{opacity:.26}
+.ph-duo path:not([opacity]){opacity:1}
+
+/* Navigation ------------------------------------------------------------ */
+.ricon--phosphor{
+  display:grid;
+  place-items:center;
+  width:21px;
+  height:21px;
+  flex:0 0 21px;
+  color:inherit;
+  transform-origin:center;
+  transition:transform .32s cubic-bezier(.2,.82,.24,1),color .22s ease;
+}
+.ricon--phosphor .ph-duo{width:21px;height:21px}
+.rail__link.active .ricon--phosphor{color:var(--orange)}
+.rail__link.active .ph-duo path[opacity]{opacity:.38}
+
+@media (hover:hover) and (pointer:fine){
+  .rail__link:hover .ricon--phosphor{
+    transform:translateX(2px) rotate(-2.5deg);
+  }
+  .rail__link:hover .ph-duo{
+    transform:scale(1.055);
+  }
+  .rail__link:hover .ph-duo path[opacity]{
+    opacity:.52;
+    transform:translate(-2px,1px) scale(1.09) rotate(-2deg);
+  }
+  .rail__link:hover .ph-duo path:not([opacity]){
+    transform:translate(1px,-1px) scale(.985);
+  }
+}
+.rail__link:focus-visible .ricon--phosphor{transform:translateX(2px) rotate(-2deg)}
+.rail__link:focus-visible .ph-duo path[opacity]{opacity:.5;transform:scale(1.08)}
+
+/* Round contact actions ------------------------------------------------- */
+.rail__social .ph-duo{
+  width:20px;
+  height:20px;
+  color:var(--ink);
+}
+.rail__social .ph-duo path[opacity]{opacity:.24}
+@media (hover:hover) and (pointer:fine){
+  .rail__social:hover .ph-duo{
+    transform:translateY(-1px) scale(1.08) rotate(-3deg);
+    color:var(--orange);
+    filter:drop-shadow(0 5px 7px rgba(255,122,26,.16));
+  }
+  .rail__social:hover .ph-duo path[opacity]{
+    opacity:.5;
+    transform:translate(-2px,2px) scale(1.11) rotate(3deg);
+  }
+  .rail__social:hover .ph-duo path:not([opacity]){
+    transform:translate(1px,-1px) scale(.985);
+  }
+}
+.rail__social:focus-visible .ph-duo{color:var(--orange);transform:scale(1.06)}
+.rail__social:focus-visible .ph-duo path[opacity]{opacity:.48;transform:scale(1.1)}
+
+/* Home bento cards ------------------------------------------------------ */
+.bento__icon{
+  background:linear-gradient(145deg,rgba(255,122,26,.13),rgba(255,122,26,.055));
+  box-shadow:inset 0 0 0 1px rgba(255,122,26,.14),0 7px 16px -13px rgba(11,30,63,.55);
+  transform-origin:center;
+  transition:transform .34s cubic-bezier(.2,.82,.24,1),background .28s ease,box-shadow .3s ease;
+}
+.bento__icon .ph-duo{width:20px;height:20px;color:var(--orange)}
+.bento__icon .ph-duo path[opacity]{opacity:.29}
+
+@media (hover:hover) and (pointer:fine){
+  .bento__card:hover .bento__icon{
+    transform:translateY(-2px) rotate(-3deg) scale(1.045);
+    background:linear-gradient(145deg,rgba(255,122,26,.22),rgba(255,122,26,.075));
+    box-shadow:inset 0 0 0 1px rgba(255,122,26,.22),0 11px 20px -13px rgba(255,122,26,.42);
+  }
+  .bento__card:hover .bento__icon .ph-duo{
+    transform:scale(1.07) rotate(2deg);
+  }
+  .bento__card:hover .bento__icon .ph-duo path[opacity]{
+    opacity:.58;
+    transform:translate(-2px,2px) scale(1.12) rotate(-4deg);
+  }
+  .bento__card:hover .bento__icon .ph-duo path:not([opacity]){
+    transform:translate(1px,-1px) scale(.98) rotate(1deg);
+  }
+}
+.bento__card:focus-visible .bento__icon{transform:translateY(-2px) rotate(-2deg) scale(1.035)}
+.bento__card:focus-visible .bento__icon .ph-duo path[opacity]{opacity:.54;transform:scale(1.1)}
+
+/* Small chips/offers ---------------------------------------------------- */
+.bento__offer-tile,.bento__chip-icon{
+  transform-origin:center;
+  transition:transform .28s cubic-bezier(.2,.82,.24,1),background .22s ease;
+}
+.bento__offer-tile .ph-duo{width:15px;height:15px;color:var(--orange)}
+.bento__chip-icon .ph-duo{width:13px;height:13px;color:var(--orange)}
+@media (hover:hover) and (pointer:fine){
+  .bento__offer:hover .bento__offer-tile,
+  .bento__chip:hover .bento__chip-icon{
+    transform:translateY(-1px) rotate(-3deg) scale(1.06);
+  }
+  .bento__offer:hover .ph-duo path[opacity],
+  .bento__chip:hover .ph-duo path[opacity]{
+    opacity:.56;
+    transform:scale(1.13) rotate(-3deg);
+  }
+  .bento__offer:hover .ph-duo path:not([opacity]),
+  .bento__chip:hover .ph-duo path:not([opacity]){
+    transform:scale(.97) translate(1px,-1px);
+  }
+}
+
+/* Dynamic app/page icons ----------------------------------------------- */
+.clone-icon--phosphor{
+  background:linear-gradient(145deg,rgba(255,122,26,.16),rgba(255,122,26,.06));
+  box-shadow:inset 0 0 0 1px rgba(255,122,26,.18),0 10px 22px -18px rgba(11,30,63,.55);
+  transform-origin:center;
+  transition:transform .34s cubic-bezier(.2,.82,.24,1),background .28s ease,box-shadow .3s ease;
+}
+.clone-icon--phosphor .ph-duo{width:22px;height:22px;color:var(--orange)}
+.clone-icon--phosphor .ph-duo path[opacity]{opacity:.31}
+
+@media (hover:hover) and (pointer:fine){
+  :is(.clone-card,.pet-choice,.pet-option,.clone-contact a):hover .clone-icon--phosphor{
+    transform:translateY(-2px) rotate(-3deg) scale(1.045);
+    background:linear-gradient(145deg,rgba(255,122,26,.23),rgba(255,122,26,.08));
+    box-shadow:inset 0 0 0 1px rgba(255,122,26,.24),0 14px 24px -17px rgba(255,122,26,.38);
+  }
+  :is(.clone-card,.pet-choice,.pet-option,.clone-contact a):hover .clone-icon--phosphor .ph-duo{
+    transform:scale(1.06) rotate(2deg);
+  }
+  :is(.clone-card,.pet-choice,.pet-option,.clone-contact a):hover .clone-icon--phosphor .ph-duo path[opacity]{
+    opacity:.58;
+    transform:translate(-2px,2px) scale(1.12) rotate(-4deg);
+  }
+  :is(.clone-card,.pet-choice,.pet-option,.clone-contact a):hover .clone-icon--phosphor .ph-duo path:not([opacity]){
+    transform:translate(1px,-1px) scale(.98);
+  }
+}
+:is(.clone-card,.pet-choice,.pet-option,.clone-contact a):focus-visible .clone-icon--phosphor .ph-duo path[opacity]{opacity:.54;transform:scale(1.1)}
+
+/* Direct dynamic icons not wrapped by clone-icon ----------------------- */
+.ph-duo--dynamic{width:1em;height:1em}
+@media (hover:hover) and (pointer:fine){
+  :is(a,button,.clone-card,.pet-choice,.pet-option):hover > .ph-duo--dynamic,
+  :is(a,button,.clone-card,.pet-choice,.pet-option):hover .ph-duo--dynamic:not(.clone-icon--phosphor .ph-duo--dynamic){
+    transform:scale(1.045) rotate(-2deg);
+  }
+  :is(a,button,.clone-card,.pet-choice,.pet-option):hover .ph-duo--dynamic path[opacity]{
+    opacity:.52;
+    transform:scale(1.09) rotate(-2deg);
+  }
+}
+
+/* Dark parity ----------------------------------------------------------- */
+[data-theme="dark"] .rail__social .ph-duo{color:#f7f8fb}
+[data-theme="dark"] .rail__social:hover .ph-duo{color:var(--orange)}
+[data-theme="dark"] .bento__icon,
+[data-theme="dark"] .clone-icon--phosphor{
+  box-shadow:inset 0 0 0 1px rgba(255,122,26,.2),0 12px 24px -18px rgba(0,0,0,.72);
+}
+
+/* Keep motion respectful and preserve touch behavior ------------------- */
+@media (prefers-reduced-motion:reduce){
+  .ph-duo,.ph-duo path,.ricon--phosphor,.bento__icon,.bento__offer-tile,.bento__chip-icon,.clone-icon--phosphor{
+    transition:none!important;
+    animation:none!important;
+    transform:none!important;
+  }
+}

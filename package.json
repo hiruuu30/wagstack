@@ -1,0 +1,10 @@
+{
+  "name": "wagstack-brick-and-bond",
+  "private": true,
+  "version": "8.0.0",
+  "scripts": {
+    "dev": "npx serve -s . -l 4173",
+    "start": "npx serve -s . -l 4173"
+  },
+  "description": "WagStack by Brick & Bond \u2014 connected pet care workspace for cats and dogs"
+}

@@ -1,0 +1,907 @@
+/* Styles only for recreated subpages and local behavior. Intentionally avoids overriding captured homepage rules. */
+.clone-page{height:100%;overflow:auto;padding:32px 54px 96px;scrollbar-width:thin;scrollbar-color:rgba(11,30,63,.22) transparent}
+.clone-wrap{max-width:940px;margin:0 auto}.clone-head{display:flex;justify-content:space-between;align-items:flex-start;gap:28px;margin-bottom:18px}.clone-kicker{display:inline-flex;align-items:center;gap:7px;color:#ff7a1a;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.12em}.clone-title{margin:7px 0 0;font-size:clamp(38px,4vw,54px);line-height:1.04;letter-spacing:-.035em}.clone-lede{max-width:660px;margin:13px 0 0;color:#5a6479;font-size:14px;line-height:1.65}.clone-actions{display:flex;gap:8px;flex-wrap:wrap}.clone-btn{display:inline-flex;align-items:center;justify-content:center;height:44px;padding:0 18px;border-radius:999px;border:0;background:#0b1e3f;color:#f4f4ed;font-size:12px;font-weight:600;box-shadow:0 8px 24px -10px rgba(11,30,63,.3)}.clone-btn--ghost{background:rgba(255,255,255,.65);color:#0b1e3f;box-shadow:inset 0 0 0 1px rgba(11,30,63,.14)}
+.clone-glass{margin-top:16px;padding:18px;border-radius:30px;background:linear-gradient(rgba(255,255,255,.28),rgba(255,255,255,0) 38%),linear-gradient(100deg,rgba(255,255,255,.82),rgba(255,255,255,.62) 42%,rgba(214,228,255,.72) 76%,rgba(178,204,255,.78));box-shadow:inset 0 0 0 1px rgba(11,30,63,.14),inset 0 1px 0 rgba(255,255,255,.5),0 30px 70px -40px rgba(6,12,26,.5);backdrop-filter:blur(18px) saturate(1.2)}
+.clone-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}.clone-card{position:relative;overflow:hidden;grid-column:span 6;min-height:190px;padding:19px;border-radius:24px;background:#fbfbf7;box-shadow:inset 0 0 0 1px rgba(11,30,63,.24),0 1px 2px rgba(6,12,26,.04),0 24px 50px -36px rgba(6,12,26,.45);transition:transform .22s ease,box-shadow .22s ease}.clone-card:hover{transform:translateY(-3px);box-shadow:inset 0 0 0 1px rgba(11,30,63,.22),0 28px 56px -34px rgba(6,12,26,.5)}.clone-card--full{grid-column:span 12}.clone-card--third{grid-column:span 4}.clone-card--tall{min-height:260px}.clone-card__no{font-size:10px;font-weight:700;color:#ff7a1a;letter-spacing:.1em;text-transform:uppercase}.clone-card h2,.clone-card h3{margin:7px 0 6px;font-size:20px;line-height:1.2}.clone-card h3{font-size:16px}.clone-card p{margin:0;color:#5a6479;font-size:12.5px;line-height:1.65}.clone-card ul{margin:12px 0 0;padding-left:18px;color:#5a6479;font-size:12px;line-height:1.75}.clone-tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:15px}.clone-tag{display:inline-flex;align-items:center;height:28px;padding:0 10px;border-radius:999px;background:#fff;box-shadow:inset 0 0 0 1px rgba(11,30,63,.14);font-size:10px;font-weight:600}.clone-status{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:600;color:#2e9e6b}.clone-status:before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}.clone-icon{width:42px;height:42px;display:grid;place-items:center;border-radius:13px;background:rgba(255,122,26,.11);color:#ff7a1a;font-size:18px;font-weight:700}.clone-row{display:flex;align-items:flex-start;gap:13px}.clone-row__body{min-width:0}.clone-metric{font-size:36px;font-weight:700;line-height:1;color:#0b1e3f}.clone-caption{color:#5a6479;font-size:11px;margin-top:5px}.clone-note{margin-top:14px;padding:13px 15px;border-radius:16px;background:rgba(255,122,26,.08);box-shadow:inset 0 0 0 1px rgba(255,122,26,.18);color:#5a6479;font-size:11.5px}.clone-sep{height:1px;background:rgba(11,30,63,.12);margin:16px 0}.clone-quote{font-size:16px!important;line-height:1.6!important;color:#0b1e3f!important}.clone-person{display:flex;align-items:center;gap:10px;margin-top:16px}.clone-avatar{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:#0b1e3f;color:#fff;font-size:12px;font-weight:700}.clone-person strong{display:block;font-size:12px}.clone-person span{display:block;color:#5a6479;font-size:10px}.clone-section-title{margin:28px 0 10px;font-size:15px}.clone-faq{display:grid;gap:8px}.clone-faq details{border-radius:17px;background:#fbfbf7;box-shadow:inset 0 0 0 1px rgba(11,30,63,.17);overflow:hidden}.clone-faq summary{list-style:none;cursor:pointer;padding:14px 16px;font-size:12.5px;font-weight:600}.clone-faq summary::-webkit-details-marker{display:none}.clone-faq details p{margin:0;padding:0 16px 16px;color:#5a6479;font-size:12px;line-height:1.7}.clone-contact{display:grid;grid-template-columns:1fr 1fr;gap:14px}.clone-contact a{display:block;padding:18px;border-radius:22px;background:#fbfbf7;box-shadow:inset 0 0 0 1px rgba(11,30,63,.22);transition:.2s ease}.clone-contact a:hover{transform:translateY(-2px)}.clone-contact small{display:block;color:#ff7a1a;font-size:9px;text-transform:uppercase;letter-spacing:.1em;font-weight:700}.clone-contact strong{display:block;margin-top:4px;font-size:15px}.clone-contact span{display:block;margin-top:3px;color:#5a6479;font-size:11px}.clone-project-art{height:92px;margin-top:16px;border-radius:16px;background:radial-gradient(circle at 22% 24%,rgba(255,122,26,.22),transparent 26%),radial-gradient(circle at 78% 35%,rgba(72,128,255,.2),transparent 28%),linear-gradient(135deg,#fff,#e6eeff);box-shadow:inset 0 0 0 1px rgba(11,30,63,.12);position:relative;overflow:hidden}.clone-project-art:after{content:"";position:absolute;inset:18px 22px;border-radius:12px;border:1px solid rgba(11,30,63,.18);background:repeating-linear-gradient(90deg,rgba(11,30,63,.04) 0 1px,transparent 1px 42px),repeating-linear-gradient(0deg,rgba(11,30,63,.04) 0 1px,transparent 1px 30px)}
+[data-theme="dark"] .clone-page{color:#f4f4ed}[data-theme="dark"] .clone-lede,[data-theme="dark"] .clone-card p,[data-theme="dark"] .clone-card ul,[data-theme="dark"] .clone-caption,[data-theme="dark"] .clone-note,[data-theme="dark"] .clone-person span,[data-theme="dark"] .clone-faq details p,[data-theme="dark"] .clone-contact span{color:#abb4c6}[data-theme="dark"] .clone-glass{background:linear-gradient(100deg,rgba(25,43,75,.9),rgba(18,37,66,.78),rgba(14,50,91,.82))}[data-theme="dark"] .clone-card,[data-theme="dark"] .clone-faq details,[data-theme="dark"] .clone-contact a,[data-theme="dark"] .clone-tag,[data-theme="dark"] .clone-btn--ghost{background:#10213a;color:#f4f4ed}[data-theme="dark"] .clone-quote,[data-theme="dark"] .clone-metric{color:#f4f4ed}
+@media (max-width:900px){.clone-page{height:auto;min-height:calc(100vh - 116px);padding:24px 18px 100px}.clone-head{display:block}.clone-actions{margin-top:15px}.clone-card{grid-column:span 12}.clone-card--third{grid-column:span 6}}
+@media (max-width:560px){.clone-title{font-size:38px}.clone-card--third{grid-column:span 12}.clone-contact{grid-template-columns:1fr}.clone-glass{padding:12px}.clone-card{padding:16px}}
+
+/* WagStack app controls — deliberately built from the clone's existing pills, glass, card radii and motion language. */
+.pet-status{display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 9px;border-radius:999px;background:rgba(46,158,107,.09);box-shadow:inset 0 0 0 1px rgba(46,158,107,.2);font-size:9.5px;font-weight:700;color:#2e9e6b}.pet-status:before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}.pet-status--due{color:#c77a23;background:rgba(199,122,35,.09);box-shadow:inset 0 0 0 1px rgba(199,122,35,.2)}
+.pet-stepper{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:14px}.pet-stepper span{min-width:0;height:48px;border-radius:16px;display:flex;align-items:center;justify-content:center;gap:7px;background:rgba(255,255,255,.62);box-shadow:inset 0 0 0 1px rgba(11,30,63,.11);font-size:10px;font-weight:700;color:var(--muted)}.pet-stepper span b{font-size:10px}.pet-stepper .is-active{background:var(--ink);color:#fff;box-shadow:0 12px 26px -18px rgba(11,30,63,.7)}.pet-stepper .is-done{color:var(--orange);box-shadow:inset 0 0 0 1px rgba(255,122,26,.24)}
+.pet-book-card{min-height:340px}.pet-choice-grid,.pet-option-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:18px 0}.pet-choice,.pet-option{appearance:none;border:0;text-align:left;display:flex;align-items:center;gap:11px;padding:12px;border-radius:18px;background:#fff;color:var(--ink);box-shadow:inset 0 0 0 1px rgba(11,30,63,.14);cursor:pointer;transition:transform .2s ease,box-shadow .2s ease}.pet-choice:hover,.pet-option:hover{transform:translateY(-2px)}.pet-choice.is-selected,.pet-option.is-selected{box-shadow:inset 0 0 0 2px var(--orange),0 12px 26px -18px rgba(11,30,63,.45)}.pet-choice img{width:56px;height:56px;border-radius:15px;object-fit:cover}.pet-choice span,.pet-option span{display:grid;gap:3px}.pet-choice strong,.pet-option strong{font-size:12px}.pet-choice small,.pet-option small{font-size:9.5px;color:var(--muted);line-height:1.35}.pet-option{min-height:92px}.pet-option .clone-icon{flex:0 0 auto}.pet-book-controls{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:18px}
+.pet-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}.pet-form-grid label,.clone-card label{display:grid;gap:7px;font-size:10px;font-weight:700;color:var(--muted)}.pet-field-full{grid-column:1/-1}.pet-input{width:100%;min-height:44px;border:0;outline:0;border-radius:14px;padding:0 13px;background:#fff;color:var(--ink);font:500 12px Poppins,system-ui,sans-serif;box-shadow:inset 0 0 0 1px rgba(11,30,63,.16);transition:box-shadow .18s ease}.pet-input:focus{box-shadow:inset 0 0 0 2px var(--orange),0 8px 20px -16px rgba(11,30,63,.5)}.pet-textarea{min-height:100px;padding-top:12px;resize:vertical}.pet-review{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}.pet-review div{padding:14px;border-radius:16px;background:#fff;box-shadow:inset 0 0 0 1px rgba(11,30,63,.12)}.pet-review small{display:block;color:var(--muted);font-size:9px;text-transform:uppercase;letter-spacing:.08em}.pet-review strong{display:block;margin-top:5px;font-size:12px}
+.pet-switch-row{display:flex;gap:9px;overflow:auto;padding:2px 2px 10px;scrollbar-width:none}.pet-switch-row::-webkit-scrollbar{display:none}.pet-switch-row button{border:0;background:transparent;display:flex;align-items:center;gap:8px;padding:6px 10px 6px 6px;border-radius:999px;color:var(--ink);box-shadow:inset 0 0 0 1px rgba(11,30,63,.12);cursor:pointer;white-space:nowrap}.pet-switch-row button.is-active{background:var(--ink);color:#fff}.pet-switch-row img{width:34px;height:34px;border-radius:50%;object-fit:cover}.pet-switch-row span{font-size:10.5px;font-weight:700}.pet-tabs{display:flex;gap:6px;overflow:auto;margin-bottom:14px;padding-bottom:2px;scrollbar-width:none}.pet-tabs::-webkit-scrollbar{display:none}.pet-tabs button{border:0;height:34px;padding:0 12px;border-radius:999px;background:rgba(255,255,255,.62);color:var(--muted);box-shadow:inset 0 0 0 1px rgba(11,30,63,.12);font:600 10px Poppins,system-ui,sans-serif;white-space:nowrap;cursor:pointer}.pet-tabs button.is-active{background:var(--ink);color:#fff}.pet-profile-card{display:grid;grid-template-columns:120px 1fr;align-items:center;gap:20px}.pet-profile-photo{width:120px;height:120px;object-fit:cover;border-radius:24px;box-shadow:0 18px 30px -24px rgba(11,30,63,.55)}.pet-metric{font-size:27px;margin:9px 0}.pet-gallery-image{width:100%;height:120px;border-radius:15px;object-fit:cover;margin-bottom:10px}.pet-add-card{text-align:center}.pet-add{width:64px;height:64px;margin:20px auto 5px;border:0;border-radius:18px;background:rgba(255,122,26,.1);color:var(--orange);font-size:28px;cursor:pointer}.pet-link-btn{border:0;background:transparent;color:var(--orange);font:700 10px Poppins,system-ui,sans-serif;padding:10px 0 0;cursor:pointer}.pet-hotel-hero{display:grid;grid-template-columns:1fr minmax(240px,38%);gap:18px;align-items:center}.pet-hotel-hero img{width:100%;height:190px;object-fit:cover;border-radius:19px}.pet-hotel-hero .clone-btn{margin-top:16px}.pet-member-card{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:16px}.pet-price{font-size:22px;font-weight:700;margin:14px 0;color:var(--ink)}.pet-reward-hero{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:16px}.pet-progress{height:8px;margin:12px 0 6px;border-radius:999px;background:rgba(11,30,63,.08);overflow:hidden}.pet-progress span{display:block;height:100%;border-radius:inherit;background:var(--orange);transition:width .35s ease}.pet-reward-hero small{font-size:9.5px;color:var(--muted)}.pet-inline-actions{margin-top:14px}.clone-btn[disabled]{opacity:.48;cursor:not-allowed;transform:none}.pet-toast{position:fixed;right:24px;bottom:24px;z-index:100000;max-width:min(360px,calc(100vw - 32px));padding:12px 16px;border-radius:999px;background:var(--ink);color:#fff;box-shadow:0 20px 60px -24px rgba(6,12,26,.65);font-size:10.5px;font-weight:600;opacity:0;transform:translateY(12px);pointer-events:none;transition:.22s ease}.pet-toast.is-showing{opacity:1;transform:translateY(0)}
+[data-theme="dark"] .pet-choice,[data-theme="dark"] .pet-option,[data-theme="dark"] .pet-input,[data-theme="dark"] .pet-review div{background:#10213a;color:#f4f4ed}[data-theme="dark"] .pet-switch-row button,[data-theme="dark"] .pet-tabs button{color:#c3ccdc}[data-theme="dark"] .pet-switch-row button.is-active,[data-theme="dark"] .pet-tabs button.is-active{background:#f4f4ed;color:#0b1e3f}[data-theme="dark"] .pet-price{color:#f4f4ed}[data-theme="dark"] .pet-stepper span{background:rgba(16,33,58,.86)}[data-theme="dark"] .pet-stepper .is-active{background:#f4f4ed;color:#0b1e3f}
+@media(max-width:760px){.pet-choice-grid,.pet-option-grid{grid-template-columns:1fr}.pet-form-grid,.pet-review{grid-template-columns:1fr}.pet-field-full{grid-column:auto}.pet-profile-card{grid-template-columns:82px 1fr}.pet-profile-photo{width:82px;height:82px;border-radius:19px}.pet-hotel-hero{grid-template-columns:1fr}.pet-hotel-hero img{height:160px}.pet-stepper span b{display:none}.pet-stepper span{height:38px}.pet-toast{right:16px;bottom:86px}.pet-member-card,.pet-reward-hero{grid-template-columns:1fr}.pet-book-card{min-height:0}}
+/* Preserve the clone's accessibility control when the remote reference CSS is unavailable. */
+.a11y{position:fixed;left:18px;bottom:18px;z-index:9998}.a11y__panel{position:absolute;left:0;bottom:52px;width:270px;padding:14px;border-radius:22px;background:rgba(251,251,247,.95);box-shadow:inset 0 0 0 1px rgba(11,30,63,.14),0 24px 56px -28px rgba(6,12,26,.55);backdrop-filter:blur(18px);display:none}.a11y.is-open .a11y__panel{display:block}.a11y__button{width:42px;height:42px;border:0;border-radius:50%;display:grid;place-items:center;background:#fbfbf7;color:#0b1e3f;box-shadow:inset 0 0 0 1px rgba(11,30,63,.17),0 12px 28px -18px rgba(6,12,26,.5);cursor:pointer}.a11y__head{display:flex;justify-content:space-between;align-items:center}.a11y__title{font-size:12px;font-weight:700}.a11y__close{border:0;background:transparent;width:30px;height:30px;display:grid;place-items:center;cursor:pointer}.a11y__label{display:block;margin:12px 0 7px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}.a11y__sizes{display:flex;gap:6px}.a11y__size,.a11y__switch,.a11y__reset{font-family:Poppins,system-ui,sans-serif}.a11y__size{border:0;border-radius:10px;padding:7px 10px;background:#fff;box-shadow:inset 0 0 0 1px rgba(11,30,63,.12);cursor:pointer}.a11y__list{list-style:none;padding:0;margin:10px 0;display:grid;gap:6px}.a11y__switch{width:100%;border:0;border-radius:12px;padding:9px 10px;display:flex;align-items:center;justify-content:space-between;text-align:left;background:#fff;box-shadow:inset 0 0 0 1px rgba(11,30,63,.1);cursor:pointer}.a11y__switch-label{display:block;font-size:10px;font-weight:700}.a11y__switch-desc{display:block;font-size:8.5px;color:var(--muted)}.a11y__toggle{width:28px;height:16px;border-radius:999px;background:rgba(11,30,63,.12);position:relative}.a11y__toggle:after{content:"";position:absolute;width:12px;height:12px;left:2px;top:2px;border-radius:50%;background:#fff;box-shadow:0 1px 4px #0002;transition:.18s ease}.a11y__switch[aria-pressed="true"] .a11y__toggle{background:var(--orange)}.a11y__switch[aria-pressed="true"] .a11y__toggle:after{transform:translateX(12px)}.a11y__reset{width:100%;border:0;background:transparent;color:var(--orange);font-size:9.5px;font-weight:700;cursor:pointer}.a11y__reset:disabled{opacity:.4}.a11y-text-lg{font-size:110%}.a11y-text-xl{font-size:120%}.a11y-high-contrast{filter:contrast(1.12)}.a11y-underline a{text-decoration:underline!important;text-underline-offset:3px}.a11y-reduce-motion *{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}[data-theme="dark"] .a11y__panel,[data-theme="dark"] .a11y__button,[data-theme="dark"] .a11y__size,[data-theme="dark"] .a11y__switch{background:#10213a;color:#f4f4ed}
+@media(max-width:760px){.a11y{left:12px;bottom:12px}.a11y__panel{width:min(270px,calc(100vw - 24px))}}
+
+/* ===== v5 BrewedOps reference parity =====
+   Desktop values below are taken from the attached 1358×636 capture. */
+
+/* The captured short desktop does NOT compress the rail. Preserve its native scale/rhythm. */
+.rail{overflow:visible}
+.rail__inner{overflow:visible}
+
+/* Guarantee local rail action icons render instead of relying on CSS masks. */
+.rail__social-img{display:block;width:20px;height:20px;object-fit:contain}
+[data-theme="dark"] .rail__social-img{filter:invert(1)}
+
+/* Main bento geometry: 4 columns × 2 rows at the reference viewport. */
+@media (min-width:901px){
+  .bento{grid-template-columns:214.656px 214.656px 214.656px minmax(214.656px,1fr);grid-template-rows:165.641px 165.641px;gap:13.58px}
+  .bento__card{padding:12px 14.938px}
+  .bento__card--projects,.bento__card--quotes{display:grid;gap:0 14px}
+  .bento__card--projects{grid-template-columns:198.5px 198.516px;grid-template-rows:139.641px}
+  .bento__card--quotes{grid-template-columns:176.453px 220.562px;grid-template-rows:139.641px}
+  .bento__card--projects>.bento__head,.bento__card--quotes>.bento__head{grid-column:1;grid-row:1;min-width:0}
+
+  /* Booking / Projects: exact vertical reel mechanics from the capture. */
+  .bento__card--projects .bento__reel{position:relative;inset:auto;grid-column:2;grid-row:1;width:198.516px;height:139.641px;border-radius:14px;overflow:hidden}
+  .bento__card--projects .bento__reel-track{display:flex;flex-direction:column;gap:10px;width:198.516px;height:max-content;animation:referenceReelY 24s linear infinite}
+  .bento__card--projects .bento__shot{position:relative;flex:0 0 auto;width:198.516px;height:129.156px;padding:18px 4px 4px;border-radius:12px;background:#fff;box-shadow:inset 0 0 0 1px rgba(11,30,63,.14),0 10px 24px -16px rgba(6,12,26,.6);overflow:hidden}
+  .bento__card--projects .bento__shot img{display:block;width:190.516px;height:107.156px;object-fit:cover;object-position:50% 0;border-radius:7px}
+  @keyframes referenceReelY{to{transform:translateY(calc(-50% - 5px))}}
+
+  /* Pawfile / About: exact tall portrait fan, not square pet chips. */
+  .bento__card--about .bento__fan{position:relative;inset:auto;width:182.781px;height:73.547px;margin-top:8px;display:grid;place-items:center;overflow:visible;flex:1 1 auto}
+  .bento__card--about .bento__photo{position:absolute;left:50%;top:50%;width:76.047px;height:101.391px;border-radius:12px;overflow:hidden;box-shadow:0 0 0 3px #fff,0 14px 30px -14px rgba(6,12,26,.6);transform-origin:50% 50%;transition:transform .6s cubic-bezier(.34,1.56,.64,1)}
+  .bento__card--about .bento__photo:nth-child(1){transform:translate(-72%,-50%) rotate(-9deg)}
+  .bento__card--about .bento__photo:nth-child(2){transform:translate(-50%,-50%) rotate(0deg)}
+  .bento__card--about .bento__photo:nth-child(3){transform:translate(-28%,-50%) rotate(9deg)}
+  .bento__card--about .bento__photo img{width:100%;height:100%;object-fit:cover}
+
+  /* Health / AI: natural flex media shelf from reference. */
+  .bento__card--ai .bento__chips{position:relative;inset:auto;width:182.797px;height:57.453px;margin-top:8px;display:flex;flex:1 1 auto;flex-direction:column;justify-content:center;gap:8px;overflow:hidden}
+  .bento__card--ai .bento__chip-row{height:24.734px;margin:0;overflow:hidden}
+
+  /* Hotel / Credentials: restore the original large badge composition. */
+  .bento__card--creds .bento__badge{position:relative;inset:auto;width:182.781px;height:57.453px;margin-top:8px;display:flex;flex:1 1 auto;flex-direction:column;align-items:center;justify-content:center;gap:10px;overflow:visible}
+  .bento__card--creds .bento__badge-ring{width:86.906px;height:57.344px;border-radius:50%;display:grid;place-items:center;overflow:visible;background:#fff;box-shadow:inset 0 0 0 1px rgba(11,30,63,.14),0 0 0 8px rgba(11,30,63,.05),0 16px 30px -18px rgba(6,12,26,.6)}
+  .bento__card--creds .bento__badge-ring img{width:72px;height:72px;object-fit:cover;border-radius:50%}
+  .bento__card--creds .bento__badge-tag{height:18.141px;padding:0 10px;gap:5px;font-size:11px;line-height:18.15px;white-space:nowrap}
+
+  /* Shop & Club / Services: exact compact offer stack proportions. */
+  .bento__card--services .bento__offers{position:relative;inset:auto;width:182.781px;height:61.016px;margin:4.452px 0 0;display:flex;flex:1 1 auto;flex-direction:column;justify-content:stretch;overflow:hidden}
+  .bento__card--services .bento__offer{display:flex;flex:1 1 0;align-items:center;gap:7px;min-height:11.391px;padding:0 2px}
+  .bento__card--services .bento__offer-text{display:flex;min-width:0;flex:1 1 auto;flex-direction:column;font-size:9.5px;line-height:13.187px;overflow:hidden}
+  .bento__card--services .bento__offer-title{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .bento__card--services .bento__offer-note{display:none}
+  .bento__card--services .bento__offer-num{position:static!important;flex:0 0 auto;font-size:9.5px;line-height:15.675px;transform:none!important;color:var(--muted)}
+
+  /* Rewards / Testimonials: exact second-column vertical reel. */
+  .bento__card--quotes .bento__reviews{position:relative;inset:auto;grid-column:2;grid-row:1;width:220.562px;height:139.641px;overflow:hidden}
+  .bento__card--quotes .bento__reviews-track{display:flex;flex-direction:column;gap:10px;width:220.562px;height:max-content;animation:referenceReviewsY 26s linear infinite}
+  .bento__card--quotes .bento__review{flex:0 0 auto;width:220.562px;min-height:82px;padding:10px 12px;gap:4px;border-radius:12px;background:#fff;box-shadow:inset 0 0 0 1px rgba(11,30,63,.14)}
+  .bento__card--quotes .bento__review-top{font-size:12px;line-height:19.8px}
+  .bento__card--quotes .bento__review-role{font-size:11.5px;line-height:16.1px}
+  .bento__card--quotes .bento__review-work{font-size:11px;line-height:18.15px}
+  @keyframes referenceReviewsY{to{transform:translateY(calc(-50% - 5px))}}
+}
+
+/* Keep motion architecture but provide reduced-motion parity. */
+@media (prefers-reduced-motion:reduce){
+  .bento__reel-track,.bento__reviews-track,.tools-marquee__track,.bento__chip-track{animation:none!important}
+}
+
+/* Mobile remains intentionally usable because the reference file only establishes desktop geometry. */
+@media (max-width:540px){
+  .rail__nav{position:relative;padding-right:24px;scrollbar-width:none;mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 34px),transparent 100%);-webkit-mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 34px),transparent 100%)}
+  .rail__nav::-webkit-scrollbar{display:none}
+  .bento{grid-auto-rows:auto!important;gap:12px}
+  .bento__card{min-height:188px}
+  .bento__card--projects{min-height:238px}
+  .bento__card--projects .bento__reel{left:56%;right:12px;top:12px;bottom:12px}
+  .bento__card--about{min-height:206px}
+  .bento__card--about .bento__fan{height:86px;bottom:10px;overflow:visible}
+  .bento__card--about .bento__photo{width:68px;height:88px;border-radius:11px}
+  .bento__card--ai{min-height:188px}
+  .bento__card--creds{min-height:202px}
+  .bento__card--services{min-height:198px}
+  .bento__card--quotes{min-height:238px}
+  .bento__card--quotes .bento__reviews{left:14px;right:14px;top:90px;bottom:12px;width:auto;max-width:none}
+  .bento__card--quotes .bento__reviews-track{flex-direction:row;gap:9px;width:max-content;animation:reel 20s linear infinite}
+  .bento__card--quotes .bento__review{flex:0 0 148px;width:148px;min-height:104px;padding:10px 11px}
+}
+
+/* v5.1 mobile polish after parity render */
+@media (max-width:540px){
+  .bento__card{display:block;position:relative;overflow:hidden}
+  .bento__card--projects .bento__reel{position:absolute;left:56%;right:12px;top:12px;bottom:12px;width:auto;height:auto;border-radius:14px;overflow:hidden}
+  .bento__card--projects .bento__reel-track{display:flex;flex-direction:column;gap:8px;width:100%;height:max-content;animation:referenceMobileReelY 18s linear infinite}
+  .bento__card--projects .bento__shot{flex:0 0 auto;width:100%;height:128px;padding:14px 4px 4px;border-radius:12px;background:#fff;box-shadow:inset 0 0 0 1px rgba(11,30,63,.14),0 10px 24px -16px rgba(6,12,26,.6)}
+  .bento__card--projects .bento__shot img{width:100%;height:110px;object-fit:cover;object-position:50% 0;border-radius:7px}
+  @keyframes referenceMobileReelY{to{transform:translateY(calc(-50% - 4px))}}
+  .bento__card--about .bento__fan{position:absolute;left:14px;right:14px;top:auto;bottom:10px;width:auto;height:86px;display:grid;place-items:center;overflow:visible;margin:0}
+  .bento__card--about .bento__photo{position:absolute;left:50%;top:50%;width:68px;height:88px;box-shadow:0 0 0 3px #fff,0 12px 24px -14px rgba(6,12,26,.55)}
+  .bento__card--about .bento__photo:nth-child(1){transform:translate(-88%,-50%) rotate(-8deg)}
+  .bento__card--about .bento__photo:nth-child(2){transform:translate(-50%,-50%)}
+  .bento__card--about .bento__photo:nth-child(3){transform:translate(-12%,-50%) rotate(8deg)}
+  .bento__card--creds .bento__badge{position:absolute;left:14px;right:14px;top:auto;bottom:10px;width:auto;height:76px;margin:0;display:flex;align-items:center;justify-content:center;flex-direction:row;gap:12px}
+  .bento__card--creds .bento__badge-ring{width:78px;height:58px}
+  .bento__card--services .bento__offers{position:absolute;left:14px;right:14px;top:auto;bottom:12px;width:auto;height:66px;margin:0}
+}
+@media (min-width:901px){
+  .bento__card--about .bento__photo{left:50%;top:50%;}
+  .bento__card--about .bento__photo:nth-child(1){transform:translate(calc(-50% - 26px),-50%) rotate(-9deg)}
+  .bento__card--about .bento__photo:nth-child(2){transform:translate(-50%,-50%)}
+  .bento__card--about .bento__photo:nth-child(3){transform:translate(calc(-50% + 26px),-50%) rotate(9deg)}
+}
+@media (max-width:540px){
+  .bento__card--projects .bento__head{max-width:52%}
+  .bento__card--projects .bento__desc{margin-right:0}
+}
+
+/* v5.2 exact desktop media offsets from the 1358×636 reference capture. */
+@media (min-width:901px){
+  .bento__card--about .bento__fan{position:absolute;left:15.938px;right:auto;top:79.094px;width:182.781px;height:73.547px;margin:0}
+  .bento__card--ai .bento__chips{position:absolute;left:15.938px;right:auto;top:95.188px;width:182.797px;height:57.453px;margin:0}
+  .bento__card--creds .bento__badge{position:absolute;left:15.938px;right:auto;top:95.188px;width:182.781px;height:57.453px;margin:0}
+  .bento__card--services .bento__offers{position:absolute;left:15.938px;right:auto;top:91.625px;width:182.781px;height:61.016px;margin:0}
+  .bento__card--projects .bento__reel,.bento__card--quotes .bento__reviews{transform:translate(1px,1px)}
+}
+
+
+/* ==========================================================================
+   v8 — source-section parity from the user's original BrewedOps captures
+   Captures: accessibility launcher, accessibility panel, desktop rail.
+   ========================================================================== */
+
+@media (min-width:901px){
+  .rail{
+    position:relative;
+    z-index:700;
+    flex:0 0 312px;
+    width:312px;
+    height:100vh;
+    padding:28px 30px;
+  }
+  .rail__inner{
+    min-height:100%;
+    width:252px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    overflow:visible;
+  }
+  .rail__avatar{
+    position:relative;
+    display:block;
+    width:133.547px;
+    height:133.547px;
+    padding:0;
+    background:transparent;
+    border:0;
+    border-radius:50%;
+    box-shadow:none;
+    overflow:visible;
+    transition:opacity .56s cubic-bezier(.22,1,.36,1) .04s,
+               transform .7s cubic-bezier(.22,1,.36,1) .04s;
+  }
+  .rail__avatar img{
+    position:relative;
+    display:block;
+    width:133.547px;
+    height:133.547px;
+    max-width:100%;
+    border-radius:50%;
+    object-fit:cover;
+    object-position:50% 50%;
+    filter:drop-shadow(0 14px 22px rgba(6,12,26,.35));
+  }
+  .rail__name{
+    margin:20px 0 0;
+    gap:7px;
+    align-items:center;
+    font-size:22px;
+    line-height:26.4px;
+    letter-spacing:-.44px;
+    font-weight:700;
+    transition:opacity .56s cubic-bezier(.22,1,.36,1) .095s,
+               transform .7s cubic-bezier(.22,1,.36,1) .095s;
+  }
+  .rail__handle{
+    margin:5px 0 0;
+    font-size:14.5px;
+    line-height:23.925px;
+    color:#5a6479;
+    transition:opacity .56s cubic-bezier(.22,1,.36,1) .14s,
+               transform .7s cubic-bezier(.22,1,.36,1) .14s;
+  }
+  .rail__visits{
+    display:inline;
+    height:auto;
+    margin-left:8px;
+    padding:0;
+    border:0;
+    border-radius:0;
+    background:transparent;
+    color:inherit;
+    font-size:14.5px;
+    line-height:23.925px;
+    font-weight:500;
+  }
+  .rail__actions{
+    display:flex;
+    align-items:center;
+    width:206px;
+    height:44px;
+    margin:18px 0 0;
+    gap:10px;
+    transition:opacity .56s cubic-bezier(.22,1,.36,1) .19s,
+               transform .7s cubic-bezier(.22,1,.36,1) .19s;
+  }
+  .rail__socials{
+    display:flex;
+    align-items:center;
+    width:152px;
+    height:44px;
+    gap:10px;
+  }
+  .rail__social,.rail__theme{
+    display:grid;
+    place-items:center;
+    width:44px;
+    height:44px;
+    border:0;
+    border-radius:50%;
+    background:#fff;
+    color:#0b1e3f;
+  }
+  .rail__social{
+    box-shadow:inset 0 0 0 1px rgba(11,30,63,.14),
+               0 10px 24px -18px rgba(6,12,26,.55);
+    transition:transform .32s cubic-bezier(.34,1.56,.64,1),
+               color .18s cubic-bezier(.22,1,.36,1),
+               box-shadow .18s cubic-bezier(.22,1,.36,1);
+  }
+  .rail__theme{
+    box-shadow:inset 0 0 0 1px rgba(11,30,63,.14);
+    transition:transform .32s cubic-bezier(.34,1.56,.64,1),
+               box-shadow .18s cubic-bezier(.22,1,.36,1);
+  }
+  .rail__social .ph-duo{width:20px;height:20px}
+  .rail__theme .tg{width:21px;height:21px}
+  .rail__nav{
+    width:252px;
+    margin-top:20px;
+    padding-top:18px;
+    border-top:1px solid rgba(11,30,63,.14);
+  }
+  .rail__nav ul{display:flex;flex-direction:column;gap:3px}
+  .rail__link{
+    width:252px;
+    height:46px;
+    padding:0 16px;
+    gap:15px;
+    border-radius:14px;
+    font-size:17px;
+    line-height:28.05px;
+    font-weight:500;
+    transition:color .18s cubic-bezier(.22,1,.36,1),
+               background .18s cubic-bezier(.22,1,.36,1),
+               transform .32s cubic-bezier(.34,1.56,.64,1);
+  }
+  .rail__link .ricon--phosphor,
+  .rail__link .ph-duo--nav{width:21px;height:21px}
+  .rail__link .ph-duo--nav{opacity:.85}
+  .rail__link .ph-duo--nav path[opacity]{opacity:.32}
+  .rail__link.active .ph-duo--nav{opacity:1}
+  .rail__copy{
+    align-self:stretch;
+    width:252px;
+    margin:0;
+    padding:25.44px 0 0 52px;
+    color:#5a6479;
+    font-size:12px;
+    line-height:20.4px;
+    transition:opacity .56s cubic-bezier(.22,1,.36,1) .3s,
+               transform .7s cubic-bezier(.22,1,.36,1) .3s;
+  }
+}
+[data-theme="dark"] .rail__social,
+[data-theme="dark"] .rail__theme{background:#10213a;color:#f4f4ed}
+
+/* Exact accessibility launcher positioning and dimensions. */
+.a11y{
+  position:fixed;
+  left:28px;
+  bottom:28px;
+  width:48px;
+  height:48px;
+  z-index:9998;
+}
+.a11y__button{
+  width:48px;
+  height:48px;
+  padding:0;
+  border:1px solid rgba(244,244,237,.14);
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:#0b1e3f;
+  color:#f4f4ed;
+  box-shadow:0 18px 40px -18px rgba(6,12,26,.62);
+  cursor:pointer;
+  transition:transform .32s cubic-bezier(.34,1.56,.64,1),
+             box-shadow .32s cubic-bezier(.22,1,.36,1);
+}
+.a11y__button:hover,
+.a11y__button:focus-visible{
+  transform:translateY(-2px);
+  box-shadow:0 22px 48px -18px rgba(6,12,26,.7);
+}
+.a11y__button svg{display:block;width:22px;height:22px}
+.a11y .slab__2{opacity:.32}
+.a11y .slab__1{opacity:1}
+
+/* Exact accessibility panel geometry at the 1358x636 capture. */
+.a11y__panel{
+  position:absolute;
+  right:-252px;
+  left:auto;
+  bottom:60px;
+  width:300px;
+  height:387.328px;
+  padding:14px;
+  gap:12px;
+  display:flex;
+  flex-direction:column;
+  color:#f4f4ed;
+  background:#0b1e3f;
+  border:1px solid rgba(244,244,237,.14);
+  border-radius:18px;
+  box-shadow:0 30px 60px -20px rgba(6,12,26,.7);
+  backdrop-filter:none;
+  -webkit-backdrop-filter:none;
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  transform:translateY(8px) scale(.965);
+  transform-origin:left bottom;
+  transition:opacity .18s cubic-bezier(.22,1,.36,1),
+             transform .32s cubic-bezier(.34,1.56,.64,1),
+             visibility 0s linear .32s;
+}
+.a11y.is-open .a11y__panel{
+  display:flex;
+  opacity:1;
+  visibility:visible;
+  pointer-events:auto;
+  transform:none;
+  transition:opacity .18s cubic-bezier(.22,1,.36,1),
+             transform .32s cubic-bezier(.34,1.56,.64,1),
+             visibility 0s;
+}
+.a11y__head{
+  height:30px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.a11y__title{
+  font-size:15px;
+  line-height:24.75px;
+  font-weight:700;
+  letter-spacing:-.15px;
+}
+.a11y__close{
+  width:30px;
+  height:30px;
+  padding:0;
+  border:0;
+  border-radius:9px;
+  display:grid;
+  place-items:center;
+  color:rgba(244,244,237,.75);
+  background:rgba(244,244,237,.08);
+  cursor:pointer;
+  transition:background .18s cubic-bezier(.22,1,.36,1),
+             color .18s cubic-bezier(.22,1,.36,1),
+             transform .2s ease;
+}
+.a11y__close:hover{background:rgba(244,244,237,.14);color:#f4f4ed}
+.a11y__close:active{transform:scale(.94)}
+.a11y__close svg{width:16px;height:16px}
+.a11y__group{width:270px;height:64.1406px}
+.a11y__label{
+  display:block;
+  width:270px;
+  height:18.1406px;
+  margin:0 0 6px;
+  color:rgba(244,244,237,.55);
+  font-size:11px;
+  line-height:18.15px;
+  font-weight:600;
+  letter-spacing:.88px;
+  text-transform:none;
+}
+.a11y__sizes{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  width:270px;
+  height:40px;
+  gap:6px;
+}
+.a11y__size{
+  width:86px;
+  height:40px;
+  padding:0;
+  border:1px solid rgba(244,244,237,.12);
+  border-radius:10px;
+  background:rgba(244,244,237,.09);
+  color:#f4f4ed;
+  box-shadow:none;
+  font-weight:700;
+  cursor:pointer;
+  transition:background .18s cubic-bezier(.22,1,.36,1),
+             border-color .18s cubic-bezier(.22,1,.36,1);
+}
+.a11y__size:nth-child(1){font-size:15px;line-height:24.75px}
+.a11y__size:nth-child(2){font-size:16px;line-height:26.4px}
+.a11y__size:nth-child(3){font-size:18px;line-height:29.7px}
+.a11y__size.is-on{
+  color:#fff;
+  background:#ff7a1a;
+  border-color:#ff7a1a;
+}
+.a11y__size:not(.is-on):hover{background:rgba(244,244,237,.14)}
+.a11y__list{
+  width:270px;
+  height:191.1875px;
+  margin:0;
+  padding:0;
+  list-style:none;
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+}
+.a11y__switch{
+  width:270px;
+  min-height:61.0625px;
+  padding:9px 10px;
+  gap:12px;
+  border:0;
+  border-radius:11px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  text-align:left;
+  color:#f4f4ed;
+  background:transparent;
+  box-shadow:none;
+  cursor:pointer;
+  transition:background .18s cubic-bezier(.22,1,.36,1);
+}
+.a11y__switch:hover{background:rgba(244,244,237,.055)}
+.a11y__switch-text{
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  gap:1px;
+}
+.a11y__switch-label{
+  display:block;
+  color:#f4f4ed;
+  font-size:13.5px;
+  line-height:22.275px;
+  font-weight:600;
+}
+.a11y__switch-desc{
+  display:block;
+  color:rgba(244,244,237,.58);
+  font-size:12px;
+  line-height:19.8px;
+  font-weight:400;
+}
+.a11y__toggle{
+  position:relative;
+  flex:0 0 38px;
+  width:38px;
+  height:22px;
+  border-radius:999px;
+  background:rgba(244,244,237,.18);
+  transition:background .18s cubic-bezier(.22,1,.36,1);
+}
+.a11y__toggle::after{
+  content:"";
+  position:absolute;
+  left:3px;
+  top:3px;
+  width:16px;
+  height:16px;
+  border-radius:50%;
+  background:#f4f4ed;
+  box-shadow:0 2px 7px rgba(6,12,26,.32);
+  transition:transform .24s cubic-bezier(.34,1.56,.64,1);
+}
+.a11y__switch[aria-pressed="true"] .a11y__toggle{background:#ff7a1a}
+.a11y__switch[aria-pressed="true"] .a11y__toggle::after{transform:translateX(16px)}
+.a11y__reset{
+  width:270px;
+  height:36px;
+  padding:0;
+  gap:6px;
+  border:0;
+  border-radius:10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(244,244,237,.09);
+  color:#f4f4ed;
+  font-size:12.5px;
+  line-height:20.625px;
+  font-weight:600;
+  cursor:pointer;
+  opacity:1;
+  transition:background .18s cubic-bezier(.22,1,.36,1),
+             opacity .18s ease;
+}
+.a11y__reset:hover:not(:disabled){background:rgba(244,244,237,.14)}
+.a11y__reset:disabled{opacity:.4;cursor:default}
+.a11y__reset svg{width:14px;height:14px}
+
+/* The original widget is dark in both site themes. */
+[data-theme="dark"] .a11y__panel,
+[data-theme="dark"] .a11y__button{
+  background:#0b1e3f;
+  color:#f4f4ed;
+}
+[data-theme="dark"] .a11y__size,
+[data-theme="dark"] .a11y__switch{
+  color:#f4f4ed;
+}
+[data-theme="dark"] .a11y__size{background:rgba(244,244,237,.09)}
+[data-theme="dark"] .a11y__size.is-on{background:#ff7a1a}
+
+/* Keep the accessibility launcher usable on small screens without changing
+   the captured desktop geometry. */
+@media (max-width:760px){
+  .a11y{left:12px;bottom:12px}
+  .a11y__panel{
+    right:auto;
+    left:0;
+    width:min(300px,calc(100vw - 24px));
+    max-height:calc(100vh - 84px);
+    overflow:auto;
+  }
+  .a11y__group,.a11y__label,.a11y__sizes,.a11y__list,.a11y__switch,.a11y__reset{width:100%}
+  .a11y__size{width:auto}
+}
+
+/* ========================================================================== 
+   v9 — independent rail scrolling + hover-gated bento motion
+   ========================================================================== */
+
+@media (min-width:901px){
+  /* The desktop shell is viewport-locked, so the rail must be its own scroll
+     container whenever the source-accurate nav extends below the viewport. */
+  .rail{
+    overflow-y:auto!important;
+    overflow-x:hidden!important;
+    overscroll-behavior-y:contain;
+    scrollbar-width:none;
+    -ms-overflow-style:none;
+    -webkit-overflow-scrolling:touch;
+  }
+  .rail::-webkit-scrollbar{width:0;height:0;display:none}
+  .rail__inner{min-height:100%;height:auto;overflow:visible}
+
+  /* BrewedOps-style content motion: static at rest, animated only while the
+     corresponding card is actively hovered (or keyboard-focused). */
+  .bento__card--projects .bento__reel-track,
+  .bento__card--quotes .bento__reviews-track,
+  .bento__card--ai .bento__chip-track{
+    animation-play-state:paused!important;
+  }
+  .bento__card--projects:hover .bento__reel-track,
+  .bento__card--projects:focus-within .bento__reel-track,
+  .bento__card--quotes:hover .bento__reviews-track,
+  .bento__card--quotes:focus-within .bento__reviews-track,
+  .bento__card--ai:hover .bento__chip-track,
+  .bento__card--ai:focus-within .bento__chip-track{
+    animation-play-state:running!important;
+  }
+}
+
+/* Touch devices have no true hover, so these decorative shelves stay still. */
+@media (hover:none){
+  .bento__card--projects .bento__reel-track,
+  .bento__card--quotes .bento__reviews-track,
+  .bento__card--ai .bento__chip-track{
+    animation-play-state:paused!important;
+  }
+}
+
+/* v10: captured BrewedOps HeroCanvas container parity. */
+.hero-canvas{overflow:visible}
+.hero-canvas>canvas{display:block;width:100%;height:100%}
+
+/* ==========================================================================\n   v11 — Pawfile information architecture\n   Pawfile is the summary home. Five requested summary cards fill the 4×2\n   reference grid without an empty cell: Rewards & Club + Shop share row 2.\n   ========================================================================== */
+@media (min-width:901px){
+  .bento__card--services{
+    grid-column:span 2;
+    display:grid;
+    grid-template-columns:176.453px 220.562px;
+    grid-template-rows:139.641px;
+    gap:0 14px;
+  }
+  .bento__card--services>.bento__head{grid-column:1;grid-row:1;min-width:0}
+  .bento__card--services .bento__offers{
+    position:relative!important;
+    inset:auto!important;
+    grid-column:2;
+    grid-row:1;
+    width:220.562px!important;
+    height:139.641px!important;
+    margin:0!important;
+    padding:5px 0;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    gap:4px;
+    overflow:hidden;
+  }
+  .bento__card--services .bento__offer{
+    flex:0 0 28px;
+    min-height:28px;
+    padding:0 9px;
+    border-radius:10px;
+    background:rgba(255,255,255,.72);
+    box-shadow:inset 0 0 0 1px rgba(11,30,63,.10);
+  }
+  [data-theme="dark"] .bento__card--services .bento__offer{background:rgba(255,255,255,.07)}
+}
+@media (max-width:900px) and (min-width:541px){
+  .bento__card--services{grid-column:span 2}
+}
+@media (max-width:540px){
+  .bento__card--services{grid-column:span 1}
+}
+
+
+/* v17 — corrected marked-up Pawfile grid: Health remains beside My Pets. */
+@media (min-width:901px){
+  .bento__card--reward-compact{grid-column:span 1;display:block}
+  .bento__card--reward-compact .bento__desc{margin-right:0}
+  .bento__reward-compact{position:absolute;left:15px;right:15px;bottom:13px;height:55px;padding:9px 11px;border-radius:13px;background:rgba(255,255,255,.72);box-shadow:inset 0 0 0 1px rgba(11,30,63,.11);display:grid;align-content:center;gap:2px}
+  .bento__reward-compact strong{font-size:12px;line-height:1.2;color:var(--ink)}
+  .bento__reward-compact span{font-size:9px;line-height:1.25;color:var(--orange);font-weight:700}
+  [data-theme="dark"] .bento__reward-compact{background:rgba(255,255,255,.07)}
+  [data-theme="dark"] .bento__reward-compact strong{color:#f4f4ed}
+}
+@media (max-width:900px) and (min-width:541px){.bento__card--reward-compact{grid-column:span 1}}
+@media (max-width:540px){
+  .bento__card--reward-compact{grid-column:span 1}
+  .bento__reward-compact{position:absolute;left:14px;right:14px;bottom:12px;height:58px;padding:10px 12px;border-radius:13px;background:rgba(255,255,255,.72);box-shadow:inset 0 0 0 1px rgba(11,30,63,.11);display:grid;align-content:center;gap:2px}
+  .bento__reward-compact strong{font-size:12px;color:var(--ink)}
+  .bento__reward-compact span{font-size:9px;color:var(--orange);font-weight:700}
+}
+
+/* ==========================================================================\n   v18 — My Pets fan interaction + arrow parity\n   ========================================================================== */
+/* My Pets intentionally has no descriptive copy: the photo fan is the content. */
+.bento__card--about .bento__head{position:relative;z-index:3}
+.bento__card--about .bento__fan{z-index:2}
+.bento__card--about .bento__photo{will-change:transform;transition:transform .58s cubic-bezier(.34,1.56,.64,1),box-shadow .35s cubic-bezier(.22,1,.36,1)}
+
+/* Restore the old fan/spread response only when hover is a real interaction. */
+@media (hover:hover) and (pointer:fine){
+  .bento__card--about:hover .bento__photo:nth-child(1),
+  .bento__card--about:focus-within .bento__photo:nth-child(1){
+    transform:translate(-94%,-55%) rotate(-14deg);
+  }
+  .bento__card--about:hover .bento__photo:nth-child(2),
+  .bento__card--about:focus-within .bento__photo:nth-child(2){
+    transform:translate(-50%,-60%) rotate(0deg) scale(1.055);
+    box-shadow:0 0 0 3px #fff,0 18px 34px -14px rgba(6,12,26,.66);
+  }
+  .bento__card--about:hover .bento__photo:nth-child(3),
+  .bento__card--about:focus-within .bento__photo:nth-child(3){
+    transform:translate(-6%,-55%) rotate(14deg);
+  }
+}
+
+@media (prefers-reduced-motion:reduce){
+  .bento__card--about .bento__photo{transition:none!important}
+}
+
+/* ========================================================================== 
+   v19 — Fur-parent identity, TFA branding, live booking reel, live points,
+   cart badge and local two-way messages.
+   ========================================================================== */
+.rail__member-badge{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:7px;background:rgba(255,122,26,.12);color:#ff7a1a;box-shadow:inset 0 0 0 1px rgba(255,122,26,.2)}
+.rail__member-icon{width:15px;height:15px;display:block}
+.rail__social{position:relative}
+.rail__action-badge{position:absolute;right:-3px;top:-4px;display:grid;place-items:center;min-width:17px;height:17px;padding:0 4px;border-radius:999px;background:#ff7a1a;color:#fff;font:700 9px/1 Poppins,system-ui,sans-serif;box-shadow:0 0 0 2px #f4f4ed}
+[data-theme="dark"] .rail__action-badge{box-shadow:0 0 0 2px #060c1a}
+.home__brand-lockup{display:flex;align-items:flex-start;min-height:74px}
+.home__brand-logo{display:block;width:148px;height:auto;border-radius:13px;box-shadow:0 14px 30px -20px rgba(6,12,26,.52)}
+.home__lede{margin-top:8px}
+
+/* Live appointment cards replace the old static screenshot reel while keeping
+   the captured BrewedOps vertical hover-scroll motion. */
+.bento__card--projects .bento__booking-shot{display:flex!important;align-items:center!important;gap:9px!important;width:198.516px!important;height:64.5px!important;padding:8px!important;background:#fff!important;border-radius:12px!important;box-shadow:inset 0 0 0 1px rgba(11,30,63,.14),0 10px 24px -16px rgba(6,12,26,.5)!important;overflow:hidden!important}
+.bento__card--projects .bento__booking-pet{flex:0 0 48px!important;width:48px!important;height:48px!important;border-radius:9px!important;object-fit:cover!important;object-position:center!important}
+.bento__booking-copy{display:flex;flex:1;min-width:0;flex-direction:column;align-items:flex-start;line-height:1.13}
+.bento__booking-copy strong{width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#0b1e3f;font-size:9.5px;font-weight:700}
+.bento__booking-copy small{display:block;width:100%;margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#5a6479;font-size:7.5px;font-weight:500}
+.bento__booking-copy em{display:inline-flex;margin-top:4px;padding:2px 5px;border-radius:999px;font-size:6.5px;font-style:normal;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.bento__booking-copy em.is-confirmed{background:#dff6e9;color:#25845a}.bento__booking-copy em.is-pending{background:#fff0df;color:#c35a08}
+.bento__booking-shot.is-placeholder{justify-content:center;color:#5a6479;font-size:9px}
+@media (min-width:901px){.bento__card--projects .bento__reel-track{gap:7px!important}}
+
+/* Messages page */
+.pet-messages{padding:18px}.pet-thread{display:flex;flex-direction:column;gap:10px;max-height:360px;overflow:auto;padding:4px}
+.pet-message{max-width:72%;padding:12px 14px;border-radius:18px;background:#fff;box-shadow:inset 0 0 0 1px rgba(11,30,63,.13);align-self:flex-start}
+.pet-message.is-parent{align-self:flex-end;background:#0b1e3f;color:#f4f4ed}.pet-message__who{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#ff7a1a}
+.pet-message p{margin:4px 0 0;font-size:12px;line-height:1.5;color:inherit}.pet-message small{display:block;margin-top:5px;font-size:9px;opacity:.58}
+.pet-message-compose{display:grid;grid-template-columns:1fr auto;gap:9px;margin-top:14px}.pet-message-compose .pet-input{min-width:0}
+
+@media (max-width:900px){
+  .home__brand-logo{width:128px}
+  .home__brand-lockup{min-height:64px}
+}
+
+
+/* ========================================================================== 
+   v20 — user-marked dashboard corrections
+   ========================================================================== */
+@media (min-width:901px){
+  /* Fur-parent identity is intentionally compact so navigation gets the visual priority. */
+  .rail__avatar{width:88px!important;height:88px!important}
+  .rail__avatar img{width:88px!important;height:88px!important;filter:drop-shadow(0 10px 16px rgba(6,12,26,.28))!important}
+  .rail__name{margin-top:13px!important}
+  .rail__handle{margin-top:3px!important}
+  .rail__actions{margin-top:13px!important}
+
+  /* First homepage row now is a real bento card, not a branding masthead. */
+  .home__promo-card{height:108px;min-height:108px;padding:12px 15px;display:grid;grid-template-columns:165px minmax(0,1fr);align-items:stretch;gap:14px;overflow:hidden}
+  .home__promo-head{position:relative;display:flex;flex-direction:column;justify-content:space-between;min-width:0;padding:1px 0}
+  .home__promo-controls{display:flex;gap:6px}
+  .home__promo-controls button{width:28px;height:28px;border:0;border-radius:9px;background:rgba(11,30,63,.06);box-shadow:inset 0 0 0 1px rgba(11,30,63,.1);color:var(--ink);font:700 18px/1 Poppins;cursor:pointer}
+  .home__promo-viewport{min-width:0;height:84px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;touch-action:pan-x;cursor:grab;border-radius:15px}
+  .home__promo-viewport:active{cursor:grabbing}.home__promo-viewport::-webkit-scrollbar{display:none}
+  .home__promo-track{display:flex;width:100%;height:100%}
+  .home__promo-slide{flex:0 0 100%;width:100%;height:100%;scroll-snap-align:start;display:grid;align-content:center;gap:3px;padding:11px 16px;border-radius:15px;background:linear-gradient(112deg,rgba(255,255,255,.86),rgba(234,240,255,.82));box-shadow:inset 0 0 0 1px rgba(11,30,63,.1)}
+  .home__promo-slide span{color:var(--orange);font-size:8px;font-weight:700;letter-spacing:.11em}.home__promo-slide strong{font-size:14px;line-height:1.18;color:var(--ink)}.home__promo-slide small{font-size:9.5px;line-height:1.4;color:var(--muted)}
+  .home__promo-dots{position:absolute;right:16px;bottom:9px;display:flex;gap:5px;z-index:4}.home__promo-card{position:relative}.home__promo-dots button{width:6px;height:6px;padding:0;border:0;border-radius:50%;background:rgba(11,30,63,.2);cursor:pointer}.home__promo-dots button.is-active{background:var(--orange);transform:scale(1.2)}
+  [data-theme="dark"] .home__promo-slide{background:linear-gradient(112deg,rgba(23,43,77,.92),rgba(12,33,64,.86))}[data-theme="dark"] .home__promo-slide strong{color:#f4f4ed}[data-theme="dark"] .home__promo-controls button{background:rgba(255,255,255,.08);color:#f4f4ed}
+
+  /* Hotel card no longer contains a floating dog photo. */
+  .bento__card--creds .bento__badge--text-only{position:absolute!important;left:15.938px!important;right:15.938px!important;top:auto!important;bottom:14px!important;width:auto!important;height:auto!important;display:block!important;margin:0!important}
+  .bento__card--creds .bento__badge--text-only .bento__badge-tag{display:inline-flex;height:23px;align-items:center;padding:0 9px;border-radius:999px;background:var(--ink);color:#f4f4ed;font-size:8.5px;font-weight:700;box-shadow:none}
+}
+
+/* Badges for messages, notifications and cart use one system. */
+.rail__action-badge[hidden]{display:none!important}
+
+/* Notifications page */
+.pet-notification{min-height:112px}
+
+@media (max-width:900px){
+  .home__promo-card{min-height:116px;padding:12px 14px;display:grid;grid-template-columns:120px minmax(0,1fr);gap:10px}
+  .home__promo-head{display:flex;flex-direction:column;justify-content:space-between}.home__promo-controls{display:flex;gap:5px}.home__promo-controls button{width:28px;height:28px;border:0;border-radius:9px;background:rgba(11,30,63,.07);color:var(--ink)}
+  .home__promo-viewport{height:92px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}.home__promo-viewport::-webkit-scrollbar{display:none}.home__promo-track{display:flex;height:100%}.home__promo-slide{flex:0 0 100%;scroll-snap-align:start;padding:12px;border-radius:14px;background:rgba(255,255,255,.74);box-shadow:inset 0 0 0 1px rgba(11,30,63,.1);display:grid;align-content:center;gap:3px}.home__promo-slide span{font-size:8px;color:var(--orange);font-weight:700}.home__promo-slide strong{font-size:13px}.home__promo-slide small{font-size:9px;color:var(--muted)}.home__promo-dots{display:none}
+}
+@media (max-width:540px){
+  .home__promo-card{grid-template-columns:1fr;min-height:148px}.home__promo-head{flex-direction:row;align-items:center}.home__promo-viewport{height:92px}
+}
+
+
+/* ========================================================================== 
+   v21 — consolidated user-marked IA, dashboard, profile and My Pets edits
+   ========================================================================== */
+.rail__edit-profile{display:inline-flex;align-items:center;justify-content:center;margin-top:7px;height:26px;padding:0 10px;border-radius:999px;background:rgba(255,255,255,.6);box-shadow:inset 0 0 0 1px rgba(11,30,63,.12);color:var(--muted);font-size:9.5px;font-weight:700;transition:.2s ease}.rail__edit-profile:hover{color:var(--ink);transform:translateY(-1px)}
+.rail__social{border:0;cursor:pointer}
+
+@media(min-width:901px){
+  .home{grid-template-rows:174px minmax(340px,1fr)!important;gap:16px!important}
+  .home__topbar{display:grid;grid-template-columns:178px minmax(0,1fr);gap:16px;min-width:0;height:174px}
+  .home__brand-slot{display:grid;place-items:center;height:174px;border-radius:26px;background:rgba(255,255,255,.38);box-shadow:inset 0 0 0 1px rgba(11,30,63,.11);backdrop-filter:blur(16px) saturate(1.15)}
+  .home__brand-slot img{display:block;width:122px;height:122px;object-fit:contain;border-radius:18px;box-shadow:0 18px 34px -24px rgba(6,12,26,.55)}
+  .home__promo-card{height:174px!important;min-height:174px!important;padding:14px 16px!important;display:grid!important;grid-template-columns:1fr!important;grid-template-rows:34px minmax(0,1fr)!important;gap:9px!important}
+  .home__promo-head{display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:space-between!important;padding:0!important}
+  .home__promo-controls{order:2}
+  .home__promo-viewport{height:112px!important;border-radius:17px!important}
+  .home__promo-slide{padding:16px 19px!important;border-radius:17px!important}
+  .home__promo-slide span{font-size:8.5px!important}.home__promo-slide strong{font-size:16px!important}.home__promo-slide small{font-size:10px!important;max-width:620px}
+  .home__promo-dots{right:20px!important;bottom:18px!important}
+}
+@media(max-width:900px){.home__topbar{display:grid;grid-template-columns:110px minmax(0,1fr);gap:10px}.home__brand-slot{display:grid;place-items:center;border-radius:20px;background:rgba(255,255,255,.38);box-shadow:inset 0 0 0 1px rgba(11,30,63,.1)}.home__brand-slot img{width:84px;height:84px;border-radius:14px}.home__promo-card{min-height:132px!important;grid-template-columns:1fr!important;grid-template-rows:auto 1fr!important}.home__promo-head{flex-direction:row!important;align-items:center!important}.home__promo-viewport{height:88px!important}}
+@media(max-width:540px){.home__topbar{grid-template-columns:1fr}.home__brand-slot{height:88px}.home__brand-slot img{width:70px;height:70px}.home__promo-card{min-height:150px!important}}
+
+/* Rail icons use the same duotone visual language as Pawfile. */
+.rail__link .ricon{display:grid;place-items:center;width:28px;height:28px;border-radius:9px;background:rgba(255,122,26,.08);color:var(--orange);flex:0 0 28px}.rail__link .ricon svg{width:18px!important;height:18px!important}.rail__link.active .ricon{background:rgba(255,122,26,.13)}
+
+/* Health and appointment editing/action cards. */
+.pet-health-card{position:relative}.pet-card-edit{position:absolute;right:14px;top:12px;border:0;border-radius:999px;background:rgba(11,30,63,.06);color:var(--muted);padding:5px 9px;font:700 9px/1 Poppins;cursor:pointer;z-index:3}.pet-card-edit:hover{background:rgba(255,122,26,.12);color:var(--orange)}
+.pet-health-add,.pet-action-card{display:flex;flex-direction:column;align-items:flex-start}.pet-health-add .pet-input{width:100%;margin:10px 0 8px}.pet-action-buttons{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.pet-action-buttons .clone-btn{height:34px;padding:0 11px;font-size:9px}
+.pet-status--neutral{background:rgba(11,30,63,.08);color:var(--muted)}
+.pet-modal{position:fixed;inset:0;z-index:200000;display:grid;place-items:center;padding:20px}.pet-modal__backdrop{position:absolute;inset:0;background:rgba(6,12,26,.46);backdrop-filter:blur(5px)}.pet-modal__panel{position:relative;z-index:1;width:min(520px,100%);padding:22px;border-radius:24px;background:var(--paper);box-shadow:0 30px 80px -25px rgba(6,12,26,.65)}.pet-modal__panel h2{margin:5px 0 16px}.pet-modal__close{position:absolute;right:14px;top:14px;width:32px;height:32px;border:0;border-radius:10px;background:rgba(11,30,63,.07);font-size:20px;cursor:pointer}
+
+/* Brand/About/Profile */
+.pet-about-hero{display:grid;grid-template-columns:150px 1fr;gap:24px;align-items:center}.pet-about-hero img{width:150px;height:150px;object-fit:contain;border-radius:24px}.pet-profile-editor{display:grid;grid-template-columns:160px 1fr;gap:24px;align-items:start}.pet-profile-editor__avatar{display:grid;gap:10px}.pet-profile-editor__avatar img{width:150px;height:150px;border-radius:50%;object-fit:cover;box-shadow:0 20px 40px -25px rgba(6,12,26,.5)}
+@media(max-width:760px){.pet-about-hero,.pet-profile-editor{grid-template-columns:1fr}.pet-about-hero img,.pet-profile-editor__avatar img{width:110px;height:110px}}
+
+/* The chat is opened from the rail only; no floating dog launcher. */
+.kape__launcher,.kape__nudge{display:none!important}.kape__avatar--brand{border-radius:10px!important;object-fit:cover!important}.kape{right:24px!important;bottom:24px!important;pointer-events:none}.kape.is-open{pointer-events:auto}.kape__panel{display:none}.kape.is-open .kape__panel{display:flex}
+@media(max-width:900px){.rail__edit-profile{grid-column:2;grid-row:3;justify-self:start;margin:4px 0 0}}
+
+/* ========================================================================== 
+   v22 — per-pet health records, fixed health taxonomy, stronger record actions
+   ========================================================================== */
+.pet-health-card,.pet-booking-record{position:relative;padding-top:54px!important}
+.pet-card-actions{position:absolute;top:14px;right:14px;display:flex;gap:8px;z-index:5}
+.pet-card-action{min-width:78px;height:38px;padding:0 15px;border:0;border-radius:11px;font:700 10.5px/1 Poppins,system-ui,sans-serif;cursor:pointer;transition:transform .2s cubic-bezier(.22,1,.36,1),background .2s ease,color .2s ease,box-shadow .2s ease;box-shadow:inset 0 0 0 1px rgba(11,30,63,.1)}
+.pet-card-action:hover{transform:translateY(-2px)}
+.pet-card-action--edit{background:rgba(255,255,255,.78);color:var(--ink)}
+.pet-card-action--edit:hover{background:rgba(255,122,26,.12);color:var(--orange);box-shadow:inset 0 0 0 1px rgba(255,122,26,.22)}
+.pet-card-action--delete{background:rgba(193,52,52,.08);color:#a93434}
+.pet-card-action--delete:hover{background:rgba(193,52,52,.15);box-shadow:inset 0 0 0 1px rgba(193,52,52,.18)}
+[data-theme="dark"] .pet-card-action--edit{background:rgba(255,255,255,.08);color:#f4f4ed}
+
+.pet-health-picker{position:relative;width:100%;margin-top:12px}
+.pet-health-picker>summary{list-style:none;display:flex;align-items:center;justify-content:space-between;width:100%;min-height:48px;padding:0 15px;border-radius:14px;background:rgba(255,255,255,.78);box-shadow:inset 0 0 0 1px rgba(11,30,63,.14);color:var(--ink);font:700 10.5px/1.2 Poppins,system-ui,sans-serif;cursor:pointer}
+.pet-health-picker>summary::-webkit-details-marker{display:none}
+.pet-health-picker[open]>summary{box-shadow:inset 0 0 0 2px var(--orange)}
+.pet-health-menu{position:absolute;left:0;right:0;top:54px;z-index:30;display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:8px;border-radius:16px;background:var(--paper);box-shadow:0 24px 60px -22px rgba(6,12,26,.55),inset 0 0 0 1px rgba(11,30,63,.1);max-height:330px;overflow:auto}
+.pet-health-option{display:grid;grid-template-columns:38px 1fr;align-items:center;gap:9px;min-height:54px;padding:7px 9px;border:0;border-radius:12px;background:rgba(255,255,255,.56);box-shadow:inset 0 0 0 1px rgba(11,30,63,.08);text-align:left;color:var(--ink);cursor:pointer;transition:.18s ease}
+.pet-health-option:hover{background:rgba(255,122,26,.08);box-shadow:inset 0 0 0 1px rgba(255,122,26,.2);transform:translateY(-1px)}
+.pet-health-option .clone-icon{width:38px;height:38px;margin:0;border-radius:11px}
+.pet-health-option .clone-icon svg{width:19px!important;height:19px!important}
+.pet-health-option span{min-width:0;display:grid;gap:2px}.pet-health-option strong{font-size:10px;line-height:1.15}.pet-health-option small{font-size:7.5px;color:var(--muted);line-height:1.2}
+[data-theme="dark"] .pet-health-picker>summary,[data-theme="dark"] .pet-health-option{background:rgba(255,255,255,.06)}
+
+.pet-fixed-field{min-height:48px;padding:7px 10px;border-radius:13px;background:rgba(11,30,63,.045);box-shadow:inset 0 0 0 1px rgba(11,30,63,.1);display:flex;align-items:center;gap:10px}
+.pet-fixed-field .clone-icon{width:34px;height:34px;margin:0;border-radius:10px}.pet-fixed-field .clone-icon svg{width:18px!important;height:18px!important}.pet-fixed-field strong{font-size:11px}
+.pet-modal-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.clone-btn--danger{background:#9f3434!important;color:#fff!important}.clone-btn--danger:hover{background:#8f2d2d!important}
+
+/* Appointment CTA: intentionally large and right weighted. */
+.pet-action-card--booking{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(210px,42%);align-items:center;gap:18px;min-height:188px}
+.pet-action-card__copy{display:grid;align-content:start;justify-items:start}
+.pet-action-buttons--primary{margin:0!important;display:grid!important;grid-template-columns:1fr!important;gap:10px!important;justify-self:stretch;align-self:center}
+.pet-action-buttons--primary .clone-btn{width:100%;height:56px!important;padding:0 18px!important;border-radius:15px!important;font-size:11px!important;justify-content:center;box-shadow:0 16px 30px -22px rgba(6,12,26,.7)}
+.pet-action-buttons--primary .clone-btn--hotel{background:var(--ink);color:#fff}
+
+@media(max-width:760px){
+  .pet-health-menu{grid-template-columns:1fr}
+  .pet-action-card--booking{grid-template-columns:1fr;min-height:0}
+  .pet-action-buttons--primary{width:100%}
+  .pet-card-actions{position:static;margin:0 0 12px;justify-content:flex-end}
+  .pet-health-card,.pet-booking-record{padding-top:18px!important}
+}
+
+
+/* ==========================================================================
+   v23 — WagStack identity system
+   ========================================================================== */
+.wagstack-lockup{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;color:#071f43;text-decoration:none;line-height:1}
+.wagstack-brandmark{display:block!important;width:102px!important;height:74px!important;object-fit:contain!important;border-radius:0!important;box-shadow:none!important}
+.wagstack-wordmark{display:inline-flex;align-items:baseline;font-family:Poppins,system-ui,sans-serif;font-size:27px;line-height:.95;font-weight:700;letter-spacing:-.065em;color:#071f43;white-space:nowrap}
+.wagstack-wordmark__dot{color:#ff7a1a;margin-left:.06em}
+.wagstack-byline{margin-top:5px;color:#6a7487;font:600 7px/1 Poppins,system-ui,sans-serif;letter-spacing:.13em;text-transform:uppercase;white-space:nowrap}
+.home__brand-slot{text-decoration:none!important}
+.home__brand-slot .wagstack-brandmark{transition:transform .34s cubic-bezier(.22,1,.36,1)}
+.home__brand-slot:hover .wagstack-brandmark,.home__brand-slot:focus-visible .wagstack-brandmark{transform:translateY(-2px) rotate(-1deg)}
+[data-theme="dark"] .wagstack-wordmark{color:#f4f4ed}
+[data-theme="dark"] .wagstack-byline{color:#b9c2d1}
+.kape__avatar--brand{padding:4px;background:#071f43!important;border-radius:11px!important;object-fit:contain!important}
+.wagstack-about-brand{width:176px;min-height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;padding:16px 12px;border-radius:24px;background:linear-gradient(145deg,rgba(255,255,255,.78),rgba(255,255,255,.48));box-shadow:inset 0 0 0 1px rgba(11,30,63,.10)}
+.wagstack-about-brand>img{width:136px!important;height:92px!important;object-fit:contain!important;border-radius:0!important}
+.wagstack-wordmark--about{font-size:30px}
+.wagstack-byline--about{font-size:7.5px}
+.pet-about-hero--wagstack{grid-template-columns:190px minmax(0,1fr)!important}
+[data-theme="dark"] .wagstack-about-brand{background:linear-gradient(145deg,rgba(19,42,76,.78),rgba(6,12,26,.58))}
+@media (max-width:900px){.wagstack-brandmark{width:78px!important;height:56px!important}.wagstack-wordmark{font-size:22px}.wagstack-byline{font-size:6px}}
+@media (max-width:760px){.pet-about-hero--wagstack{grid-template-columns:1fr!important}.wagstack-about-brand{width:min(100%,240px)}}
+@media (max-width:540px){.home__brand-slot .wagstack-lockup{flex-direction:row;gap:7px}.home__brand-slot .wagstack-brandmark{width:60px!important;height:44px!important}.home__brand-slot .wagstack-wordmark{font-size:23px}.home__brand-slot .wagstack-byline{display:none}}
+/* Keep the canonical navy/orange logo colors intact on their light glass plates in both themes. */
+.home__brand-slot .wagstack-wordmark,
+.wagstack-about-brand .wagstack-wordmark{color:#071f43!important}
+.home__brand-slot .wagstack-byline,
+.wagstack-about-brand .wagstack-byline{color:#6a7487!important}
+[data-theme="dark"] .home__brand-slot,
+[data-theme="dark"] .wagstack-about-brand{background:rgba(255,255,255,.88)!important}
