@@ -65,4 +65,4 @@
 [data-theme="dark"] :is(.bento__reward-strip,.pet-reward-card) strong{color:#fff!important}
 [data-theme="dark"] :is(.bento__reward-strip,.pet-reward-card) small{color:#ff8a33!important}
 `;document.head.appendChild(s);
-const apply=()=>{document.querySelectorAll('svg').forEach(svg=>{if(svg.closest('.ph-duo,.ricon--phosphor,.clone-icon--phosphor,.bento__icon,.pet-insight-icon,.wag-service-icon'))svg.style.color='inherit'});};apply();new MutationObserver(()=>requestAnimationFrame(apply)).observe(document.body,{subtree:true,childList:true});})();
+})();

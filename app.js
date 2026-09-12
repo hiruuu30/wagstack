@@ -78,6 +78,7 @@
     } catch (_) { return cloneDefault(); }
   }
   let state = loadState();
+  try { if(!localStorage.getItem(STORE_KEY))localStorage.setItem(STORE_KEY,JSON.stringify(state)); } catch {}
   function save(){ try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch(_){} syncRail(); }
   function pet(){ return state.pets.find(p=>p.name===state.activePet) || state.pets[0]; }
   function fmtDate(v){ if(!v) return ''; const d=new Date(v+'T00:00:00'); return d.toLocaleDateString('en-PH',{month:'short',day:'numeric',year:'numeric'}); }
@@ -214,7 +215,7 @@
     if(tab==='photos') panel=`<div class="clone-grid"><article class="clone-card clone-card--third">${icon('camera')}<img class="pet-gallery-image" src="${p.image}" alt="${esc(p.name)}"><h3>${esc(p.name)}, all smiles</h3></article><article class="clone-card clone-card--third">${icon('camera')}<img class="pet-gallery-image" src="/assets/hero-club.png" alt="Pet club"><h3>Care day</h3></article><article class="clone-card clone-card--third pet-add-card"><button class="pet-add" data-add-photo>＋</button><h3>Add photo</h3><p>Stored locally for this demo.</p></article></div>`;
     if(tab==='documents') panel=`<div class="clone-grid">${state.documents.map((d,i)=>`<article class="clone-card clone-card--third">${icon('files')}<h3>${esc(d)}</h3><p>${i===0?'Health record':i===1?'Care preference':'Stay instructions'}</p></article>`).join('')}<article class="clone-card clone-card--third pet-add-card"><button class="pet-add" data-add-document>＋</button><h3>Add document</h3></article></div>`;
     if(tab==='notes') panel=`<div class="clone-grid">${state.notes.map((n,i)=>`<article class="clone-card clone-card--third">${icon('note-pencil')}<h3>Care note ${i+1}</h3><p>${esc(n)}</p></article>`).join('')}<article class="clone-card clone-card--third"><label>New care note<textarea class="pet-input pet-textarea" id="new-note" placeholder="Anything the team should remember?"></textarea></label><button class="clone-btn" data-add-note>Save note</button></article></div>`;
-    const switcher=`<div class="pet-switch-row">${state.pets.map(x=>`<button data-switch-pet="${esc(x.name)}" class="${x.name===p.name?'is-active':''}"><img src="${x.image}" alt=""><span>${esc(x.name)}</span></button>`).join('')}</div>`;
+    const switcher=`<div class="pet-switch-row">${state.pets.map(x=>`<button data-switch-pet="${esc(x.name)}" class="${x.name===p.name?'is-active':''}"><img src="${x.image}" alt=""><span>${esc(x.name)}</span></button>`).join('')}<button type="button" class="wag-addpet-main" data-add-pet-main><span aria-hidden="true">+</span><span>Add pet</span></button></div>`;
     const tabbar=`<div class="pet-tabs">${tabs.map(t=>`<button class="${tab===t?'is-active':''}" data-paw-tab="${t}">${t[0].toUpperCase()+t.slice(1)}</button>`).join('')}</div>`;
     return pageShell('My Pets',`${p.name}’s profile.`,`Pet details, care history, health records, photos, documents and notes — all connected back to Pawfile.`,`<div class="clone-glass">${switcher}${tabbar}${panel}</div>`,`<a class="clone-btn" href="/grooming" data-spa>Book grooming ↗</a>`);
   }
@@ -333,7 +334,7 @@
     qs('[data-promo-next]',main)?.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();go(index+1)});
     dots.forEach((d,j)=>d.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();go(j)}));
     let down=false,startX=0,startLeft=0;
-    viewport.addEventListener('pointerdown',e=>{down=true;startX=e.clientX;startLeft=viewport.scrollLeft;viewport.setPointerCapture?.(e.pointerId)});
+    viewport.addEventListener('pointerdown',e=>{if(e.pointerType!=='mouse'||e.target.closest('a,button'))return;down=true;startX=e.clientX;startLeft=viewport.scrollLeft;viewport.setPointerCapture?.(e.pointerId)});
     viewport.addEventListener('pointermove',e=>{if(down) viewport.scrollLeft=startLeft-(e.clientX-startX)});
     const finish=()=>{if(!down)return;down=false;index=Math.round(viewport.scrollLeft/Math.max(1,viewport.clientWidth));go(index)};
     viewport.addEventListener('pointerup',finish);viewport.addEventListener('pointercancel',finish);
@@ -360,6 +361,7 @@
   }
 
   function render(path, push=false){
+    state=loadState();
     path=normalizePath(path);
     if(push && location.pathname!==path) history.pushState({path},'',path);
     if(path==='/'){
@@ -369,7 +371,7 @@
       const html = path==='/grooming'?bookingPage():path==='/pets'?pawfilePage():path==='/health'?healthPage():path==='/hotel'?hotelPage():path==='/shop'?clubPage():path==='/messages'?messagesPage():path==='/notifications'?notificationsPage():path==='/about'?aboutPage():path==='/profile'?profilePage():rewardsPage();
       main.innerHTML=html; document.title=`${routeTitles[path]} | WagStack`;
     }
-    setActive(path); syncRail(); window.scrollTo(0,0);
+    setActive(path); syncRail(); main.scrollTop=0; window.scrollTo(0,0); document.dispatchEvent(new CustomEvent('wagstack:render',{detail:{path}}));
   }
 
   function toast(message){

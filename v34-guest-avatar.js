@@ -1,3 +1,4 @@
+import { observeUI } from './ui-lifecycle.js';
 (()=>{
   const STORE_KEY='tfa-clone-workspace-v3';
   const SESSION_KEY='wagstack-supabase-session-v1';
@@ -67,10 +68,10 @@
     if(!isGuest())return;
     const btn=document.querySelector('.wag-cloud-btn');if(!btn)return;
     btn.classList.add('is-guest');
-    const state=btn.querySelector('.wag-cloud-state');if(state)state.textContent='Guest mode';
+    const state=btn.querySelector('.wag-cloud-state');if(state&&state.textContent!=='Guest mode')state.textContent='Guest mode';
     let detail=btn.querySelector('.wag-cloud-email');
     if(!detail){detail=document.createElement('span');detail.className='wag-cloud-email';btn.appendChild(detail)}
-    detail.textContent='Local only';
+    if(detail.textContent!=='Local only')detail.textContent='Local only';
   }
 
   function patchAuthModal(){
@@ -149,5 +150,5 @@
 
   function patch(){patchCloudButton();patchAuthModal();markPixelAvatars()}
   patch();
-  new MutationObserver(()=>requestAnimationFrame(patch)).observe(document.body,{childList:true,subtree:true});
+  observeUI(patch);
 })();

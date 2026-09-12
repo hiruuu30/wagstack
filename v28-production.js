@@ -1,3 +1,4 @@
+import { observeUI } from './ui-lifecycle.js';
 (() => {
   const STORE_KEY='tfa-clone-workspace-v3';
   const read=()=>{try{return JSON.parse(localStorage.getItem(STORE_KEY)||'{}')}catch{return {}}};
@@ -22,7 +23,7 @@
   @media(max-width:900px){.pet-overview-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.wag-day-strip{grid-template-columns:repeat(4,minmax(0,1fr))}.wag-day:nth-child(n+5){display:none}}@media(max-width:620px){.home__promo-card .home__promo-head{left:18px!important;right:16px!important;top:16px!important}.home__promo-card .home__promo-slide{padding:52px 18px 22px!important}.pet-overview-grid{grid-template-columns:1fr!important}.pet-overview-grid>.pet-insight-card{grid-column:1!important;min-height:138px!important}.wag-schedule-native{grid-template-columns:1fr!important}}
   `;document.head.appendChild(st);
 
-  function homePets(){const card=document.querySelector('a.bento__card[href="/pets"]');if(!card)return;const pets=read().pets||[],imgs=[...card.querySelectorAll('.bento__photo img')];imgs.forEach((img,i)=>{const p=pets[i],wrap=img.closest('.bento__photo');if(p?.image){if(img.src!==p.image)img.src=p.image;img.alt=p.name||'Pet';if(wrap)wrap.hidden=false}else if(wrap&&!wrap.hidden)wrap.hidden=true})}
+  function homePets(){const card=document.querySelector('a.bento__card[href="/pets"]');if(!card)return;const stored=read();if(!Array.isArray(stored.pets))return;const pets=stored.pets,imgs=[...card.querySelectorAll('.bento__photo img')];imgs.forEach((img,i)=>{const p=pets[i],wrap=img.closest('.bento__photo');if(p?.image){if(img.src!==p.image)img.src=p.image;img.alt=p.name||'Pet';if(wrap)wrap.hidden=false}else if(wrap&&!wrap.hidden)wrap.hidden=true})}
 
   function overview(){const profile=document.querySelector('.pet-profile-card');if(!profile)return;const grid=profile.parentElement;if(!grid)return;grid.classList.add('pet-overview-grid');const cfg={'Last groom':['scissors','Grooming history saved to this pet profile.'],'Usual style':['note','Preferences stay ready for the next appointment.'],'Next visit':['calendar','Your next care date at a glance.'],'Paw Points':['trophy','Rewards follow the Fur Parent account.']};[...grid.children].forEach(card=>{if(card===profile)return;const label=card.querySelector('.clone-card__no')?.textContent?.trim(),c=cfg[label];if(!c)return;card.classList.add('pet-insight-card');if(!card.querySelector('.pet-insight-icon'))card.insertAdjacentHTML('afterbegin',`<span class="pet-insight-icon" aria-hidden="true">${svg(c[0])}</span>`);const p=card.querySelector(':scope>p');if(p&&p.textContent!==c[1])p.textContent=c[1]})}
 
@@ -41,6 +42,6 @@
 
   function patch(){homePets();overview();stepper();services();scheduleUI()}
   let pending=false;const queue=()=>{if(pending)return;pending=true;requestAnimationFrame(()=>{pending=false;patch()})};
-  const start=()=>{patch();const main=document.getElementById('main-content');if(main)new MutationObserver(queue).observe(main,{childList:true,subtree:true});addEventListener('popstate',queue);addEventListener('storage',queue);document.addEventListener('click',()=>setTimeout(queue,0),true)};
+  const start=()=>{patch();const main=document.getElementById('main-content');observeUI(patch);addEventListener('popstate',queue);addEventListener('storage',queue);document.addEventListener('click',()=>setTimeout(queue,0),true)};
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
 })();

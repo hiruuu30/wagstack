@@ -1,3 +1,4 @@
+import { observeUI } from './ui-lifecycle.js';
 (() => {
   const css=`
   /* Critical: Updates hierarchy must never collide */
@@ -40,7 +41,7 @@
     const card=document.querySelector('.home__promo-card');
     if(!card)return;
     const title=card.querySelector('.home__promo-head .bento__title');
-    if(title) title.textContent='Updates';
+    if(title && title.textContent!=='Updates') title.textContent='Updates';
     card.querySelectorAll('.home__promo-label').forEach(n=>n.remove());
   };
 
@@ -48,7 +49,7 @@
   const patch=()=>{queued=false;cleanStepper();fixUpdates()};
   const queue=()=>{if(queued)return;queued=true;requestAnimationFrame(patch)};
   patch();
-  new MutationObserver(queue).observe(document.body,{childList:true,subtree:true});
+  observeUI(patch);
   addEventListener('popstate',queue);
   document.addEventListener('click',()=>setTimeout(queue,0),true);
 })();
