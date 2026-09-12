@@ -1,3 +1,4 @@
+import './v26-hotfix.js';
 (() => {
   const clipper=`<svg class="ph-duo ph-duo--dynamic" aria-hidden="true" viewBox="0 0 256 256" fill="currentColor"><path d="M54 82h116a22 22 0 0 1 22 22v28H32v-28a22 22 0 0 1 22-22Z" opacity=".2"/><path d="M54 66h116a38 38 0 0 1 38 38v20h16a8 8 0 0 1 0 16h-16v18a24 24 0 0 1-24 24h-12v26a8 8 0 0 1-16 0v-26h-24v18a8 8 0 0 1-16 0v-18H92v26a8 8 0 0 1-16 0v-26H64a24 24 0 0 1-24-24v-18H24a8 8 0 0 1 0-16h16v-20a38 38 0 0 1 14-30Zm0 38v54a8 8 0 0 0 8 8h122a8 8 0 0 0 8-8v-54a22 22 0 0 0-22-22H76a22 22 0 0 0-22 22Zm154-56 5 12 12 5-12 5-5 12-5-12-12-5 12-5 5-12Z"/></svg>`;
   const healthIcons={
