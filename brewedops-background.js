@@ -1,5 +1,6 @@
 import './v25-patch.js';
 import './v27-tweaks.js';
+import './v28-polish.js';
 import {
   S as Scene,
   O as OrthographicCamera,
