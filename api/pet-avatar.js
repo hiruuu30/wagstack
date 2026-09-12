@@ -41,9 +41,11 @@ module.exports = async function handler(req,res){
 
   const prompt=[
     `Use input image 0 as the identity reference for ${petName}${breed?`, a ${breed}`:''}.`,
-    'Transform the same pet into a polished friendly cartoon portrait while preserving its recognizable identity exactly: species, coat colors, markings, ear shape, muzzle, eye color, face proportions and expression.',
-    'Premium modern pet-club app illustration, softly rounded forms, subtle texture, warm natural colors, centered head-and-shoulders crop, clean light neutral background.',
-    'Do not invent a different animal. No text, logos, frame, extra animals, clothing or accessories unless visible in the source image.'
+    'Transform the same pet into a cute retro pixel-art cartoon avatar while preserving its recognizable identity: species, breed traits, coat colors, unique markings, ear shape, muzzle, eye color and face proportions.',
+    'Style: crisp low-resolution pixel art, visible chunky square pixels, 16-bit / 32-bit game sprite aesthetic, simplified geometric shading, limited warm color palette, dark navy pixel outlines, expressive friendly face, clean handcrafted sprite look.',
+    'Composition: centered front-facing or slight three-quarter head-and-shoulders pet portrait, symmetrical readable silhouette, square avatar composition, plain light cream background, no scenery.',
+    'Keep fur texture translated into clustered pixel shapes rather than smooth brush strokes. Avoid anti-aliased edges, gradients, soft painterly rendering, photorealism, vector-smooth shapes, 3D rendering or glossy effects.',
+    'Do not invent a different animal. No text, logos, frame, extra animals, clothing or accessories unless clearly visible in the source image.'
   ].join(' ');
 
   try{
