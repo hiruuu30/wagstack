@@ -3,6 +3,7 @@ import './v27-tweaks.js';
 import './v28-production.js';
 import './v30-dark-responsive-qa.js';
 import './v31-dark-theme-visual-parity.js';
+import './v32-ui-shop-lightness.js';
 import {
   S as Scene,
   O as OrthographicCamera,
