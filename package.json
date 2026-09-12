@@ -6,5 +6,8 @@
     "dev": "npx serve -s . -l 4173",
     "start": "npx serve -s . -l 4173"
   },
-  "description": "WagStack by Brick & Bond \u2014 connected pet care workspace for cats and dogs"
+  "dependencies": {
+    "sharp": "^0.34.3"
+  },
+  "description": "WagStack by Brick & Bond — connected pet care workspace for cats and dogs"
 }
