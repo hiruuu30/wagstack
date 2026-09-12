@@ -96,6 +96,79 @@ const fragmentShader = `
   }
 `;
 
+
+
+// Production visual-QA hardening. This runs before the app's deferred script so
+// layout fixes and route-flash protection are in place as early as possible.
+function applyProductionVisualQA(){
+  // WagStack must not rely on a third-party live stylesheet for production UI.
+  document.querySelectorAll('link[rel="stylesheet"]').forEach(link=>{
+    if((link.href||'').includes('portfolio.brewedops.cloud/assets/index-')){
+      link.disabled=true;
+      link.remove();
+    }
+  });
+
+  const style=document.createElement('style');
+  style.id='wagstack-production-qa-v24';
+  style.textContent=`
+  @media (min-width:901px){
+    .shell__panel:not([data-fixed="true"]){overflow-y:auto!important;overflow-x:hidden!important;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+    .shell__panel:not([data-fixed="true"]) .clone-page{min-height:100%;padding-bottom:64px}
+  }
+  @media (max-width:900px){
+    .rail{padding:14px 16px 12px!important;background:rgba(244,244,237,.68);backdrop-filter:blur(18px) saturate(1.15);border-bottom:1px solid rgba(11,30,63,.09)}
+    [data-theme="dark"] .rail{background:rgba(7,18,36,.72);border-bottom-color:rgba(244,244,237,.09)}
+    .rail__inner{grid-template-columns:54px minmax(0,1fr) auto!important;column-gap:10px!important}
+    .rail__avatar{width:50px!important;height:50px!important}
+    .rail__name{font-size:16px!important;min-width:0}
+    .rail__handle{font-size:10.5px!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .rail__edit-profile{margin-top:4px;height:23px;font-size:8.5px}
+    .rail__actions{display:flex!important;grid-column:3!important;grid-row:1/3!important;margin:0!important;gap:5px!important;width:auto!important;height:auto!important}
+    .rail__socials{display:flex!important;width:auto!important;height:auto!important;gap:5px!important}
+    .rail__social,.rail__theme{width:36px!important;height:36px!important;flex:0 0 36px}
+    .rail__social .ph-duo{width:17px!important;height:17px!important}.rail__theme .tg{width:18px!important;height:18px!important}
+    .rail__action-badge{transform:scale(.86);transform-origin:100% 0}
+    .rail__nav{grid-column:1/-1!important;width:100%!important;margin:10px 0 0!important;padding:9px 0 0!important;overflow:visible!important;border-top:1px solid rgba(11,30,63,.10)!important;mask-image:none!important;-webkit-mask-image:none!important}
+    .rail__nav ul{display:grid!important;grid-template-columns:repeat(8,minmax(0,1fr))!important;gap:6px!important;width:100%!important}
+    .rail__link{width:100%!important;height:54px!important;padding:6px 4px!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:3px!important;border-radius:12px!important;font-size:9px!important;line-height:1.05!important;text-align:center!important;white-space:normal!important}
+    .rail__link .ricon--phosphor,.rail__link .ph-duo--nav,.rail__link .ph-duo--dynamic{width:18px!important;height:18px!important;flex:0 0 18px}
+    .rail__link:hover{transform:none!important}.rail__copy{display:none!important}
+  }
+  @media (max-width:620px){
+    .rail__inner{grid-template-columns:48px minmax(0,1fr) auto!important}.rail__avatar{width:44px!important;height:44px!important}
+    .rail__actions{gap:4px!important}.rail__socials{gap:4px!important}.rail__social,.rail__theme{width:32px!important;height:32px!important;flex-basis:32px}
+    .rail__nav ul{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:5px!important}.rail__link{height:52px!important;font-size:9.5px!important}
+    .home{padding:16px 12px 96px!important;gap:12px!important}.home__topbar{gap:9px!important}.home__brand-slot{height:76px!important}.home__promo-card{min-height:142px!important;padding:11px 12px!important}
+    .home__glass--showcase{padding:10px!important;border-radius:22px!important;overflow:visible!important}.bento{grid-template-columns:1fr!important;grid-auto-rows:auto!important;gap:11px!important}
+    .bento__card{grid-column:1!important;min-height:210px!important;padding:14px!important;border-radius:20px!important}.bento__card--projects{min-height:252px!important}.bento__card--ai{min-height:220px!important}.bento__card--about{min-height:218px!important}.bento__card--creds{min-height:200px!important}.bento__card--reward-compact{min-height:188px!important}.bento__card--services{min-height:228px!important}
+    .bento__desc{font-size:11px!important;line-height:1.45!important}.bento__card--projects .bento__reel{left:53%!important}.bento__card--services .bento__offers{height:82px!important}.bento__card--ai .bento__chips{height:76px!important;bottom:16px!important}
+  }
+  .shell,.shell__panel,.home,.home__topbar,.home__glass,.bento,.clone-page,.clone-grid,.clone-card{min-width:0;max-width:100%}.clone-card,.pet-card,.pet-profile-card,.pet-booking-card{overflow-wrap:anywhere}img,svg{max-width:100%}
+  .bento__booking-shot.is-placeholder{display:flex;align-items:center;justify-content:center;padding:10px;text-align:center;background:linear-gradient(145deg,rgba(255,255,255,.92),rgba(236,241,250,.92));color:var(--ink);font-weight:700}
+  `;
+  document.head.appendChild(style);
+
+  const railCopy=document.querySelector('.rail__copy');
+  if(railCopy) railCopy.textContent='Private pet care workspace';
+  const placeholder=document.querySelector('.bento__booking-shot.is-placeholder');
+  if(placeholder) placeholder.textContent='Full Grooming · Sep 18';
+
+  // Direct SPA routes initially receive index.html. Hide only the main panel until
+  // app.js replaces the dashboard markup, avoiding a visible wrong-page flash.
+  if(location.pathname!=='/'){
+    const main=document.querySelector('#main-content');
+    if(main){
+      main.style.visibility='hidden';
+      let released=false;
+      const release=()=>{if(released)return;released=true;main.style.visibility='';observer.disconnect();};
+      const observer=new MutationObserver(()=>release());
+      observer.observe(main,{childList:true,subtree:false});
+      setTimeout(release,1800);
+    }
+  }
+}
+
 function isDarkTheme(){
   return document.documentElement.dataset.theme === 'dark';
 }
@@ -250,6 +323,8 @@ function mountBrewedOpsBackground(){
     }
   };
 }
+
+applyProductionVisualQA();
 
 if(document.readyState === 'loading'){
   document.addEventListener('DOMContentLoaded',mountBrewedOpsBackground,{once:true});
