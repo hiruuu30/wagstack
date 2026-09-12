@@ -10,12 +10,13 @@ const uuid=()=>crypto.randomUUID?.()||`${Date.now()}-${Math.random().toString(16
 const text=v=>String(v??'').trim();
 const num=v=>{const m=String(v??'').replace(/,/g,'').match(/-?\d+(?:\.\d+)?/);return m?Number(m[0]):null};
 const iso=v=>{if(!v)return null;const d=new Date(v);return Number.isNaN(d.getTime())?null:d.toISOString()};
+const dateOnly=v=>{const s=text(v);if(!s)return null;if(/^\d{4}-\d{2}-\d{2}$/.test(s))return s;const d=new Date(s);return Number.isNaN(d.getTime())?null:d.toISOString().slice(0,10)};
 const healthType=v=>({Vaccinations:'vaccination',Vaccination:'vaccination',Allergy:'allergy',Medication:'medication',Condition:'condition','Vet Visit':'vet_visit','Weight Record':'weight'}[v]||'note');
 
 function ensureIds(state){
   let changed=false;
   for(const p of state.pets||[]){if(!p.cloudKey){p.cloudKey=uuid();changed=true}}
-  for(const [petName,list] of Object.entries(state.healthByPet||{}))for(const h of Array.isArray(list)?list:[]){if(!h.cloudId){h.cloudId=text(h.id)||uuid();changed=true}}
+  for(const list of Object.values(state.healthByPet||{}))for(const h of Array.isArray(list)?list:[]){if(!h.cloudId){h.cloudId=text(h.id)||uuid();changed=true}}
   for(const b of state.bookings||[]){if(!b.cloudId){b.cloudId=text(b.id)||uuid();changed=true}}
   if(changed)baseSetItem.call(localStorage,STORE_KEY,JSON.stringify(state));
   return state;
@@ -47,7 +48,7 @@ async function syncNormalized(){
     const health=[];
     for(const [petName,list] of Object.entries(state.healthByPet||{})){
       const localPet=(state.pets||[]).find(p=>p.name===petName);const pet=localPet?petByKey.get(localPet.cloudKey):petByName.get(petName);if(!pet)continue;
-      for(const h of Array.isArray(list)?list:[])health.push({owner_id:owner,pet_id:pet.id,legacy_id:h.cloudId,record_type:healthType(h.category||h.title),title:text(h.title)||text(h.category)||'Health note',details:text(h.note)||text(h.details)||null,status:text(h.status)||null,tone:text(h.tone)||null,record_date:(text(h.date)||text(h.recordDate)||new Date().toISOString().slice(0,10)),expires_on:text(h.expiresOn)||null,attachment_url:text(h.attachment)||null});
+      for(const h of Array.isArray(list)?list:[])health.push({owner_id:owner,pet_id:pet.id,legacy_id:h.cloudId,record_type:healthType(h.category||h.title),title:text(h.title)||text(h.category)||'Health note',details:text(h.note)||text(h.details)||null,status:text(h.status)||null,tone:text(h.tone)||null,record_date:dateOnly(h.date||h.recordDate)||new Date().toISOString().slice(0,10),expires_on:dateOnly(h.expiresOn),attachment_url:text(h.attachment)||null});
     }
     await upsert('health_records',health,'owner_id,legacy_id');
     await removeMissing('health_records','legacy_id',new Set(health.map(h=>h.legacy_id)));
