@@ -1,4 +1,4 @@
-const MODEL='@cf/runwayml/stable-diffusion-v1-5-img2img';
+const MODEL='@cf/stabilityai/stable-diffusion-xl-base-1.0';
 
 module.exports = async function handler(req,res){
   res.setHeader('Cache-Control','no-store');
@@ -49,7 +49,7 @@ module.exports = async function handler(req,res){
         width:512,
         height:512,
         num_steps:20,
-        strength:0.56,
+        strength:0.52,
         guidance:7.5
       })
     });
