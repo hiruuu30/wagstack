@@ -1,3 +1,4 @@
+import { observeUI } from './ui-lifecycle.js';
 (() => {
   const css=`
   .pet-stepper{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;align-items:stretch!important;gap:8px!important;overflow:visible!important}
@@ -82,6 +83,6 @@
   function patch(){if(raf)return;raf=requestAnimationFrame(()=>{raf=0;patchGroomingStepper();patchServiceIcons();patchPetPhotoPicker()})}
   document.addEventListener('click',e=>{if(e.target.closest?.('[data-edit-pet-profile],[data-book-next],[data-book-prev],[data-draft-service],[data-draft-pet]'))setTimeout(patch,0)},true);
   addEventListener('popstate',patch);
-  const start=()=>{patch();const main=document.getElementById('main-content');if(main)new MutationObserver(patch).observe(main,{childList:true,subtree:false});new MutationObserver(patch).observe(document.body,{childList:true,subtree:false})};
+  const start=()=>{patch();const main=document.getElementById('main-content');observeUI(()=>{patchGroomingStepper();patchServiceIcons();patchPetPhotoPicker()})};
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
 })();

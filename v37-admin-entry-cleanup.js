@@ -1,1 +1,2 @@
-(()=>{if(location.pathname==='/admin')return;function clean(){document.querySelectorAll('.admin-demo-link,a[href="/admin"]').forEach(el=>{if(el.closest('.wag-auth'))return;el.closest('li')?.remove?.()||el.remove()})}clean();new MutationObserver(()=>requestAnimationFrame(clean)).observe(document.body,{childList:true,subtree:true})})();
+import { observeUI } from './ui-lifecycle.js';
+(()=>{if(location.pathname==='/admin')return;function clean(){document.querySelectorAll('.admin-demo-link,a[href="/admin"]').forEach(el=>{if(el.closest('.wag-auth'))return;el.closest('li')?.remove?.()||el.remove()})}clean();observeUI(clean)})();

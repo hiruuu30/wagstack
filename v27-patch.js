@@ -1,15 +1,7 @@
+import { PRODUCTS } from './shop-catalog.js';
+import { observeUI } from './ui-lifecycle.js';
 (() => {
   const STORE_KEY='tfa-clone-workspace-v3';
-  const PRODUCTS=[
-    {id:'coat-shampoo',name:'Cloud Coat Shampoo',price:549,cat:'Grooming',eyebrow:'SOFT COAT',desc:'Gentle everyday wash for sensitive skin and bright coats.'},
-    {id:'slicker-brush',name:'Daily Slicker Brush',price:399,cat:'Grooming',eyebrow:'DETANGLE',desc:'Rounded pins and an easy-clean pad for quick brush sessions.'},
-    {id:'paw-balm',name:'Paw Barrier Balm',price:349,cat:'Wellness',eyebrow:'PAW CARE',desc:'A compact balm for dry paw pads and everyday protection.'},
-    {id:'probiotic-bites',name:'Daily Probiotic Bites',price:499,cat:'Wellness',eyebrow:'GUT CARE',desc:'A simple daily wellness chew for routine digestive support.'},
-    {id:'dental-chews',name:'Dental Chews',price:299,cat:'Food',eyebrow:'FRESH BREATH',desc:'Textured chews made for the everyday dental-care routine.'},
-    {id:'calming-spray',name:'Calming Mist',price:459,cat:'Wellness',eyebrow:'SETTLE IN',desc:'A light pet-safe room and bedding mist for wind-down time.'},
-    {id:'enrichment-toy',name:'Treat Puzzle Toy',price:399,cat:'Play',eyebrow:'ENRICHMENT',desc:'A compact puzzle for slower snacks and busy paws.'},
-    {id:'travel-bowl',name:'Foldaway Travel Bowl',price:329,cat:'Travel',eyebrow:'ON THE GO',desc:'Soft fold-flat bowl for walks, hotel stays and road trips.'}
-  ];
   let shopFilter='All';
   let fileIntent=null;
   const read=()=>{try{return JSON.parse(localStorage.getItem(STORE_KEY)||'{}')}catch{return {}}};
@@ -80,7 +72,7 @@
     const visible=shopFilter==='All'?PRODUCTS:PRODUCTS.filter(p=>p.cat===shopFilter);
     const c=counts(s.cart),rows=Object.entries(c).map(([id,q])=>{const p=PRODUCTS.find(x=>x.id===id);return p?`<div class="v27-bag-row"><span>${esc(p.name)}</span><div class="v27-qty"><button data-v27-cart-minus="${esc(id)}">−</button><b>${q}</b><button data-v27-cart-plus="${esc(id)}">＋</button></div></div>`:''}).join('');
     const total=s.cart.reduce((sum,id)=>sum+(PRODUCTS.find(p=>p.id===id)?.price||0),0);
-    glass.innerHTML=`<div class="v27-shop"><section class="v27-shop-hero"><div class="v27-shop-intro"><div class="v27-shop-kicker">WagStack Shop</div><h2>Good things for everyday pet care.</h2><p>A tighter shop for grooming, wellness, play and travel essentials. Built to feel like part of the care workspace—not a separate marketplace.</p><div class="v27-filterbar">${cats.map(cat=>`<button class="v27-filter ${cat===shopFilter?'is-active':''}" data-v27-shop-filter="${esc(cat)}">${esc(cat)}</button>`).join('')}</div></div><aside class="v27-shop-bag"><div><div class="v27-shop-kicker">Your bag</div><div class="v27-bag-count">${s.cart.length}</div><div class="v27-bag-total">${money(total)}</div></div><div class="v27-bag-list">${rows||'<span style="font-size:9px;color:var(--muted)">Your bag is ready when you are.</span>'}</div>${s.cart.length?'<button class="pet-link-btn" data-v27-cart-clear>Clear bag →</button>':''}</aside></section><section class="v27-products">${visible.length?visible.map(p=>`<article class="v27-product"><div class="v27-product__visual" aria-hidden="true"></div><div class="v27-product__cat">${esc(p.cat)} · ${esc(p.eyebrow)}</div><h3>${esc(p.name)}</h3><p>${esc(p.desc)}</p><div class="v27-product__foot"><span class="v27-product__price">${money(p.price)}</span><button class="v27-add" data-v27-cart-add="${esc(p.id)}">Add to bag</button></div></article>`).join(''):'<div class="v27-empty-shop">No products in this category yet.</div>'}</section></div>`;
+    glass.innerHTML=`<div class="v27-shop"><section class="v27-shop-hero"><div class="v27-shop-intro"><div class="v27-shop-kicker">WagStack Shop</div><h2>Good things for everyday pet care.</h2><p>Grooming, play and travel essentials for their everyday routine.</p><div class="v27-filterbar">${cats.map(cat=>`<button class="v27-filter ${cat===shopFilter?'is-active':''}" data-v27-shop-filter="${esc(cat)}">${esc(cat)}</button>`).join('')}</div></div><aside class="v27-shop-bag"><div><div class="v27-shop-kicker">Your bag</div><div class="v27-bag-count">${s.cart.length}</div><div class="v27-bag-total">${money(total)}</div></div><div class="v27-bag-list">${rows||'<span style="font-size:9px;color:var(--muted)">Your bag is ready when you are.</span>'}</div>${s.cart.length?'<button class="pet-link-btn" data-v27-cart-clear>Clear bag →</button>':''}</aside></section><section class="v27-products">${visible.length?visible.map(p=>`<article class="v27-product"><div class="v27-product__visual" aria-hidden="true"></div><div class="v27-product__cat">${esc(p.cat)} · ${esc(p.eyebrow)}</div><h3>${esc(p.name)}</h3><p>${esc(p.desc)}</p><div class="v27-product__foot"><span class="v27-product__price">${money(p.price)}</span><button class="v27-add" data-v27-cart-add="${esc(p.id)}">Add to bag</button></div></article>`).join(''):'<div class="v27-empty-shop">No products in this category yet.</div>'}</section></div>`;
   }
 
   document.addEventListener('click',e=>{
@@ -103,6 +95,6 @@
     setTimeout(schedule,0);
   },true);
   document.addEventListener('keydown',e=>{if(e.key==='Escape'){document.querySelector('.v27-lightbox')?.remove();document.querySelector('.v27-editor')?.remove()}});
-  const main=document.querySelector('#main-content');if(main)new MutationObserver(schedule).observe(main,{childList:true,subtree:false});
+  const main=document.querySelector('#main-content');observeUI(()=>{patchPets();patchShop();updateCartBadge()});
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(schedule,0),{once:true});else setTimeout(schedule,0);
 })();
