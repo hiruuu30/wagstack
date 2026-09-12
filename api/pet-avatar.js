@@ -23,8 +23,16 @@ module.exports = async function handler(req,res){
     res.status(400).json({error:'No pet photo was received.'});
     return;
   }
-  if(image_b64.length>8_000_000){
-    res.status(413).json({error:'Pet photo is too large.'});
+
+  let imageBytes;
+  try{ imageBytes=Buffer.from(image_b64,'base64'); }
+  catch{ imageBytes=null; }
+  if(!imageBytes?.length){
+    res.status(400).json({error:'The uploaded pet photo could not be decoded.'});
+    return;
+  }
+  if(imageBytes.length>1_800_000){
+    res.status(413).json({error:'Pet photo is too large for AI processing. Please use a smaller photo.'});
     return;
   }
 
@@ -45,7 +53,7 @@ module.exports = async function handler(req,res){
       body:JSON.stringify({
         prompt,
         negative_prompt:'photorealistic, blurry, distorted face, duplicate animal, extra limbs, text, watermark, logo, frame, human, low detail',
-        image_b64,
+        image:Array.from(imageBytes),
         width:512,
         height:512,
         num_steps:20,
