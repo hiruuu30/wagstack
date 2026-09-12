@@ -1,4 +1,5 @@
-const MODEL='@cf/stabilityai/stable-diffusion-xl-base-1.0';
+const sharp=require('sharp');
+const MODEL='@cf/black-forest-labs/flux-2-klein-4b';
 
 module.exports = async function handler(req,res){
   res.setHeader('Cache-Control','no-store');
@@ -24,42 +25,39 @@ module.exports = async function handler(req,res){
     return;
   }
 
-  let imageBytes;
-  try{ imageBytes=Buffer.from(image_b64,'base64'); }
-  catch{ imageBytes=null; }
-  if(!imageBytes?.length){
-    res.status(400).json({error:'The uploaded pet photo could not be decoded.'});
-    return;
-  }
-  if(imageBytes.length>1_800_000){
-    res.status(413).json({error:'Pet photo is too large for AI processing. Please use a smaller photo.'});
+  let input;
+  try{
+    const raw=Buffer.from(image_b64,'base64');
+    if(!raw.length)throw new Error('empty image');
+    input=await sharp(raw)
+      .rotate()
+      .resize(480,480,{fit:'cover',position:'attention'})
+      .jpeg({quality:88,mozjpeg:true})
+      .toBuffer();
+  }catch{
+    res.status(400).json({error:'The uploaded pet photo could not be prepared for AI processing.'});
     return;
   }
 
   const prompt=[
-    `Create a polished friendly cartoon portrait of ${petName}${breed?`, a ${breed}`:''}.`,
-    'Preserve the pet’s recognizable identity: species, coat colors, markings, ear shape, muzzle, eye color and face proportions.',
-    'Match a premium modern pet-club app aesthetic: softly rounded illustrated forms, subtle texture, warm natural color, centered head-and-shoulders crop, clean light neutral background.',
-    'No text, no logos, no frame, no extra animals, no invented clothing or accessories unless visible in the source photo.'
+    `Use input image 0 as the identity reference for ${petName}${breed?`, a ${breed}`:''}.`,
+    'Transform the same pet into a polished friendly cartoon portrait while preserving its recognizable identity exactly: species, coat colors, markings, ear shape, muzzle, eye color, face proportions and expression.',
+    'Premium modern pet-club app illustration, softly rounded forms, subtle texture, warm natural colors, centered head-and-shoulders crop, clean light neutral background.',
+    'Do not invent a different animal. No text, logos, frame, extra animals, clothing or accessories unless visible in the source image.'
   ].join(' ');
 
   try{
+    const form=new FormData();
+    form.append('prompt',prompt);
+    form.append('width','512');
+    form.append('height','512');
+    form.append('guidance','4');
+    form.append('input_image_0',new Blob([input],{type:'image/jpeg'}),'pet.jpg');
+
     const upstream=await fetch(`https://api.cloudflare.com/client/v4/accounts/${encodeURIComponent(accountId)}/ai/run/${MODEL}`,{
       method:'POST',
-      headers:{
-        'Authorization':`Bearer ${apiToken}`,
-        'Content-Type':'application/json'
-      },
-      body:JSON.stringify({
-        prompt,
-        negative_prompt:'photorealistic, blurry, distorted face, duplicate animal, extra limbs, text, watermark, logo, frame, human, low detail',
-        image:Array.from(imageBytes),
-        width:512,
-        height:512,
-        num_steps:20,
-        strength:0.52,
-        guidance:7.5
-      })
+      headers:{Authorization:`Bearer ${apiToken}`},
+      body:form
     });
 
     const type=upstream.headers.get('content-type')||'';
