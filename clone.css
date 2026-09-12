@@ -19,7 +19,7 @@
 .a11y{position:fixed;left:18px;bottom:18px;z-index:9998}.a11y__panel{position:absolute;left:0;bottom:52px;width:270px;padding:14px;border-radius:22px;background:rgba(251,251,247,.95);box-shadow:inset 0 0 0 1px rgba(11,30,63,.14),0 24px 56px -28px rgba(6,12,26,.55);backdrop-filter:blur(18px);display:none}.a11y.is-open .a11y__panel{display:block}.a11y__button{width:42px;height:42px;border:0;border-radius:50%;display:grid;place-items:center;background:#fbfbf7;color:#0b1e3f;box-shadow:inset 0 0 0 1px rgba(11,30,63,.17),0 12px 28px -18px rgba(6,12,26,.5);cursor:pointer}.a11y__head{display:flex;justify-content:space-between;align-items:center}.a11y__title{font-size:12px;font-weight:700}.a11y__close{border:0;background:transparent;width:30px;height:30px;display:grid;place-items:center;cursor:pointer}.a11y__label{display:block;margin:12px 0 7px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}.a11y__sizes{display:flex;gap:6px}.a11y__size,.a11y__switch,.a11y__reset{font-family:Poppins,system-ui,sans-serif}.a11y__size{border:0;border-radius:10px;padding:7px 10px;background:#fff;box-shadow:inset 0 0 0 1px rgba(11,30,63,.12);cursor:pointer}.a11y__list{list-style:none;padding:0;margin:10px 0;display:grid;gap:6px}.a11y__switch{width:100%;border:0;border-radius:12px;padding:9px 10px;display:flex;align-items:center;justify-content:space-between;text-align:left;background:#fff;box-shadow:inset 0 0 0 1px rgba(11,30,63,.1);cursor:pointer}.a11y__switch-label{display:block;font-size:10px;font-weight:700}.a11y__switch-desc{display:block;font-size:8.5px;color:var(--muted)}.a11y__toggle{width:28px;height:16px;border-radius:999px;background:rgba(11,30,63,.12);position:relative}.a11y__toggle:after{content:"";position:absolute;width:12px;height:12px;left:2px;top:2px;border-radius:50%;background:#fff;box-shadow:0 1px 4px #0002;transition:.18s ease}.a11y__switch[aria-pressed="true"] .a11y__toggle{background:var(--orange)}.a11y__switch[aria-pressed="true"] .a11y__toggle:after{transform:translateX(12px)}.a11y__reset{width:100%;border:0;background:transparent;color:var(--orange);font-size:9.5px;font-weight:700;cursor:pointer}.a11y__reset:disabled{opacity:.4}.a11y-text-lg{font-size:110%}.a11y-text-xl{font-size:120%}.a11y-high-contrast{filter:contrast(1.12)}.a11y-underline a{text-decoration:underline!important;text-underline-offset:3px}.a11y-reduce-motion *{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}[data-theme="dark"] .a11y__panel,[data-theme="dark"] .a11y__button,[data-theme="dark"] .a11y__size,[data-theme="dark"] .a11y__switch{background:#10213a;color:#f4f4ed}
 @media(max-width:760px){.a11y{left:12px;bottom:12px}.a11y__panel{width:min(270px,calc(100vw - 24px))}}
 
-/* ===== v5 BrewedOps reference parity =====
+/* ===== v5 WagStack reference parity =====
    Desktop values below are taken from the attached 1358×636 capture. */
 
 /* The captured short desktop does NOT compress the rail. Preserve its native scale/rhythm. */
@@ -146,7 +146,7 @@
 
 
 /* ==========================================================================
-   v8 — source-section parity from the user's original BrewedOps captures
+   v8 — source-section parity from the user's original WagStack captures
    Captures: accessibility launcher, accessibility panel, desktop rail.
    ========================================================================== */
 
@@ -590,7 +590,7 @@
   .rail::-webkit-scrollbar{width:0;height:0;display:none}
   .rail__inner{min-height:100%;height:auto;overflow:visible}
 
-  /* BrewedOps-style content motion: static at rest, animated only while the
+  /* WagStack-style content motion: static at rest, animated only while the
      corresponding card is actively hovered (or keyboard-focused). */
   .bento__card--projects .bento__reel-track,
   .bento__card--quotes .bento__reviews-track,
@@ -616,7 +616,7 @@
   }
 }
 
-/* v10: captured BrewedOps HeroCanvas container parity. */
+/* v10: captured WagStack HeroCanvas container parity. */
 .hero-canvas{overflow:visible}
 .hero-canvas>canvas{display:block;width:100%;height:100%}
 
@@ -722,7 +722,7 @@
 .home__lede{margin-top:8px}
 
 /* Live appointment cards replace the old static screenshot reel while keeping
-   the captured BrewedOps vertical hover-scroll motion. */
+   the captured WagStack vertical hover-scroll motion. */
 .bento__card--projects .bento__booking-shot{display:flex!important;align-items:center!important;gap:9px!important;width:198.516px!important;height:64.5px!important;padding:8px!important;background:#fff!important;border-radius:12px!important;box-shadow:inset 0 0 0 1px rgba(11,30,63,.14),0 10px 24px -16px rgba(6,12,26,.5)!important;overflow:hidden!important}
 .bento__card--projects .bento__booking-pet{flex:0 0 48px!important;width:48px!important;height:48px!important;border-radius:9px!important;object-fit:cover!important;object-position:center!important}
 .bento__booking-copy{display:flex;flex:1;min-width:0;flex-direction:column;align-items:flex-start;line-height:1.13}

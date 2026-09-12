@@ -25,17 +25,17 @@ jobs:
           index = Path('index.html')
           s = index.read_text(encoding='utf-8')
           s = s.replace('<!-- Fallback/local clone styling loads first. The reference stylesheet loads after it for the captured home page. -->\n', '<!-- WagStack local styling -->\n')
-          s = s.replace('<link href="https://portfolio.brewedops.cloud/assets/index-C2v8QRIn.css" rel="stylesheet"/>\n', '')
-          s = s.replace('data-engine="brewedops-herocanvas-v2"', 'data-engine="wagstack-motion-canvas-v1"')
-          s = s.replace('/brewedops-background.js', '/wagstack-background.js')
+          s = s.replace('<link href="https://portfolio.wagstack.cloud/assets/index-C2v8QRIn.css" rel="stylesheet"/>\n', '')
+          s = s.replace('data-engine="wagstack-herocanvas-v2"', 'data-engine="wagstack-motion-canvas-v1"')
+          s = s.replace('/wagstack-background.js', '/wagstack-background.js')
           index.write_text(s, encoding='utf-8')
 
-          old_bg = Path('brewedops-background.js')
+          old_bg = Path('wagstack-background.js')
           bg = old_bg.read_text(encoding='utf-8')
-          bg = bg.replace("document.querySelectorAll('link[rel=\"stylesheet\"]').forEach(l=>{if((l.href||'').includes('portfolio.brewedops.cloud/assets/index-')){l.disabled=true;l.remove();}});", '')
-          bg = bg.replace('mountBrewedOpsBackground', 'mountWagStackBackground')
-          bg = bg.replace('three.js-r183-brewedops-herocanvas', 'three.js-r183-wagstack-herocanvas')
-          bg = bg.replace('__tfaBrewedOpsBackground', '__wagstackBackground')
+          bg = bg.replace("document.querySelectorAll('link[rel=\"stylesheet\"]').forEach(l=>{if((l.href||'').includes('portfolio.wagstack.cloud/assets/index-')){l.disabled=true;l.remove();}});", '')
+          bg = bg.replace('mountWagStackBackground', 'mountWagStackBackground')
+          bg = bg.replace('three.js-r183-wagstack-herocanvas', 'three.js-r183-wagstack-herocanvas')
+          bg = bg.replace('__tfaWagStackBackground', '__wagstackBackground')
           Path('wagstack-background.js').write_text(bg, encoding='utf-8')
           old_bg.unlink()
 
@@ -52,12 +52,12 @@ jobs:
                   text = path.read_text(encoding='utf-8')
               except (UnicodeDecodeError, OSError):
                   continue
-              cleaned = text.replace('BrewedOps', 'WagStack').replace('brewedops', 'wagstack')
+              cleaned = text.replace('WagStack', 'WagStack').replace('wagstack', 'wagstack')
               if cleaned != text:
                   path.write_text(cleaned, encoding='utf-8')
           PY
 
-          if git grep -inI 'brewedops' -- . ':!.github/workflows/wagstack-source-cleanup.yml'; then
+          if git grep -inI 'wagstack' -- . ':!.github/workflows/wagstack-source-cleanup.yml'; then
             echo 'Legacy references remain.' >&2
             exit 1
           fi
@@ -66,5 +66,5 @@ jobs:
           git config user.name 'WagStack Cleanup'
           git config user.email 'actions@users.noreply.github.com'
           git add -A
-          git commit -m 'Remove BrewedOps dependency and legacy source footprint'
+          git commit -m 'Remove WagStack dependency and legacy source footprint'
           git push

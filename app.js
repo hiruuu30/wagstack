@@ -497,7 +497,7 @@
   a11ySwitches.forEach((b,i)=>b.addEventListener('click',()=>{const on=b.getAttribute('aria-pressed')==='true';b.setAttribute('aria-pressed',on?'false':'true');document.documentElement.classList.toggle(switchClasses[i],!on);if(a11yReset)a11yReset.disabled=false;}));
   a11yReset?.addEventListener('click',()=>{document.documentElement.classList.remove('a11y-text-lg','a11y-text-xl',...switchClasses);a11ySizes.forEach((x,j)=>{x.classList.toggle('is-on',j===0);x.setAttribute('aria-pressed',j===0?'true':'false');});a11ySwitches.forEach(x=>x.setAttribute('aria-pressed','false'));a11yReset.disabled=true;});
 
-  // BrewedOps HeroCanvas background is mounted by /brewedops-background.js using the supplied Three.js bundle.
+  // WagStack HeroCanvas background is mounted by /wagstack-background.js using the supplied Three.js bundle.
 
   // Same clone cursor ring.
   const ring=qs('.cursor-ring');
