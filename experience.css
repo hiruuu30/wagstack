@@ -11,7 +11,7 @@ html .shell__panel{overflow-y:auto!important;overflow-x:clip!important;scrollbar
 html :is(.home__showcase,.bento){height:auto!important}
 html :is(.bento__card,.clone-card){transition:background-color .16s,border-color .16s!important}
 html .bento__card:hover{transform:none!important}
-html :is(.bento__reel-track,.health-marquee-track,.health-marquee-stack,.bento__chip-track,.tools-marquee__track){animation:none!important;transform:none!important}
+html :is(.health-marquee-track,.health-marquee-stack,.bento__chip-track,.tools-marquee__track){animation:none!important;transform:none!important}
 html :is(.ph-duo,.ph-duo path){filter:none!important;transition:color .15s!important;animation:none!important}
 html .ph-duo path[opacity]{opacity:.24!important}
 html .ph-duo path{transform:none!important}
@@ -53,22 +53,22 @@ html[data-theme="dark"] :is(.clone-btn,.pet-choice,.pet-option) .ph-duo{color:in
 html[data-theme="dark"] :is(.rail__link,.rail__social,.rail__theme,.rail__edit-profile){color:var(--ws-text)!important}
 html[data-theme="dark"] .rail__link.active{background:var(--ws-raised)!important}
 /* Updates: editable copy and CTA separate from the image. */
-html .home__promo-card{min-height:244px!important}
+html .home__promo-card{min-height:188px!important}
 html .home__promo-head{position:absolute;top:16px;left:20px;right:20px;z-index:2;pointer-events:none}
 html .home__promo-controls{pointer-events:auto;opacity:1!important;transform:none!important;display:flex;gap:6px}
 html .home__promo-controls button{width:36px;height:36px;background:var(--ws-panel)!important;color:var(--ws-text)!important;box-shadow:0 0 0 1px var(--ws-line)!important}
-html .home__promo-card .home__promo-viewport{height:244px!important;min-height:244px!important;touch-action:pan-x pan-y;scroll-snap-type:x mandatory}
+html .home__promo-card .home__promo-viewport{height:188px!important;min-height:188px!important;touch-action:pan-x pan-y;scroll-snap-type:x mandatory}
 html .home__promo-card .home__promo-track{height:100%!important}
-html .home__promo-card .home__promo-slide{display:grid!important;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:12px;padding:58px 20px 32px!important;position:relative;height:244px!important;min-height:244px!important;flex:0 0 100%;scroll-snap-align:start;background:var(--ws-panel)!important}
+html .home__promo-card .home__promo-slide{display:grid!important;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:12px;padding:48px 16px 20px!important;position:relative;height:188px!important;min-height:188px!important;flex:0 0 100%;scroll-snap-align:start;background:var(--ws-panel)!important}
 html .update-copy{position:relative;z-index:1;align-self:center;min-width:0}
 html .update-copy>span{display:block;font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--ws-accent)}
-html .update-copy>strong{display:block;font-size:clamp(18px,2vw,25px)!important;line-height:1.2!important;letter-spacing:-.025em;margin:5px 0;color:var(--ws-text)!important}
+html .update-copy>strong{display:block;font-size:clamp(16px,1.6vw,21px)!important;line-height:1.2!important;letter-spacing:-.025em;margin:5px 0;color:var(--ws-text)!important}
 html .update-copy>small{display:block;font-size:13px!important;line-height:1.5;color:var(--ws-muted)!important;max-width:32ch}
 html .update-cta{display:inline-flex;align-items:center;min-height:40px;margin-top:8px;gap:8px;font-size:14px;font-weight:700;color:var(--ws-text);text-decoration:underline;text-underline-offset:4px}
 html .update-image{width:100%;height:100%;min-height:0;object-fit:cover;border-radius:16px;object-position:60% center;align-self:stretch}
 html .home__promo-dots{bottom:12px!important}
 .mobile-nav,.mobile-more{display:none}
-@media(min-width:901px){html .home{display:flex;flex-direction:column;padding:28px clamp(18px,3vw,48px)!important;gap:18px}html .home__topbar{grid-template-columns:minmax(130px,.38fr) minmax(0,1fr)!important;min-height:244px}html .bento{grid-auto-rows:minmax(190px,auto)!important}html .rail{flex-basis:260px;width:260px;padding:28px 20px;overflow-y:auto}html .rail__nav{margin-top:14px;padding-top:10px}html .rail__link{font-size:15px;min-height:44px}html .rail__avatar{width:104px;height:104px}html .clone-title{font-size:clamp(28px,3vw,42px)}html .clone-page{padding:28px clamp(18px,3vw,48px) 50px}}
+@media(min-width:901px){html .home{display:flex;flex-direction:column;padding:28px clamp(18px,3vw,48px)!important;gap:18px}html .home__topbar{grid-template-columns:minmax(130px,.38fr) minmax(0,1fr)!important;min-height:188px}html .bento{grid-auto-rows:minmax(190px,auto)!important}html .rail{flex-basis:260px;width:260px;padding:28px 20px;overflow-y:auto}html .rail__nav{margin-top:14px;padding-top:10px}html .rail__link{font-size:15px;min-height:44px}html .rail__avatar{width:104px;height:104px}html .clone-title{font-size:clamp(28px,3vw,42px)}html .clone-page{padding:28px clamp(18px,3vw,48px) 50px}}
 @media(max-width:900px){
  html,html body,html #root{height:auto;overflow:visible}
  html .shell{display:block!important;height:auto!important;min-height:100dvh;overflow:visible!important}
@@ -134,7 +134,7 @@ html .home__promo-dots{bottom:12px!important}
  html .pet-toast{bottom:calc(90px + env(safe-area-inset-bottom))!important;max-width:calc(100% - 28px)}
  html .wag-cloud-btn{max-width:100%;font-size:12px!important}
 }
-@media(max-width:420px){html .bento{grid-template-columns:1fr!important}html .bento__card{grid-column:1!important}html .home__promo-card .home__promo-slide{grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);padding-left:16px!important;padding-right:16px!important;gap:8px}html .update-copy>strong{font-size:20px!important}html .update-image{border-radius:12px}html .rail{padding:10px!important}html .rail__name{font-size:14px!important}html .rail__handle{font-size:11px!important}html .rail__socials li:last-child{display:none}html .v27-products{gap:8px!important}html .v27-product{padding:10px!important}}
+@media(max-width:420px){html .bento{grid-template-columns:1fr!important}html .bento__card{grid-column:1!important}html .home__promo-card .home__promo-slide{grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);padding-left:16px!important;padding-right:16px!important;gap:8px}html .update-copy>strong{font-size:17px!important}html .update-image{border-radius:12px}html .rail{padding:10px!important}html .rail__name{font-size:14px!important}html .rail__handle{font-size:11px!important}html .rail__socials li:last-child{display:none}html .v27-products{gap:8px!important}html .v27-product{padding:10px!important}}
 @media(prefers-reduced-motion:reduce){html *,html *::before,html *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 
 html .home__promo-card .home__promo-slide{grid-template-rows:minmax(0,1fr)!important;align-content:stretch!important;align-items:stretch!important;gap:16px!important}
@@ -149,7 +149,7 @@ html[data-theme="dark"] .home__brand-slot{background:var(--ws-panel)!important;b
 html[data-theme="dark"] .home__brand-slot .wagstack-wordmark{color:var(--ws-text)!important}
 html[data-theme="dark"] .home__brand-slot .wagstack-brandmark{filter:brightness(0) invert(1)}
 html[data-theme="dark"] .home__brand-slot .wagstack-byline{color:var(--ws-muted)!important}
-@media(max-width:900px){html .home__brand-slot{display:none!important}html .home__promo-card{padding:0!important}html .home__promo-card .home__promo-viewport,html .home__promo-card .home__promo-slide{height:266px!important;min-height:266px!important}html .home__glass--showcase{border:0!important;box-shadow:none!important;background:transparent!important}}
+@media(max-width:900px){html .home__brand-slot{display:none!important}html .home__promo-card{padding:0!important}html .home__promo-card .home__promo-viewport,html .home__promo-card .home__promo-slide{height:204px!important;min-height:204px!important}html .home__glass--showcase{border:0!important;box-shadow:none!important;background:transparent!important}}
 @media(max-width:360px){html .v27-products{grid-template-columns:1fr!important}html .mobile-more-links{grid-template-columns:1fr}html .rail__handle{max-width:120px}}
 html :is(.v27-shop,.v27-shop-hero,.v27-shop-intro,.v27-shop-bag,.v27-products,.v27-filterbar){min-width:0!important;max-width:100%!important}
 html .v27-filterbar{display:flex;overflow-x:auto;gap:8px;padding:3px;scrollbar-width:thin}
@@ -158,3 +158,13 @@ html .v27-qty button{width:44px!important;height:44px!important;font-size:18px!i
 html .v27-qty b{font-size:14px!important}
 html .v32-checkout{color:var(--ws-on-action)!important;background:var(--ws-action)!important}
 html .pet-toast{color:var(--ws-on-action)!important;background:var(--ws-action)!important;font-size:14px!important}
+
+/* Keep the update strip compact; imagery shares the text row. */
+html .update-copy>small{display:none!important}
+html .update-copy>span{font-size:10px}
+html .update-cta{font-size:13px;margin-top:2px;min-height:44px}
+html .home__promo-card .home__promo-head{inset:8px 16px auto!important}
+html .home__promo-dots{bottom:6px!important}
+html .bento__card--projects .bento__reel-track{animation-play-state:running!important;will-change:transform}
+html .bento__card--projects:hover .bento__reel-track,html .bento__card--projects:focus-within .bento__reel-track{animation-play-state:paused!important}
+html.a11y-reduce-motion .bento__reel-track{animation:none!important}
