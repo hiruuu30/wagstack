@@ -1,3 +1,4 @@
+import './v32-local-only-preview.js';
 (()=>{const id='wagstack-v31-dark-theme-visual-parity';document.getElementById(id)?.remove();const s=document.createElement('style');s.id=id;s.textContent=`
 /* v31 — dark theme visual parity: colors only */
 [data-theme="dark"]{
