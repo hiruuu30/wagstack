@@ -1,3 +1,4 @@
+import './v33-revert-booking-stepper.js';
 (()=>{
 const id='wagstack-v32-ui-shop-lightness';document.getElementById(id)?.remove();
 const s=document.createElement('style');s.id=id;s.textContent=`
@@ -13,7 +14,7 @@ const s=document.createElement('style');s.id=id;s.textContent=`
 :root:not([data-theme="dark"]) :is(.shell__panel,.clone-page,.home){background-color:transparent!important}
 /* Dark theme contrast repair — tabs, controls, containers and low-contrast siblings */
 [data-theme="dark"]{--dark-bg:#09172b!important;--dark-surface:#132b49!important;--dark-surface-2:#183657!important;--dark-surface-3:#203f62!important;--dark-muted:#c2cede!important;--dark-faint:#9dacc1!important}
-[data-theme="dark"] :is(.pet-tabs,.pet-stepper,.clone-tabs,[role="tablist"]){background:#91a1b7!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.24),0 10px 26px -22px #000!important}
+[data-theme="dark"] :is(.pet-tabs,.clone-tabs,[role="tablist"]){background:#91a1b7!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.24),0 10px 26px -22px #000!important}
 [data-theme="dark"] :is(.pet-tabs button,.pet-tabs a,.clone-tabs button,.clone-tabs a,[role="tablist"] [role="tab"]){background:#dbe3ed!important;color:#70819a!important;opacity:1!important;box-shadow:inset 0 0 0 1px rgba(11,30,63,.08)!important}
 [data-theme="dark"] :is(.pet-tabs .is-active,.pet-tabs .active,.clone-tabs .is-active,.clone-tabs .active,[role="tablist"] [aria-selected="true"]){background:#10233f!important;color:#fff!important;box-shadow:0 8px 18px -13px #000!important}
 [data-theme="dark"] :is(.pet-tabs button,.pet-tabs a,.clone-tabs button,.clone-tabs a,[role="tablist"] [role="tab"]):hover{color:#10233f!important;background:#eef3f8!important}
