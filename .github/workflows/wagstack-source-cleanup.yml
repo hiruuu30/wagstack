@@ -1,0 +1,70 @@
+name: WagStack source cleanup
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.wagstack-cleanup-trigger'
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Remove legacy source dependency and labels
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          index = Path('index.html')
+          s = index.read_text(encoding='utf-8')
+          s = s.replace('<!-- Fallback/local clone styling loads first. The reference stylesheet loads after it for the captured home page. -->\n', '<!-- WagStack local styling -->\n')
+          s = s.replace('<link href="https://portfolio.brewedops.cloud/assets/index-C2v8QRIn.css" rel="stylesheet"/>\n', '')
+          s = s.replace('data-engine="brewedops-herocanvas-v2"', 'data-engine="wagstack-motion-canvas-v1"')
+          s = s.replace('/brewedops-background.js', '/wagstack-background.js')
+          index.write_text(s, encoding='utf-8')
+
+          old_bg = Path('brewedops-background.js')
+          bg = old_bg.read_text(encoding='utf-8')
+          bg = bg.replace("document.querySelectorAll('link[rel=\"stylesheet\"]').forEach(l=>{if((l.href||'').includes('portfolio.brewedops.cloud/assets/index-')){l.disabled=true;l.remove();}});", '')
+          bg = bg.replace('mountBrewedOpsBackground', 'mountWagStackBackground')
+          bg = bg.replace('three.js-r183-brewedops-herocanvas', 'three.js-r183-wagstack-herocanvas')
+          bg = bg.replace('__tfaBrewedOpsBackground', '__wagstackBackground')
+          Path('wagstack-background.js').write_text(bg, encoding='utf-8')
+          old_bg.unlink()
+
+          v31 = Path('v31-dark-theme-visual-parity.js')
+          s = v31.read_text(encoding='utf-8')
+          s = s.replace("import './v32-local-only-preview.js';\n", '')
+          v31.write_text(s, encoding='utf-8')
+          Path('v32-local-only-preview.js').unlink(missing_ok=True)
+
+          for path in Path('.').rglob('*'):
+              if not path.is_file() or '.git' in path.parts or path.name == '.wagstack-cleanup-trigger':
+                  continue
+              try:
+                  text = path.read_text(encoding='utf-8')
+              except (UnicodeDecodeError, OSError):
+                  continue
+              cleaned = text.replace('BrewedOps', 'WagStack').replace('brewedops', 'wagstack')
+              if cleaned != text:
+                  path.write_text(cleaned, encoding='utf-8')
+          PY
+
+          if git grep -inI 'brewedops' -- . ':!.github/workflows/wagstack-source-cleanup.yml'; then
+            echo 'Legacy references remain.' >&2
+            exit 1
+          fi
+
+          rm -f .wagstack-cleanup-trigger
+          git config user.name 'WagStack Cleanup'
+          git config user.email 'actions@users.noreply.github.com'
+          git add -A
+          git commit -m 'Remove BrewedOps dependency and legacy source footprint'
+          git push
