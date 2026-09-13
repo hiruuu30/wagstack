@@ -7,5 +7,6 @@ import './supabase-reward-log.js';
 import './v34-guest-avatar.js';
 import './v36-admin-separate-addpet.js';
 import './admin-production.js';
+import './admin-readability.js';
 import './v37-admin-entry-cleanup.js';
 setTimeout(()=>import('./v29-critical.js'),0);
