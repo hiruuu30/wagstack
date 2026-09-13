@@ -7,6 +7,7 @@ import './updates-production.js';
 import './supabase-normalized.js';
 import './supabase-reward-log.js';
 import './v34-guest-avatar.js';
+import './signed-out-rail-guard.js';
 import './v36-admin-separate-addpet.js';
 import './admin-production.js';
 import './admin-readability.js';
