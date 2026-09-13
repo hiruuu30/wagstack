@@ -26,10 +26,36 @@ import { observeUI } from './ui-lifecycle.js';
     .wag-cloud-btn.is-guest .wag-cloud-dot{background:#ff7a1a!important}.wag-cloud-btn.is-guest .wag-cloud-email{max-width:none}
     .wag-pixel-avatar{image-rendering:pixelated!important;image-rendering:crisp-edges!important}
     .pet-profile-card .wag-pixel-avatar,.pet-switcher .wag-pixel-avatar,.pet-card .wag-pixel-avatar{object-fit:cover!important}
+    body.wag-signed-out .rail__avatar,
+    body.wag-signed-out .rail__name,
+    body.wag-signed-out .rail__handle,
+    body.wag-signed-out .rail__edit-profile{display:none!important}
   `;
   document.head.appendChild(style);
 
   function isGuest(){return localStorage.getItem(GUEST_FLAG)==='1'}
+  function readSession(){
+    try{return JSON.parse(localStorage.getItem(SESSION_KEY)||'null')}catch{return null}
+  }
+  function hasAccountSession(){
+    const session=readSession();
+    return !!(session?.access_token&&session?.user?.id);
+  }
+  function clearSignedOutAccountState(){
+    if(isGuest()||hasAccountSession())return;
+    try{
+      localStorage.removeItem(STORE_KEY);
+      localStorage.removeItem(PRE_GUEST_STORE);
+    }catch{}
+  }
+  function patchSignedOutIdentity(){
+    const signedOut=!isGuest()&&!hasAccountSession();
+    document.body?.classList.toggle('wag-signed-out',signedOut);
+    if(!signedOut)return;
+    document.querySelectorAll('[data-owner-name],[data-owner-meta]').forEach(el=>{el.textContent=''});
+    document.querySelectorAll('.rail__member-badge').forEach(el=>{el.hidden=true});
+  }
+
   function enterGuest(){
     try{
       const existing=localStorage.getItem(STORE_KEY);
@@ -55,7 +81,7 @@ import { observeUI } from './ui-lifecycle.js';
   function convertGuestToAccountIfNeeded(){
     if(!isGuest())return;
     try{
-      const session=JSON.parse(localStorage.getItem(SESSION_KEY)||'null');
+      const session=readSession();
       if(session?.access_token&&session?.user?.id){
         localStorage.removeItem(GUEST_FLAG);
         localStorage.removeItem(PRE_GUEST_STORE);
@@ -148,7 +174,7 @@ import { observeUI } from './ui-lifecycle.js';
     });
   }
 
-  function patch(){patchCloudButton();patchAuthModal();markPixelAvatars()}
+  function patch(){clearSignedOutAccountState();patchSignedOutIdentity();patchCloudButton();patchAuthModal();markPixelAvatars()}
   patch();
   observeUI(patch);
 })();
