@@ -39,3 +39,13 @@ Generated catalog and banner visuals are illustrative assets for the existing co
 - Restored automatic grooming reel movement at 320, 390, 768 and 1440 pixels; hover/focus pauses it and reduced motion disables it.
 - Updates banner reduced from 244 to 188 pixels on desktop, and 266 to 204 pixels on mobile, retaining imagery and direct CTAs.
 - Re-ran all 121 local QA checks successfully after these corrections.
+
+## Visual QA corrections — September 13, 2026
+
+- Pet insight cards use one column on phones, with complete metrics and dates. The photo action no longer overlaps the active-pet heading.
+- Dashboard Health labels wrap without clipping; mid-size desktop layouts use two columns and cards grow with their content.
+- Dark hotel badges, shop labels and rewards summaries use readable foreground and surface colors.
+- Mobile More includes all six destination icons plus the existing Sign in and Accessibility controls. Accessibility expands within the sheet, and Sign in closes the sheet before opening its dialog.
+- 42 focused local Chromium checks passed with no uncaught JavaScript errors: Home, My Pets and Hotel at 320, 390, 620, 768, 1024 and 1440 pixels in both themes, plus menu controls, grooming motion, reduced motion and desktop control restoration.
+- Screenshots used the site's actual Poppins font and were inspected for dark desktop Home, phone pet cards, More and expanded Accessibility. Existing compact Updates dimensions and background animation are retained.
+- Authentication dialog opening was verified without submitting credentials. The integration limits above still apply.
