@@ -326,19 +326,8 @@
   }
 
   function initPromoCarousel(){
-    const viewport=qs('[data-promo-viewport]',main); if(!viewport) return;
-    const slides=qsa('.home__promo-slide',viewport), dots=qsa('[data-promo-dot]',main);
-    let index=0;
-    const go=i=>{ if(!slides.length) return; index=(i+slides.length)%slides.length; viewport.scrollTo({left:index*viewport.clientWidth,behavior:'smooth'}); dots.forEach((d,j)=>d.classList.toggle('is-active',j===index)); };
-    qs('[data-promo-prev]',main)?.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();go(index-1)});
-    qs('[data-promo-next]',main)?.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();go(index+1)});
-    dots.forEach((d,j)=>d.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();go(j)}));
-    let down=false,startX=0,startLeft=0;
-    viewport.addEventListener('pointerdown',e=>{if(e.pointerType!=='mouse'||e.target.closest('a,button'))return;down=true;startX=e.clientX;startLeft=viewport.scrollLeft;viewport.setPointerCapture?.(e.pointerId)});
-    viewport.addEventListener('pointermove',e=>{if(down) viewport.scrollLeft=startLeft-(e.clientX-startX)});
-    const finish=()=>{if(!down)return;down=false;index=Math.round(viewport.scrollLeft/Math.max(1,viewport.clientWidth));go(index)};
-    viewport.addEventListener('pointerup',finish);viewport.addEventListener('pointercancel',finish);
-    viewport.addEventListener('scroll',()=>{clearTimeout(viewport._promoT);viewport._promoT=setTimeout(()=>{const i=Math.round(viewport.scrollLeft/Math.max(1,viewport.clientWidth));if(i!==index){index=i;dots.forEach((d,j)=>d.classList.toggle('is-active',j===index));}},80)},{passive:true});
+    // The carousel module owns controls for both static and server-loaded slides.
+    document.dispatchEvent(new CustomEvent('wagstack:carousel-ready'));
   }
 
 

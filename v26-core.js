@@ -31,7 +31,7 @@ import { observeUI } from './ui-lifecycle.js';
   function esc(v){return String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
 
   function themeIcon(){const b=document.querySelector('.rail__theme');if(!b||b.dataset.v26icon)return;b.dataset.v26icon='1';const t=document.documentElement.dataset.theme||'light';b.innerHTML=`<svg aria-hidden="true" class="tg" data-theme="${t}" viewBox="0 0 24 24" fill="none"><g class="tg-rays" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path d="M12 1.8v2M12 20.2v2M1.8 12h2M20.2 12h2M4.8 4.8l1.4 1.4M17.8 17.8l1.4 1.4M4.8 19.2l1.4-1.4M17.8 6.2l1.4-1.4"/></g><circle class="tg-sun-core" cx="12" cy="12" r="5.1" fill="currentColor"/><path class="tg-moon" d="M18.7 15.8A7.6 7.6 0 0 1 8.2 5.3 8.1 8.1 0 1 0 18.7 15.8Z" fill="currentColor"/></svg>`}
-  function patchUpdates(){const p=document.querySelector('.home__promo-card');if(!p)return;p.querySelectorAll('.home__promo-label').forEach(n=>n.remove());const title=p.querySelector('.home__promo-head .bento__title');if(title){if(title.textContent!=='Updates')title.textContent='Updates';title.style.display='block'}}
+  function patchUpdates(){const p=document.querySelector('.home__promo-card');if(!p)return;p.querySelectorAll('.home__promo-label').forEach(n=>n.remove());p.querySelector('.home__promo-head .bento__label')?.remove()}
   function patchHealthHome(){
     const card=document.querySelector('a.bento__card[href="/health"]');if(!card)return;
     const d=card.querySelector('.bento__desc');if(d&&d.textContent!=='Preventives and care records.')d.textContent='Preventives and care records.';
