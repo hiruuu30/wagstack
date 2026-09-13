@@ -68,3 +68,12 @@ Generated catalog and banner visuals are illustrative assets for the existing co
 - Both effects pause on pointer exit, stay still on touch devices and respect reduced motion.
 - Equal desktop columns and shared minimum heights keep Health & Care and My Pets the same size. The pet fan is centered in its available content area.
 - 18 focused checks passed across six widths and both themes, covering dimensions, centering, overlay bounds, hover/start/stop behavior, opposing directions, reduced motion and the Updates next control. A separate touch-emulated check confirmed paused motion. No uncaught JavaScript errors were observed.
+
+## Account confirmation — September 13, 2026
+
+- Signup and resend requests explicitly target the production confirmation page.
+- Added a standalone callback with click-to-confirm token verification, expired-link recovery, resend throttling and validated legacy signup sessions. Credentials are removed from the address bar. A second link opened in the same tab is handled correctly.
+- Added a branded, responsive Confirm signup email template and documented the required hosted sender, template and redirect settings in `emails/README.md`.
+- `tests/auth-confirm.cjs` passed with intercepted Auth responses: successful and expired tokens, server errors, rate limiting, unsupported types, invalid session rejection, root callback forwarding, signup/resend parameters and the resend UI. No real accounts or emails were created.
+- Inspected the email at 320 and 600 pixels and the callback in light/dark themes at 320, 390 and 900 pixels, with no horizontal overflow or uncaught JavaScript errors. This is browser rendering QA, not Gmail/Outlook inbox rendering verification.
+- Hosted Supabase sender/template/URL settings and real email delivery still require an authenticated dashboard session and the authorized SMTP provider configuration. Repository changes alone do not change those settings.
