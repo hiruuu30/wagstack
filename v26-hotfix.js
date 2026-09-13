@@ -4,6 +4,7 @@ import './supabase-bridge.js';
 import './rail-auth.js';
 import './public-landing.js';
 import './public-landing-polish.js';
+import './public-editorial-v2.js';
 import './shop-production.js';
 import './updates-production.js';
 import './supabase-normalized.js';
