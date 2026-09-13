@@ -10,7 +10,8 @@
 
   const release=()=>html.classList.remove('wag-preinit');
   window.addEventListener('wagstack:ui-ready',release,{once:true});
-  window.addEventListener('load',()=>requestAnimationFrame(release),{once:true});
+  document.addEventListener('DOMContentLoaded',()=>requestAnimationFrame(()=>requestAnimationFrame(release)),{once:true});
+  window.addEventListener('load',release,{once:true});
 
   const params = new URLSearchParams(location.hash.slice(1));
   if (['access_token', 'refresh_token', 'token_hash', 'error_code', 'error_description'].some(key => params.has(key))) {
