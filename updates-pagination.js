@@ -1,3 +1,5 @@
+let paginationFrame = 0;
+
 function syncUpdatePagination() {
   const viewport = document.querySelector('[data-promo-viewport]');
   const track = document.querySelector('[data-promo-track]');
@@ -27,30 +29,32 @@ function syncUpdatePagination() {
     });
   });
 
-  const paint = () => {
-    const width = Math.max(1, viewport.clientWidth);
-    const active = Math.max(0, Math.min(slides.length - 1, Math.round(viewport.scrollLeft / width)));
-    dots.forEach((dot, index) => dot.classList.toggle('is-active', index === active));
-  };
+  const width = Math.max(1, viewport.clientWidth);
+  const active = Math.max(0, Math.min(slides.length - 1, Math.round(viewport.scrollLeft / width)));
+  dots.forEach((dot, index) => dot.classList.toggle('is-active', index === active));
+}
 
-  if (viewport.dataset.enhancedPagination !== 'true') {
-    viewport.dataset.enhancedPagination = 'true';
-    let frame = 0;
-    viewport.addEventListener('scroll', () => {
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(paint);
-    }, { passive: true });
-    addEventListener('resize', paint, { passive: true });
-  }
-  paint();
+function schedulePaginationSync() {
+  cancelAnimationFrame(paginationFrame);
+  paginationFrame = requestAnimationFrame(syncUpdatePagination);
 }
 
 function bootUpdatePagination() {
   syncUpdatePagination();
+  const viewport = document.querySelector('[data-promo-viewport]');
   const track = document.querySelector('[data-promo-track]');
-  if (!track || track.dataset.enhancedPaginationObserver === 'true') return;
-  track.dataset.enhancedPaginationObserver = 'true';
-  new MutationObserver(syncUpdatePagination).observe(track, { childList: true });
+  if (!viewport || !track) return;
+
+  if (viewport.dataset.enhancedPagination !== 'true') {
+    viewport.dataset.enhancedPagination = 'true';
+    viewport.addEventListener('scroll', schedulePaginationSync, { passive: true });
+    addEventListener('resize', schedulePaginationSync, { passive: true });
+  }
+
+  if (track.dataset.enhancedPaginationObserver !== 'true') {
+    track.dataset.enhancedPaginationObserver = 'true';
+    new MutationObserver(schedulePaginationSync).observe(track, { childList: true });
+  }
 }
 
 if (document.readyState === 'loading') {
