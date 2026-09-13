@@ -2,6 +2,7 @@ import './v26-core.js';
 import './v27-patch.js';
 import './supabase-bridge.js';
 import './rail-auth.js';
+import './public-landing.js';
 import './shop-production.js';
 import './updates-production.js';
 import './supabase-normalized.js';
