@@ -5,6 +5,15 @@ let productImages = new Map();
 let imageRefreshQueued = false;
 let shopObserver = null;
 
+const photoStyle=document.createElement('style');
+photoStyle.id='wagstack-production-product-photos';
+photoStyle.textContent=`
+  .v27-product__visual.has-db-image::before{display:none!important}
+  .v27-product__visual.has-db-image{background:#eef2f6!important}
+  .wag-db-product-photo{display:block!important;width:100%!important;height:100%!important;object-fit:cover!important}
+`;
+document.head.appendChild(photoStyle);
+
 async function loadCatalog() {
   try {
     const response = await fetch(
@@ -35,6 +44,19 @@ function forceShopRefresh() {
   if (location.pathname !== '/shop') return;
   const glass = document.querySelector('#main-content .clone-glass');
   if (glass) delete glass.dataset.v27Shop;
+
+  // Wake the shared UI lifecycle once so v27 rebuilds the shop with the
+  // production catalog. This is intentionally a one-shot local mutation,
+  // not a document-wide observer loop.
+  const main=document.querySelector('#main-content');
+  if(main){
+    const marker=document.createElement('span');
+    marker.hidden=true;
+    marker.dataset.shopCatalogReady='';
+    main.appendChild(marker);
+    marker.remove();
+  }
+
   queueImageRefresh();
   attachShopObserver();
 }
@@ -53,17 +75,22 @@ function applyProductImages() {
   document.querySelectorAll('.v27-product').forEach((card) => {
     const name = card.querySelector('h3')?.textContent?.trim();
     const imageUrl = productImages.get(name);
-    if (!imageUrl) return;
     const visual = card.querySelector('.v27-product__visual');
     if (!visual) return;
 
+    if (!imageUrl) {
+      visual.classList.remove('has-db-image');
+      visual.querySelector('.wag-db-product-photo')?.remove();
+      return;
+    }
+
+    visual.classList.add('has-db-image');
     let image = visual.querySelector('.wag-db-product-photo');
     if (!image) {
       visual.replaceChildren();
       image = document.createElement('img');
       image.className = 'v32-product-photo wag-db-product-photo';
       image.alt = name || 'Product';
-      image.style.cssText = 'width:100%;height:100%;object-fit:cover';
       visual.appendChild(image);
     }
 
