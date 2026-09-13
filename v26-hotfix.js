@@ -9,6 +9,7 @@ import './supabase-reward-log.js';
 import './v34-guest-avatar.js';
 import './signed-out-rail-guard.js';
 import './v36-admin-separate-addpet.js';
+import './empty-pet-route-guard.js';
 import './admin-production.js';
 import './admin-readability.js';
 import './admin-theme.js';
