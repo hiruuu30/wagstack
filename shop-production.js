@@ -2,6 +2,8 @@ import { PRODUCTS } from './shop-catalog.js';
 import { SUPABASE_URL, SUPABASE_KEY } from './auth-config.js';
 
 let productImages = new Map();
+let imageRefreshQueued = false;
+let shopObserver = null;
 
 async function loadCatalog() {
   try {
@@ -33,12 +35,17 @@ function forceShopRefresh() {
   if (location.pathname !== '/shop') return;
   const glass = document.querySelector('#main-content .clone-glass');
   if (glass) delete glass.dataset.v27Shop;
-  const marker = document.createElement('span');
-  marker.hidden = true;
-  marker.dataset.catalogRefresh = String(Date.now());
-  document.body.appendChild(marker);
-  marker.remove();
-  setTimeout(applyProductImages, 30);
+  queueImageRefresh();
+  attachShopObserver();
+}
+
+function queueImageRefresh() {
+  if (imageRefreshQueued || location.pathname !== '/shop') return;
+  imageRefreshQueued = true;
+  requestAnimationFrame(() => {
+    imageRefreshQueued = false;
+    applyProductImages();
+  });
 }
 
 function applyProductImages() {
@@ -49,26 +56,61 @@ function applyProductImages() {
     if (!imageUrl) return;
     const visual = card.querySelector('.v27-product__visual');
     if (!visual) return;
-    let image = visual.querySelector('img');
+
+    let image = visual.querySelector('.wag-db-product-photo');
     if (!image) {
+      visual.replaceChildren();
       image = document.createElement('img');
       image.className = 'v32-product-photo wag-db-product-photo';
-      visual.replaceChildren(image);
+      image.alt = name || 'Product';
+      image.style.cssText = 'width:100%;height:100%;object-fit:cover';
+      visual.appendChild(image);
     }
-    image.src = imageUrl;
-    image.alt = name || 'Product';
-    image.style.width = '100%';
-    image.style.height = '100%';
-    image.style.objectFit = 'cover';
+
+    if (image.getAttribute('src') !== imageUrl) image.setAttribute('src', imageUrl);
+    if (image.alt !== (name || 'Product')) image.alt = name || 'Product';
   });
 }
 
-const observer = new MutationObserver(() => applyProductImages());
-observer.observe(document.documentElement, { childList: true, subtree: true });
+function attachShopObserver() {
+  shopObserver?.disconnect();
+  shopObserver = null;
+  if (location.pathname !== '/shop') return;
+  const root = document.querySelector('#main-content .clone-glass');
+  if (!root) return;
+  shopObserver = new MutationObserver((mutations) => {
+    const needsRefresh = mutations.some((mutation) =>
+      Array.from(mutation.addedNodes || []).some((node) =>
+        node.nodeType === 1 && (
+          node.matches?.('.v27-product,.v27-products') ||
+          node.querySelector?.('.v27-product')
+        )
+      )
+    );
+    if (needsRefresh) queueImageRefresh();
+  });
+  shopObserver.observe(root, { childList: true, subtree: true });
+}
+
+function onRouteChange() {
+  shopObserver?.disconnect();
+  shopObserver = null;
+  if (location.pathname === '/shop') {
+    setTimeout(() => {
+      forceShopRefresh();
+      queueImageRefresh();
+    }, 0);
+  }
+}
 
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', loadCatalog, { once: true });
+  document.addEventListener('DOMContentLoaded', () => {
+    loadCatalog();
+    onRouteChange();
+  }, { once: true });
 } else {
   loadCatalog();
+  onRouteChange();
 }
-window.addEventListener('popstate', () => setTimeout(forceShopRefresh, 0));
+window.addEventListener('popstate', onRouteChange);
+window.addEventListener('hashchange', onRouteChange);
