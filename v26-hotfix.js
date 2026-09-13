@@ -9,6 +9,7 @@ import './public-editorial-v2.js';
 import './public-mobile-fix.js';
 import './shop-production.js';
 import './updates-production.js';
+import './updates-pagination.js';
 import './supabase-normalized.js';
 import './supabase-reward-log.js';
 import './v34-guest-avatar.js';
