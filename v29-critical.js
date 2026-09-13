@@ -5,6 +5,8 @@ import { observeUI } from './ui-lifecycle.js';
   .home__promo-card{position:relative!important;display:grid!important;grid-template-rows:auto 1fr!important;padding:0!important;overflow:hidden!important}
   .home__promo-card .home__promo-head{position:relative!important;inset:auto!important;z-index:30!important;display:flex!important;align-items:center!important;justify-content:space-between!important;min-height:42px!important;padding:16px 26px 4px!important;pointer-events:none!important}
   .home__promo-card .home__promo-head .bento__title{display:block!important;margin:0!important;font-size:13px!important;line-height:1!important}
+  .home__promo-card.updates-enhanced .home__promo-head{justify-content:flex-end!important}
+  .home__promo-card.updates-enhanced .home__promo-head .bento__title{display:none!important}
   .home__promo-card .home__promo-controls{pointer-events:auto!important}
   .home__promo-card .home__promo-viewport{grid-row:2!important;min-height:128px!important;height:auto!important;margin:0!important;overflow-x:auto!important}
   .home__promo-card .home__promo-track{min-height:128px!important;height:100%!important}
@@ -41,7 +43,16 @@ import { observeUI } from './ui-lifecycle.js';
     const card=document.querySelector('.home__promo-card');
     if(!card)return;
     const title=card.querySelector('.home__promo-head .bento__title');
-    if(title && title.textContent!=='Updates') title.textContent='Updates';
+    if(title){
+      if(card.classList.contains('updates-enhanced')){
+        title.hidden=true;
+        title.setAttribute('aria-hidden','true');
+      }else{
+        title.hidden=false;
+        title.removeAttribute('aria-hidden');
+        if(title.textContent!=='Updates') title.textContent='Updates';
+      }
+    }
     card.querySelectorAll('.home__promo-label').forEach(n=>n.remove());
   };
 
