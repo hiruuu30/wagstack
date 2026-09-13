@@ -45,26 +45,9 @@
   [data-theme='dark'] .wa-error{background:#35191e!important;color:#ffb4b4!important;border:1px solid rgba(255,120,120,.14)!important}
   [data-theme='dark'] ::selection{background:rgba(255,122,26,.35);color:#fff}
   `;
-
-  function inject(){
-    if(document.getElementById('wag-admin-dark-theme'))return;
-    const s=document.createElement('style');
-    s.id='wag-admin-dark-theme';
-    s.textContent=css;
-    document.head.appendChild(s);
-  }
-
-  function mirrorTheme(){
-    const html=document.documentElement;
-    const body=document.body;
-    if(!html||!body)return;
-    const theme=html.getAttribute('data-theme')||body.getAttribute('data-theme');
-    if(theme) html.setAttribute('data-theme',theme);
-  }
-
-  inject();
-  mirrorTheme();
-  const mo=new MutationObserver(mirrorTheme);
-  mo.observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
-  if(document.body)mo.observe(document.body,{attributes:true,attributeFilter:['data-theme']});
+  if(document.getElementById('wag-admin-dark-theme'))return;
+  const s=document.createElement('style');
+  s.id='wag-admin-dark-theme';
+  s.textContent=css;
+  document.head.appendChild(s);
 })();
