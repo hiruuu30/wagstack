@@ -32,7 +32,22 @@ import { observeUI } from './ui-lifecycle.js';
 
   function themeIcon(){const b=document.querySelector('.rail__theme');if(!b||b.dataset.v26icon)return;b.dataset.v26icon='1';const t=document.documentElement.dataset.theme||'light';b.innerHTML=`<svg aria-hidden="true" class="tg" data-theme="${t}" viewBox="0 0 24 24" fill="none"><g class="tg-rays" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path d="M12 1.8v2M12 20.2v2M1.8 12h2M20.2 12h2M4.8 4.8l1.4 1.4M17.8 17.8l1.4 1.4M4.8 19.2l1.4-1.4M17.8 6.2l1.4-1.4"/></g><circle class="tg-sun-core" cx="12" cy="12" r="5.1" fill="currentColor"/><path class="tg-moon" d="M18.7 15.8A7.6 7.6 0 0 1 8.2 5.3 8.1 8.1 0 1 0 18.7 15.8Z" fill="currentColor"/></svg>`}
   function patchUpdates(){const p=document.querySelector('.home__promo-card');if(!p)return;p.querySelectorAll('.home__promo-label').forEach(n=>n.remove());const title=p.querySelector('.home__promo-head .bento__title');if(title){if(title.textContent!=='Updates')title.textContent='Updates';title.style.display='block'}}
-  function patchHealthHome(){const card=document.querySelector('a.bento__card[href="/health"]');if(!card)return;const d=card.querySelector('.bento__desc');if(d&&d.textContent!=='Preventives and care records.')d.textContent='Preventives and care records.';const chips=card.querySelector('.bento__chips');if(!chips||chips.dataset.healthChips)return;const seen=new Set(),items=[];chips.querySelectorAll('.bento__chip').forEach(chip=>{const name=chip.textContent.trim();if(!seen.has(name)){seen.add(name);items.push(chip)}});chips.replaceChildren(...items);chips.dataset.healthChips='true'}
+  function patchHealthHome(){
+    const card=document.querySelector('a.bento__card[href="/health"]');if(!card)return;
+    const d=card.querySelector('.bento__desc');if(d&&d.textContent!=='Preventives and care records.')d.textContent='Preventives and care records.';
+    const chips=card.querySelector('.bento__chips');if(!chips||chips.querySelector('.health-marquee-stack'))return;
+    const seen=new Set(),items=[];chips.querySelectorAll('.bento__chip').forEach(chip=>{const name=chip.textContent.trim();if(!seen.has(name)){seen.add(name);items.push(chip)}});if(!items.length)return;
+    const stack=document.createElement('span');stack.className='health-marquee-stack';stack.setAttribute('aria-hidden','true');
+    for(let row=0;row<2;row++){
+      const viewport=document.createElement('span');viewport.className='health-marquee-window';
+      const track=document.createElement('span');track.className='health-marquee'+(row?' health-marquee--reverse':'');
+      const ordered=row?[...items].reverse():items;
+      for(let copy=0;copy<2;copy++){const group=document.createElement('span');group.className='health-marquee-group';ordered.forEach(chip=>group.appendChild(chip.cloneNode(true)));track.appendChild(group)}
+      viewport.appendChild(track);stack.appendChild(viewport);
+    }
+    const label=document.createElement('span');label.className='sr-only';label.textContent=[...seen].join(', ');
+    chips.replaceChildren(label,stack);
+  }
   function patchPicker(){document.querySelectorAll('.pet-health-picker').forEach(d=>{if(d.dataset.v26)return;d.dataset.v26='1';const s=d.querySelector('summary');if(s)s.addEventListener('click',e=>{e.preventDefault();d.open=!d.open})})}
   function patchHealthModal(){const form=document.querySelector('[data-health-edit-form]');if(!form||form.dataset.v26)return;form.dataset.v26='1';let current='Other';const fixed=form.querySelector('.pet-fixed-field');if(fixed)current=fixed.querySelector('strong')?.textContent?.trim()||'Other';else if(form.querySelector('input[name="title"]'))current='Other';const label=fixed?.closest('label')||form.querySelector('input[name="title"]')?.closest('label');if(!label)return;const opts=TYPES.map(x=>`<option value="${x.replaceAll('"','&quot;')}" ${x===current?'selected':''}>${x}</option>`).join('');label.outerHTML=`<label class="pet-record-type-select-wrap">Record type<select class="pet-input pet-record-type-select" name="category">${opts}</select></label>`;const custom=document.createElement('label');custom.className='pet-record-custom';custom.innerHTML='Custom title<input class="pet-input" name="customTitle" value="">';const status=form.querySelector('input[name="status"]')?.closest('label');if(status)status.before(custom);const sel=form.querySelector('select[name="category"]'),sync=()=>custom.classList.toggle('is-visible',sel.value==='Other');sel.addEventListener('change',sync);sync()}
 

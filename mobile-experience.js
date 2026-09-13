@@ -1,6 +1,6 @@
 import { GROOMING_ICON } from './grooming-icon.js';
 import { observeUI } from './ui-lifecycle.js';
-const stylesheet=document.createElement('link');stylesheet.rel='stylesheet';stylesheet.href='/experience.css?v=41';document.head.appendChild(stylesheet);
+const stylesheet=document.createElement('link');stylesheet.rel='stylesheet';stylesheet.href='/experience.css?v=42';document.head.appendChild(stylesheet);
 const isMobile=matchMedia('(max-width:900px)');
 const accountIcon='<svg class="ph-duo" viewBox="0 0 256 256" fill="none" aria-hidden="true"><circle cx="128" cy="128" r="96" fill="currentColor" opacity=".2"/><circle cx="128" cy="128" r="96" stroke="currentColor" stroke-width="16"/><circle cx="128" cy="104" r="32" stroke="currentColor" stroke-width="16"/><path d="M61 196a72 72 0 0 1 134 0" stroke="currentColor" stroke-width="16" stroke-linecap="round"/></svg>';
 let returnFocus;

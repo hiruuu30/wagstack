@@ -59,3 +59,12 @@ Generated catalog and banner visuals are illustrative assets for the existing co
 - Aligned the desktop Updates and WagStack cards at 174 pixels high, preserving the mobile Updates height.
 - 40 focused browser checks passed across both themes and 320, 390, 768, 1024 and 1440 pixels. Verified border/reset behavior, removed text controls, rail bounds, card alignment and consistent grooming icons, with no uncaught JavaScript errors.
 - Also checked the Full Grooming selector and Updates controls with high contrast enabled. Inspected desktop and mobile screenshots, including expanded Accessibility.
+
+## Dashboard hover motion and centering — September 13, 2026
+
+- Updates label and arrow controls overlay the slide; the image fills its side of the card from top to bottom.
+- Grooming rests still and scrolls only on hover or visible keyboard focus. Its two-booking window is vertically centered on desktop and stacked below the heading on small phones.
+- Restored two Health marquee rows moving in opposite directions on hover. Repeated visual copies are hidden from assistive technology, with one accessible category summary.
+- Both effects pause on pointer exit, stay still on touch devices and respect reduced motion.
+- Equal desktop columns and shared minimum heights keep Health & Care and My Pets the same size. The pet fan is centered in its available content area.
+- 18 focused checks passed across six widths and both themes, covering dimensions, centering, overlay bounds, hover/start/stop behavior, opposing directions, reduced motion and the Updates next control. A separate touch-emulated check confirmed paused motion. No uncaught JavaScript errors were observed.

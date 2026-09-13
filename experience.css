@@ -11,7 +11,7 @@ html .shell__panel{overflow-y:auto!important;overflow-x:clip!important;scrollbar
 html :is(.home__showcase,.bento){height:auto!important}
 html :is(.bento__card,.clone-card){transition:background-color .16s,border-color .16s!important}
 html .bento__card:hover{transform:none!important}
-html :is(.health-marquee-track,.health-marquee-stack,.bento__chip-track,.tools-marquee__track){animation:none!important;transform:none!important}
+html :is(.bento__chip-track,.tools-marquee__track){animation:none!important;transform:none!important}
 html :is(.ph-duo,.ph-duo path){filter:none!important;transition:color .15s!important;animation:none!important}
 html .ph-duo path[opacity]{opacity:.24!important}
 html .ph-duo path{transform:none!important}
@@ -165,8 +165,7 @@ html .update-copy>span{font-size:10px}
 html .update-cta{font-size:13px;margin-top:2px;min-height:44px}
 html .home__promo-card .home__promo-head{inset:8px 16px auto!important}
 html .home__promo-dots{bottom:6px!important}
-html .bento__card--projects .bento__reel-track{animation-play-state:running!important;will-change:transform}
-html .bento__card--projects:hover .bento__reel-track,html .bento__card--projects:focus-within .bento__reel-track{animation-play-state:paused!important}
+html .bento__card--projects .bento__reel-track{animation-play-state:paused!important}
 html.a11y-reduce-motion .bento__reel-track{animation:none!important}
 
 /* Visual QA: keep the profile grid independent of generic page grids. */
@@ -178,14 +177,6 @@ html .pet-insight-card .pet-metric{grid-column:1/-1;grid-row:2;min-width:0;max-w
 html .pet-overview-grid>.pet-insight-card>p{grid-column:1/-1;grid-row:3;margin:0!important;padding-top:10px;font-size:14px!important;line-height:1.5!important;overflow-wrap:anywhere;border-color:var(--ws-line)}
 @media(max-width:1100px){html .clone-grid.pet-overview-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
 @media(max-width:620px){html .clone-grid.pet-overview-grid{grid-template-columns:minmax(0,1fr)!important}html .pet-overview-grid>.pet-insight-card{grid-column:1/-1!important}html .pet-profile-card .pet-photo-edit{position:static!important;grid-column:1/-1;justify-self:start;min-height:44px;font-size:12px!important}}
-
-/* Show each health category once, with complete labels. */
-html a.bento__card[href="/health"]{display:flex!important;flex-direction:column!important;gap:12px!important}
-html a.bento__card[href="/health"] .bento__head{flex:0 0 auto!important}
-html a.bento__card[href="/health"] .bento__desc{display:block!important;max-width:100%!important;margin-bottom:0!important}
-html a.bento__card[href="/health"] .bento__chips{position:static!important;inset:auto!important;width:100%!important;height:auto!important;min-width:0;display:flex!important;flex-wrap:wrap;align-content:start;gap:6px!important;margin:auto 0 0!important;overflow:visible!important;mask-image:none!important;-webkit-mask-image:none!important;transform:none!important}
-html a.bento__card[href="/health"] .bento__chip{display:inline-flex!important;align-items:center;gap:5px;position:static!important;max-width:100%;height:auto!important;padding:5px 8px!important;font-size:11px!important;line-height:1.3!important;white-space:normal!important;transform:none!important;animation:none!important}
-html a.bento__card[href="/health"] .bento__chip svg{width:14px!important;height:14px!important;flex-shrink:0}
 
 /* Target the dashboard's actual badge, offer and reward elements. */
 html .bento__card--services .bento__offer-text{font-size:12px!important;line-height:1.4!important}
@@ -234,7 +225,6 @@ html[data-theme="dark"] .pet-stepper>span.is-active{background:#324d70!important
  html .bento__card{grid-column:auto!important}
  html .bento__card--projects,html .bento__card--services{grid-column:1/-1!important}
 }
-html a.bento__card[href="/health"] .bento__chips{flex-direction:row!important;flex:0 0 auto!important;justify-content:flex-start!important}
 
 /* Keep the complete rounded rail selection inside the rail's content width. */
 @media(min-width:901px){
@@ -251,3 +241,50 @@ html.a11y-high-contrast{filter:none;--ws-line:#465b77;--line:var(--ws-line)!impo
 html.a11y-high-contrast[data-theme="dark"]{--ws-line:#aac1dc}
 html.a11y-high-contrast :is(.home__brand-slot,.home__promo-card,.home__glass,.clone-glass,.pet-workspace-v25,.bento__card,.clone-card,.pet-profile-card,.pet-insight-card,.v27-product,.v27-shop-intro,.v27-shop-bag,.about-contact-shell,.about-form-panel,.wag-auth-card,.pet-modal__panel,.wag-addpet,.mobile-more,.a11y__panel,.kape__panel,.rail__link.active,.mobile-more-links a,.mobile-nav,.bento__chip,.bento__offer,.bento__reward-compact,.bento__badge-tag,button,input,select,textarea,.clone-btn,.pet-tabs,.pet-switch,.pet-stepper>span){border-color:var(--ws-line)!important;box-shadow:inset 0 0 0 2px var(--ws-line)!important}
 html.a11y-high-contrast .home__promo-card::after{content:"";position:absolute;inset:0;z-index:20;border:2px solid var(--ws-line);border-radius:inherit;pointer-events:none}
+
+/* Updates controls float over each slide, including its full-height image. */
+html .home__promo-card .home__promo-head{inset:10px 14px auto!important}
+html .home__promo-card .home__promo-head .bento__title{padding:8px 10px;border-radius:10px;background:var(--ws-panel);box-shadow:inset 0 0 0 1px var(--ws-line)}
+html .home__promo-card .home__promo-slide{padding:18px!important;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr)!important}
+html .home__promo-card .update-copy{padding-top:26px}
+html .home__promo-card .update-image{position:absolute;inset:0 0 0 auto;grid-column:auto!important;grid-row:auto!important;width:44%;height:100%;border-radius:0;object-position:center}
+
+/* Equal desktop columns keep Health & Care and My Pets the same size. */
+@media(min-width:1201px){html .bento{grid-template-columns:repeat(4,minmax(0,1fr))!important}}
+html a.bento__card[href="/pets"],html a.bento__card[href="/health"]{align-self:stretch;min-height:200px!important}
+html a.bento__card[href="/pets"]{display:flex!important;flex-direction:column!important;gap:8px!important}
+html a.bento__card[href="/pets"] .bento__head{flex:0 0 auto}
+html a.bento__card[href="/pets"] .bento__fan{position:relative!important;inset:auto!important;width:100%!important;height:130px!important;min-height:130px;margin:0!important;flex:1 1 auto;transform:none!important}
+
+/* Center a two-card booking window without shifting the title. */
+html .bento__card--projects{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;grid-template-rows:1fr!important;gap:12px!important;align-items:center!important}
+html .bento__card--projects>.bento__head{grid-column:1;grid-row:1;align-self:start;width:100%;max-width:100%!important}
+html .bento__card--projects .bento__reel{position:relative!important;inset:auto!important;grid-column:2;grid-row:1;width:100%!important;max-width:220px;height:136px!important;margin:0!important;justify-self:center;align-self:center;transform:none!important;overflow:hidden}
+html .bento__card--projects .bento__reel-track{width:100%!important;gap:7px!important;animation:wag-grooming-reel 18s linear infinite!important;animation-play-state:paused!important}
+html .bento__card--projects .bento__booking-shot{width:100%!important;flex:0 0 64.5px!important;height:64.5px!important;margin:0!important}
+html .bento__card--projects .bento__reel-track:not(:has(>:nth-child(2))){animation:none!important}
+@keyframes wag-grooming-reel{to{transform:translateY(calc(-50% - 3.5px))}}
+@media(max-width:520px){
+ html .bento__card--projects{grid-template-columns:minmax(0,1fr)!important;grid-template-rows:auto 136px!important}
+ html .bento__card--projects .bento__reel{grid-column:1;grid-row:2;max-width:100%}
+ html .bento__card--projects .bento__desc{font-size:12px!important;line-height:1.4!important}
+}
+
+/* Two opposing Health rows, seamless at the loop and paused at rest. */
+html a.bento__card[href="/health"]{display:flex!important;flex-direction:column!important;gap:12px!important;overflow:hidden!important}
+html a.bento__card[href="/health"] .bento__head{flex:0 0 auto}
+html a.bento__card[href="/health"] .bento__desc{max-width:100%!important;margin-bottom:0!important}
+html a.bento__card[href="/health"] .bento__chips{position:static!important;inset:auto!important;display:block!important;width:100%!important;height:58px!important;flex:0 0 58px;min-width:0;margin:auto 0 0!important;overflow:hidden!important;mask-image:none!important;-webkit-mask-image:none!important}
+html .health-marquee-stack{display:grid;gap:6px}
+html .health-marquee-window{display:block;overflow:hidden}
+html .health-marquee{display:flex;width:max-content;animation:wag-health-rows 14s linear infinite!important;animation-play-state:paused!important}
+html .health-marquee--reverse{animation-direction:reverse!important}
+html .health-marquee-group{display:flex;align-items:center;gap:7px;padding-right:7px}
+html a.bento__card[href="/health"] .bento__chip{display:inline-flex!important;flex:0 0 auto!important;align-items:center!important;gap:5px!important;max-width:none!important;height:26px!important;padding:0 8px!important;font-size:11px!important;white-space:nowrap!important;animation:none!important;transform:none!important}
+html a.bento__card[href="/health"] .bento__chip svg{width:14px!important;height:14px!important;flex:0 0 14px}
+@keyframes wag-health-rows{to{transform:translateX(-50%)}}
+@media(hover:hover) and (pointer:fine){
+ html .bento__card--projects:hover .bento__reel-track,html .bento__card--projects:focus-visible .bento__reel-track,html a.bento__card[href="/health"]:hover .health-marquee,html a.bento__card[href="/health"]:focus-visible .health-marquee{animation-play-state:running!important}
+}
+html.a11y-reduce-motion .bento__reel-track,html.a11y-reduce-motion .health-marquee{animation:none!important}
+@media(prefers-reduced-motion:reduce){html .bento__card--projects .bento__reel-track,html .health-marquee{animation:none!important}}
