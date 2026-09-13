@@ -488,16 +488,15 @@
 
   // Accessibility control from the clone: same floating interaction, now fully functional locally.
   const a11y=qs('.a11y'), a11yPanel=qs('.a11y__panel'), a11yBtn=qs('.a11y__button'), a11yClose=qs('.a11y__close'), a11yReset=qs('.a11y__reset');
-  const a11ySizes=qsa('.a11y__size'), a11ySwitches=qsa('.a11y__switch');
+  const a11ySwitches=qsa('.a11y__switch');
   function closeA11y(){a11y?.classList.remove('is-open');a11yPanel?.setAttribute('inert','');a11yBtn?.setAttribute('aria-expanded','false');}
   function openA11y(){a11y?.classList.add('is-open');a11yPanel?.removeAttribute('inert');a11yBtn?.setAttribute('aria-expanded','true');}
   a11yBtn?.addEventListener('click',()=>a11y?.classList.contains('is-open')?closeA11y():openA11y()); a11yClose?.addEventListener('click',closeA11y);
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&a11y?.classList.contains('is-open')){closeA11y();a11yBtn?.focus();}});
   document.addEventListener('pointerdown',e=>{if(a11y?.classList.contains('is-open')&&!a11y.contains(e.target))closeA11y();});
-  a11ySizes.forEach((b,i)=>b.addEventListener('click',()=>{document.documentElement.classList.remove('a11y-text-lg','a11y-text-xl');if(i===1)document.documentElement.classList.add('a11y-text-lg');if(i===2)document.documentElement.classList.add('a11y-text-xl');a11ySizes.forEach((x,j)=>{x.classList.toggle('is-on',j===i);x.setAttribute('aria-pressed',j===i?'true':'false');});if(a11yReset)a11yReset.disabled=false;}));
   const switchClasses=['a11y-high-contrast','a11y-reduce-motion','a11y-underline'];
   a11ySwitches.forEach((b,i)=>b.addEventListener('click',()=>{const on=b.getAttribute('aria-pressed')==='true';b.setAttribute('aria-pressed',on?'false':'true');document.documentElement.classList.toggle(switchClasses[i],!on);if(a11yReset)a11yReset.disabled=false;}));
-  a11yReset?.addEventListener('click',()=>{document.documentElement.classList.remove('a11y-text-lg','a11y-text-xl',...switchClasses);a11ySizes.forEach((x,j)=>{x.classList.toggle('is-on',j===0);x.setAttribute('aria-pressed',j===0?'true':'false');});a11ySwitches.forEach(x=>x.setAttribute('aria-pressed','false'));a11yReset.disabled=true;});
+  a11yReset?.addEventListener('click',()=>{document.documentElement.classList.remove(...switchClasses);a11ySwitches.forEach(x=>x.setAttribute('aria-pressed','false'));a11yReset.disabled=true;});
 
   // WagStack HeroCanvas background is mounted by /wagstack-background.js using the supplied Three.js bundle.
 

@@ -1,7 +1,7 @@
+import { GROOMING_ICON } from './grooming-icon.js';
 import { observeUI } from './ui-lifecycle.js';
 import './v26-hotfix.js';
 (() => {
-  const clipper=`<svg class="ph-duo ph-duo--dynamic" aria-hidden="true" viewBox="0 0 256 256" fill="currentColor"><path d="M54 82h116a22 22 0 0 1 22 22v28H32v-28a22 22 0 0 1 22-22Z" opacity=".2"/><path d="M54 66h116a38 38 0 0 1 38 38v20h16a8 8 0 0 1 0 16h-16v18a24 24 0 0 1-24 24h-12v26a8 8 0 0 1-16 0v-26h-24v18a8 8 0 0 1-16 0v-18H92v26a8 8 0 0 1-16 0v-26H64a24 24 0 0 1-24-24v-18H24a8 8 0 0 1 0-16h16v-20a38 38 0 0 1 14-30Zm0 38v54a8 8 0 0 0 8 8h122a8 8 0 0 0 8-8v-54a22 22 0 0 0-22-22H76a22 22 0 0 0-22 22Zm154-56 5 12 12 5-12 5-5 12-5-12-12-5 12-5 5-12Z"/></svg>`;
   const healthIcons={
     'Vaccinations':'<svg viewBox="0 0 256 256" fill="currentColor"><path d="m72 184 96-96 24 24-96 96H72v-24Z" opacity=".2"/><path d="m216 64-24-24a8 8 0 0 0-11 11l6 7-25 25-13-13a8 8 0 0 0-11 11l7 7-79 79a8 8 0 0 0-2 5v20H44a8 8 0 0 0 0 16h20v20a8 8 0 0 0 16 0v-20h20a8 8 0 0 0 6-2l79-79 7 7a8 8 0 1 0 11-11l-13-13 25-25 7 6a8 8 0 0 0 11-11ZM97 192H80v-17l76-76 17 17Z"/></svg>',
     'Deworming':'<svg viewBox="0 0 256 256" fill="currentColor"><path d="M40 144c0-44 36-80 80-80h48a48 48 0 0 1 0 96h-40a24 24 0 0 0-24 24v16H72v-16c0-22 18-40 40-40h56a32 32 0 0 0 0-64h-48a64 64 0 0 0-64 64Z" opacity=".2"/><path d="M168 56h-48a88 88 0 0 0-88 88 8 8 0 0 0 16 0 72 72 0 0 1 72-72h48a40 40 0 0 1 0 80h-56a48 48 0 0 0-48 48 8 8 0 0 0 16 0 32 32 0 0 1 32-32h56a56 56 0 0 0 0-112Z"/></svg>',
@@ -20,7 +20,7 @@ import './v26-hotfix.js';
   const style=document.createElement('style'); style.id='wagstack-v25'; style.textContent=css; document.head.appendChild(style);
 
   function patchHome(){
-    document.querySelectorAll('a[href="/grooming"] .ricon,a.bento__card[href="/grooming"] .bento__icon').forEach(el=>{if(!el.dataset.clipperReady){el.innerHTML=clipper;el.dataset.clipperReady="1"}});
+    document.querySelectorAll('a[href="/grooming"] .ricon,a.bento__card[href="/grooming"] .bento__icon').forEach(el=>{if(!el.dataset.groomingReady){el.innerHTML=GROOMING_ICON;el.dataset.groomingReady="1"}});
     const health=document.querySelector('a.bento__card[href="/health"]');
     if(health&&!health.dataset.v25){ health.dataset.v25='1'; const d=health.querySelector('.bento__desc'); if(d)d.textContent='Vaccinations, preventives and care records.'; const chips=health.querySelector('.bento__chips'); if(chips)chips.innerHTML=Object.entries(healthIcons).map(([n,svg])=>`<span class="bento__chip" data-status="Saved">${svg}${n}</span>`).join(''); }
     const promo=document.querySelector('.home__promo-card'); if(promo&&!promo.dataset.v25){promo.dataset.v25='1';promo.querySelectorAll('.home__promo-slide').forEach(s=>s.insertAdjacentHTML('afterbegin','<b class="home__promo-label">Updates</b>'));}

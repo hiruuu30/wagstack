@@ -49,3 +49,13 @@ Generated catalog and banner visuals are illustrative assets for the existing co
 - 42 focused local Chromium checks passed with no uncaught JavaScript errors: Home, My Pets and Hotel at 320, 390, 620, 768, 1024 and 1440 pixels in both themes, plus menu controls, grooming motion, reduced motion and desktop control restoration.
 - Screenshots used the site's actual Poppins font and were inspected for dark desktop Home, phone pet cards, More and expanded Accessibility. Existing compact Updates dimensions and background animation are retained.
 - Authentication dialog opening was verified without submitting credentials. The integration limits above still apply.
+
+## Accessibility, rail and Updates refinement — September 13, 2026
+
+- Removed the text-size control and its event handlers. Accessibility now offers High contrast, Reduce motion and Underline links.
+- High contrast uses stronger light/dark border tokens and two-pixel card/control edges instead of a whole-page contrast filter. Reset restores the default borders.
+- Constrained desktop rail content to its available width so both rounded ends remain visible.
+- Reused the local Phosphor duotone scissors for grooming navigation, dashboard, mobile Book/More, pet history and Full Grooming service selection.
+- Aligned the desktop Updates and WagStack cards at 174 pixels high, preserving the mobile Updates height.
+- 40 focused browser checks passed across both themes and 320, 390, 768, 1024 and 1440 pixels. Verified border/reset behavior, removed text controls, rail bounds, card alignment and consistent grooming icons, with no uncaught JavaScript errors.
+- Also checked the Full Grooming selector and Updates controls with high contrast enabled. Inspected desktop and mobile screenshots, including expanded Accessibility.

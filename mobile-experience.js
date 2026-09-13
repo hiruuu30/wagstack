@@ -1,5 +1,6 @@
+import { GROOMING_ICON } from './grooming-icon.js';
 import { observeUI } from './ui-lifecycle.js';
-const stylesheet=document.createElement('link');stylesheet.rel='stylesheet';stylesheet.href='/experience.css?v=40';document.head.appendChild(stylesheet);
+const stylesheet=document.createElement('link');stylesheet.rel='stylesheet';stylesheet.href='/experience.css?v=41';document.head.appendChild(stylesheet);
 const isMobile=matchMedia('(max-width:900px)');
 const accountIcon='<svg class="ph-duo" viewBox="0 0 256 256" fill="none" aria-hidden="true"><circle cx="128" cy="128" r="96" fill="currentColor" opacity=".2"/><circle cx="128" cy="128" r="96" stroke="currentColor" stroke-width="16"/><circle cx="128" cy="104" r="32" stroke="currentColor" stroke-width="16"/><path d="M61 196a72 72 0 0 1 134 0" stroke="currentColor" stroke-width="16" stroke-linecap="round"/></svg>';
 let returnFocus;
@@ -13,7 +14,7 @@ function placeAccountTools(){
 }
 function mount(){
   if(location.pathname==='/admin'||document.querySelector('.mobile-nav')||!document.querySelector('.rail__nav'))return;
-  const icon=path=>path==='/profile'?accountIcon:document.querySelector(`.rail__nav a[href="${path}"] svg`)?.outerHTML||'';
+  const icon=path=>path==='/grooming'?GROOMING_ICON:path==='/profile'?accountIcon:document.querySelector(`.rail__nav a[href="${path}"] svg`)?.outerHTML||'';
   const nav=document.createElement('nav');nav.className='mobile-nav';nav.setAttribute('aria-label','Main navigation');
   nav.innerHTML=[['/','Home'],['/pets','My Pets'],['/grooming','Book'],['/shop','Shop']].map(([path,label])=>`<a href="${path}" data-mobile-route="${path}">${icon(path)}<span>${label}</span></a>`).join('')+'<button type="button" data-mobile-more aria-controls="mobile-more" aria-haspopup="dialog" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg><span>More</span></button>';
   document.body.appendChild(nav);

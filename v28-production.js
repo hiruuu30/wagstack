@@ -1,10 +1,11 @@
+import { GROOMING_ICON } from './grooming-icon.js';
 import { observeUI } from './ui-lifecycle.js';
 (() => {
   const STORE_KEY='tfa-clone-workspace-v3';
   const read=()=>{try{return JSON.parse(localStorage.getItem(STORE_KEY)||'{}')}catch{return {}}};
   const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const svg=(name)=>({
-    scissors:`<svg class="ph-duo ph-duo--dynamic" aria-hidden="true" viewBox="0 0 256 256" fill="currentColor"><path d="M40 96a28 28 0 1 1 40 0 28 28 0 0 1-40 0Zm0 64a28 28 0 1 0 40 0 28 28 0 0 0-40 0Z" opacity=".2"/><path d="M160 116a8 8 0 0 1 2-11l66-46a8 8 0 1 1 9 13l-66 46a8 8 0 0 1-11-2Zm78 82a8 8 0 0 1-11 2l-91-62-43 29a36 36 0 1 1-9-13l38-26-38-26a36 36 0 1 1 9-13l144 98a8 8 0 0 1 1 11Z"/></svg>`,
+    scissors:GROOMING_ICON,
     brush:`<svg class="ph-duo ph-duo--dynamic" aria-hidden="true" viewBox="0 0 256 256" fill="currentColor"><path d="M48 48h144v104H48z" opacity=".2"/><path d="M192 40H48a16 16 0 0 0-16 16v96a16 16 0 0 0 16 16h64v32a8 8 0 0 0 16 0v-32h64a16 16 0 0 0 16-16V56a16 16 0 0 0-16-16Zm0 112H48V56h144ZM72 80v48a8 8 0 0 1-16 0V80a8 8 0 0 1 16 0Zm32 0v48a8 8 0 0 1-16 0V80a8 8 0 0 1 16 0Zm32 0v48a8 8 0 0 1-16 0V80a8 8 0 0 1 16 0Zm32 0v48a8 8 0 0 1-16 0V80a8 8 0 0 1 16 0Z"/></svg>`,
     bath:`<svg class="ph-duo ph-duo--dynamic" aria-hidden="true" viewBox="0 0 256 256" fill="currentColor"><path d="M40 120h176v40a48 48 0 0 1-48 48H88a48 48 0 0 1-48-48Z" opacity=".2"/><path d="M224 112h-16V72a40 40 0 0 0-80 0 8 8 0 0 0 16 0 24 24 0 0 1 48 0v40H32a8 8 0 0 0 0 16v32a56 56 0 0 0 48 55v9a8 8 0 0 0 16 0v-8h64v8a8 8 0 0 0 16 0v-9a56 56 0 0 0 48-55v-32a8 8 0 0 0 0-16Zm-16 48a40 40 0 0 1-40 40H88a40 40 0 0 1-40-40v-32h160Z"/></svg>`,
     ear:`<svg class="ph-duo ph-duo--dynamic" aria-hidden="true" viewBox="0 0 256 256" fill="currentColor"><path d="M184 112c0 48-40 48-40 88a24 24 0 0 1-48 0c0-56 48-56 48-104a32 32 0 0 0-64 0" opacity=".2"/><path d="M136 24a72 72 0 0 0-72 72 8 8 0 0 0 16 0 56 56 0 0 1 112 0c0 25-10 36-22 50-11 13-26 30-26 54a16 16 0 0 1-32 0c0-24 11-38 22-52 12-16 26-33 26-60a32 32 0 0 0-64 0 8 8 0 0 0 16 0 16 16 0 0 1 32 0c0 21-11 35-22 49-12 15-26 33-26 63a32 32 0 0 0 64 0c0-18 11-31 22-43 13-15 26-30 26-61a72 72 0 0 0-72-72Zm84 8v16h16a8 8 0 0 1 0 16h-16v16a8 8 0 0 1-16 0V64h-16a8 8 0 0 1 0-16h16V32a8 8 0 0 1 16 0Z"/></svg>`,

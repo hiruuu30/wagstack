@@ -235,3 +235,19 @@ html[data-theme="dark"] .pet-stepper>span.is-active{background:#324d70!important
  html .bento__card--projects,html .bento__card--services{grid-column:1/-1!important}
 }
 html a.bento__card[href="/health"] .bento__chips{flex-direction:row!important;flex:0 0 auto!important;justify-content:flex-start!important}
+
+/* Keep the complete rounded rail selection inside the rail's content width. */
+@media(min-width:901px){
+ html .rail__inner,html .rail__nav,html .rail__nav ul,html .rail__link{width:100%;max-width:100%;min-width:0;box-sizing:border-box}
+ html .rail__nav{padding-right:0;mask-image:none;-webkit-mask-image:none}
+ html .rail__link{border-radius:14px;transform:none}
+ html .home__topbar{height:174px;min-height:174px;align-items:stretch}
+ html .home__brand-slot,html .home__promo-card,html .home__promo-card .home__promo-viewport,html .home__promo-card .home__promo-slide{height:174px!important;min-height:174px!important}
+}
+
+/* Accessibility uses explicit borders instead of filtering the whole page. */
+html .a11y__panel,html .a11y__list{height:auto}
+html.a11y-high-contrast{filter:none;--ws-line:#465b77;--line:var(--ws-line)!important;--line2:var(--ws-line)!important}
+html.a11y-high-contrast[data-theme="dark"]{--ws-line:#aac1dc}
+html.a11y-high-contrast :is(.home__brand-slot,.home__promo-card,.home__glass,.clone-glass,.pet-workspace-v25,.bento__card,.clone-card,.pet-profile-card,.pet-insight-card,.v27-product,.v27-shop-intro,.v27-shop-bag,.about-contact-shell,.about-form-panel,.wag-auth-card,.pet-modal__panel,.wag-addpet,.mobile-more,.a11y__panel,.kape__panel,.rail__link.active,.mobile-more-links a,.mobile-nav,.bento__chip,.bento__offer,.bento__reward-compact,.bento__badge-tag,button,input,select,textarea,.clone-btn,.pet-tabs,.pet-switch,.pet-stepper>span){border-color:var(--ws-line)!important;box-shadow:inset 0 0 0 2px var(--ws-line)!important}
+html.a11y-high-contrast .home__promo-card::after{content:"";position:absolute;inset:0;z-index:20;border:2px solid var(--ws-line);border-radius:inherit;pointer-events:none}
