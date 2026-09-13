@@ -27,7 +27,8 @@
     if(!isSignedOut())return;
     const chat=e.target.closest('[data-open-kape]');
     const notifications=e.target.closest('[data-rail-action="notifications"]');
-    if(!chat&&!notifications)return;
+    const protectedPetRoute=e.target.closest('a[href="/pets"],a[href="/health"]');
+    if(!chat&&!notifications&&!protectedPetRoute)return;
     e.preventDefault();
     e.stopImmediatePropagation();
     openAuth();
