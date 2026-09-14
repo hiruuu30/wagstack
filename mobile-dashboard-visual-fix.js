@@ -28,6 +28,19 @@
     min-height:118px!important;
     height:118px!important;
   }
+  body:not(.public-landing-active) .home__promo-card.updates-enhanced .update-adoption-art{
+    display:flex!important;
+    align-items:flex-end!important;
+    justify-content:center!important;
+  }
+  body:not(.public-landing-active) .home__promo-card.updates-enhanced .update-adoption-art img{
+    display:block!important;
+    width:auto!important;
+    height:100%!important;
+    max-width:100%!important;
+    object-fit:contain!important;
+    object-position:center bottom!important;
+  }
 }
 
 @media (max-width:620px){
@@ -41,6 +54,12 @@
   }
   body:not(.public-landing-active) .bento > .bento__card[data-summary-card='shop'] > :not(.bento__head){
     display:none!important;
+  }
+  body:not(.public-landing-active) .home__promo-card.updates-enhanced .adoption-slide .update-copy>small{
+    -webkit-line-clamp:1!important;
+  }
+  body:not(.public-landing-active) .home__promo-card.updates-enhanced .adoption-slide .update-cta{
+    margin-top:4px!important;
   }
 }
 
@@ -161,9 +180,6 @@
   }
   body:not(.public-landing-active) .home__promo-card.updates-enhanced .home__promo-slide{
     padding:11px!important;
-  }
-  body:not(.public-landing-active) .home__promo-card.updates-enhanced .adoption-slide .update-image{
-    width:44%!important;
   }
 }
 
