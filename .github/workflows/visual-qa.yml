@@ -1,0 +1,127 @@
+name: WagStack visual QA
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  screenshots:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install browser
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Capture responsive dashboard
+        env:
+          CURRENT_URL: https://wagstack.brickand.bond/
+          BASELINE_URL: https://wagstack-ki92650o5-herotolentino3000-3215.vercel.app/
+        run: |
+          mkdir -p qa/screenshots
+          node <<'NODE'
+          const fs = require('fs');
+          const { chromium } = require('playwright');
+
+          const sizes = [
+            {name:'320', width:320, height:800},
+            {name:'360', width:360, height:800},
+            {name:'375', width:375, height:812},
+            {name:'390', width:390, height:844},
+            {name:'430', width:430, height:932},
+            {name:'768', width:768, height:1024},
+            {name:'900', width:900, height:1000},
+            {name:'901', width:901, height:1000},
+            {name:'1024', width:1024, height:900},
+            {name:'1440', width:1440, height:1000},
+          ];
+
+          async function prepare(page, url) {
+            const errors = [];
+            page.on('pageerror', e => errors.push(`pageerror: ${e.message}`));
+            page.on('console', msg => { if (msg.type() === 'error') errors.push(`console: ${msg.text()}`); });
+            await page.addInitScript(() => {
+              localStorage.setItem('wagstack-guest-mode-v1','1');
+              localStorage.removeItem('wagstack-supabase-session-v1');
+            });
+            await page.goto(url, { waitUntil: 'networkidle', timeout: 60000 });
+            await page.waitForTimeout(1800);
+            return errors;
+          }
+
+          async function diagnostics(page) {
+            return await page.evaluate(() => {
+              const rect = sel => {
+                const el = document.querySelector(sel);
+                if (!el) return null;
+                const r = el.getBoundingClientRect();
+                const s = getComputedStyle(el);
+                return {x:r.x,y:r.y,width:r.width,height:r.height,display:s.display,overflowX:s.overflowX,position:s.position};
+              };
+              const all = [...document.querySelectorAll('*')];
+              const overflowers = all.map(el => {
+                const r = el.getBoundingClientRect();
+                return {tag:el.tagName, cls:String(el.className||'').slice(0,120), left:r.left, right:r.right, width:r.width};
+              }).filter(x => x.right > innerWidth + 1 || x.left < -1).slice(0,40);
+              return {
+                viewport:{width:innerWidth,height:innerHeight},
+                bodyClass:document.body.className,
+                docScrollWidth:document.documentElement.scrollWidth,
+                bodyScrollWidth:document.body.scrollWidth,
+                horizontalOverflow:document.documentElement.scrollWidth > innerWidth + 1,
+                overflowers,
+                shell:rect('.shell'),
+                rail:rect('.rail'),
+                panel:rect('.shell__panel'),
+                main:rect('#main-content'),
+                promo:rect('.home__promo-card'),
+                promoViewport:rect('.home__promo-viewport'),
+                bento:rect('.bento'),
+                firstBento:rect('.bento__card'),
+                mobileStylePresent:!!document.getElementById('wagstack-mobile-dashboard-responsive'),
+                updatesEnhanced:!!document.querySelector('.home__promo-card.updates-enhanced'),
+                adoptionImage:document.querySelector('.adoption-slide img')?.getAttribute('src') || null,
+                title:document.title,
+                url:location.href
+              };
+            });
+          }
+
+          (async()=>{
+            const browser = await chromium.launch({headless:true});
+            const report = {createdAt:new Date().toISOString(), current:[], baselineDesktop:[]};
+            for (const size of sizes) {
+              const context = await browser.newContext({viewport:{width:size.width,height:size.height}, deviceScaleFactor:1});
+              const page = await context.newPage();
+              const errors = await prepare(page, process.env.CURRENT_URL);
+              const diag = await diagnostics(page);
+              diag.errors = errors;
+              report.current.push({size,diag});
+              await page.screenshot({path:`qa/screenshots/current-${size.name}.png`, fullPage:true});
+              await context.close();
+            }
+            for (const size of sizes.filter(s => s.width >= 901)) {
+              const context = await browser.newContext({viewport:{width:size.width,height:size.height}, deviceScaleFactor:1});
+              const page = await context.newPage();
+              const errors = await prepare(page, process.env.BASELINE_URL);
+              const diag = await diagnostics(page);
+              diag.errors = errors;
+              report.baselineDesktop.push({size,diag});
+              await page.screenshot({path:`qa/screenshots/baseline-${size.name}.png`, fullPage:true});
+              await context.close();
+            }
+            fs.writeFileSync('qa/report.json', JSON.stringify(report,null,2));
+            await browser.close();
+          })().catch(err => { console.error(err); process.exit(1); });
+          NODE
+      - name: Upload visual QA artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: wagstack-visual-qa
+          path: qa
+          if-no-files-found: error
