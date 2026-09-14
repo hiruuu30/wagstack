@@ -60,6 +60,18 @@
   }
   body:not(.public-landing-active) .home__promo-card.updates-enhanced .adoption-slide .update-cta{
     margin-top:4px!important;
+    font-size:0!important;
+    gap:5px!important;
+    white-space:nowrap!important;
+  }
+  body:not(.public-landing-active) .home__promo-card.updates-enhanced .adoption-slide .update-cta::before{
+    content:'Learn more';
+    font-size:8px!important;
+    line-height:1!important;
+  }
+  body:not(.public-landing-active) .home__promo-card.updates-enhanced .adoption-slide .update-cta>span{
+    font-size:8px!important;
+    line-height:1!important;
   }
 }
 
@@ -169,7 +181,6 @@
   }
   body:not(.public-landing-active) .home__promo-card.updates-enhanced .update-cta{
     margin-top:8px!important;
-    font-size:7.5px!important;
     white-space:nowrap!important;
   }
   body:not(.public-landing-active) .home__promo-card.updates-enhanced .home__promo-viewport,
