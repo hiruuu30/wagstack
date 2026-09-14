@@ -21,11 +21,11 @@ jobs:
       - name: Capture responsive dashboard
         env:
           CURRENT_URL: https://wagstack.brickand.bond/
-          BASELINE_URL: https://wagstack-ki92650o5-herotolentino3000-3215.vercel.app/
         run: |
           mkdir -p qa/screenshots
           node <<'NODE'
           const fs = require('fs');
+          const crypto = require('crypto');
           const { chromium } = require('playwright');
 
           const sizes = [
@@ -40,8 +40,12 @@ jobs:
             {name:'1024', width:1024, height:900},
             {name:'1440', width:1440, height:1000},
           ];
+          const slideSizes = sizes.filter(s => ['320','390','430','768'].includes(s.name));
+          const desktopSizes = sizes.filter(s => s.width >= 901);
 
-          async function prepare(page, url) {
+          const sha = path => crypto.createHash('sha256').update(fs.readFileSync(path)).digest('hex');
+
+          async function prepare(page) {
             const errors = [];
             page.on('pageerror', e => errors.push(`pageerror: ${e.message}`));
             page.on('console', msg => { if (msg.type() === 'error') errors.push(`console: ${msg.text()}`); });
@@ -49,7 +53,7 @@ jobs:
               localStorage.setItem('wagstack-guest-mode-v1','1');
               localStorage.removeItem('wagstack-supabase-session-v1');
             });
-            await page.goto(url, { waitUntil: 'networkidle', timeout: 60000 });
+            await page.goto(process.env.CURRENT_URL, { waitUntil: 'networkidle', timeout: 60000 });
             await page.waitForTimeout(1800);
             return errors;
           }
@@ -68,6 +72,9 @@ jobs:
                 const r = el.getBoundingClientRect();
                 return {tag:el.tagName, cls:String(el.className||'').slice(0,120), left:r.left, right:r.right, width:r.width};
               }).filter(x => x.right > innerWidth + 1 || x.left < -1).slice(0,40);
+              const adoption = document.querySelector('.adoption-slide');
+              const adoptionImg = adoption?.querySelector('img');
+              const weather = document.querySelector('.weather-slide');
               return {
                 viewport:{width:innerWidth,height:innerHeight},
                 bodyClass:document.body.className,
@@ -75,46 +82,90 @@ jobs:
                 bodyScrollWidth:document.body.scrollWidth,
                 horizontalOverflow:document.documentElement.scrollWidth > innerWidth + 1,
                 overflowers,
-                shell:rect('.shell'),
-                rail:rect('.rail'),
-                panel:rect('.shell__panel'),
-                main:rect('#main-content'),
-                promo:rect('.home__promo-card'),
-                promoViewport:rect('.home__promo-viewport'),
-                bento:rect('.bento'),
-                firstBento:rect('.bento__card'),
+                shell:rect('.shell'), rail:rect('.rail'), panel:rect('.shell__panel'), main:rect('#main-content'),
+                promo:rect('.home__promo-card'), promoViewport:rect('.home__promo-viewport'), bento:rect('.bento'), firstBento:rect('.bento__card'),
                 mobileStylePresent:!!document.getElementById('wagstack-mobile-dashboard-responsive'),
+                mobileFixPresent:!!document.getElementById('wagstack-mobile-dashboard-visual-fix'),
                 updatesEnhanced:!!document.querySelector('.home__promo-card.updates-enhanced'),
-                adoptionImage:document.querySelector('.adoption-slide img')?.getAttribute('src') || null,
+                adoption:{
+                  present:!!adoption,
+                  imageSrc:adoptionImg?.getAttribute('src') || null,
+                  imageCurrentSrc:adoptionImg?.currentSrc || null,
+                  imageNaturalWidth:adoptionImg?.naturalWidth || 0,
+                  imageNaturalHeight:adoptionImg?.naturalHeight || 0,
+                  rect: adoption ? (()=>{const r=adoption.getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height}})() : null
+                },
+                weather:{
+                  present:!!weather,
+                  title:weather?.querySelector('.update-copy strong')?.textContent?.trim() || null,
+                  rect: weather ? (()=>{const r=weather.getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height}})() : null
+                },
                 title:document.title,
                 url:location.href
               };
             });
           }
 
+          async function showSlide(page, selector) {
+            return await page.evaluate(selector => {
+              const viewport = document.querySelector('[data-promo-viewport]');
+              const slide = document.querySelector(selector);
+              if (!viewport || !slide) return false;
+              viewport.scrollTo({left:slide.offsetLeft, behavior:'instant'});
+              return true;
+            }, selector);
+          }
+
           (async()=>{
             const browser = await chromium.launch({headless:true});
-            const report = {createdAt:new Date().toISOString(), current:[], baselineDesktop:[]};
+            const report = {createdAt:new Date().toISOString(), current:[], slides:[], desktopNoOp:[]};
+
             for (const size of sizes) {
               const context = await browser.newContext({viewport:{width:size.width,height:size.height}, deviceScaleFactor:1});
               const page = await context.newPage();
-              const errors = await prepare(page, process.env.CURRENT_URL);
+              const errors = await prepare(page);
               const diag = await diagnostics(page);
               diag.errors = errors;
               report.current.push({size,diag});
               await page.screenshot({path:`qa/screenshots/current-${size.name}.png`, fullPage:true});
               await context.close();
             }
-            for (const size of sizes.filter(s => s.width >= 901)) {
+
+            for (const size of slideSizes) {
               const context = await browser.newContext({viewport:{width:size.width,height:size.height}, deviceScaleFactor:1});
               const page = await context.newPage();
-              const errors = await prepare(page, process.env.BASELINE_URL);
-              const diag = await diagnostics(page);
-              diag.errors = errors;
-              report.baselineDesktop.push({size,diag});
-              await page.screenshot({path:`qa/screenshots/baseline-${size.name}.png`, fullPage:true});
+              const errors = await prepare(page);
+              const adoptionShown = await showSlide(page,'.adoption-slide');
+              await page.waitForTimeout(350);
+              if (adoptionShown) await page.locator('.home__promo-card').screenshot({path:`qa/screenshots/adoption-${size.name}.png`});
+              const adoptionDiag = await diagnostics(page);
+              const weatherShown = await showSlide(page,'.weather-slide');
+              await page.waitForTimeout(350);
+              if (weatherShown) await page.locator('.home__promo-card').screenshot({path:`qa/screenshots/weather-${size.name}.png`});
+              const weatherDiag = await diagnostics(page);
+              report.slides.push({size,adoptionShown,weatherShown,adoptionDiag,weatherDiag,errors});
               await context.close();
             }
+
+            for (const size of desktopSizes) {
+              const context = await browser.newContext({viewport:{width:size.width,height:size.height}, deviceScaleFactor:1});
+              const page = await context.newPage();
+              const errors = await prepare(page);
+              await page.addStyleTag({content:'*,*::before,*::after{animation:none!important;transition:none!important;caret-color:transparent!important}'});
+              await page.waitForTimeout(100);
+              const before=`qa/screenshots/desktop-with-mobile-css-${size.name}.png`;
+              const after=`qa/screenshots/desktop-without-mobile-css-${size.name}.png`;
+              await page.screenshot({path:before, fullPage:true});
+              await page.evaluate(() => {
+                document.getElementById('wagstack-mobile-dashboard-responsive')?.remove();
+                document.getElementById('wagstack-mobile-dashboard-visual-fix')?.remove();
+              });
+              await page.waitForTimeout(100);
+              await page.screenshot({path:after, fullPage:true});
+              report.desktopNoOp.push({size,beforeSha:sha(before),afterSha:sha(after),pixelFilesIdentical:sha(before)===sha(after),errors});
+              await context.close();
+            }
+
             fs.writeFileSync('qa/report.json', JSON.stringify(report,null,2));
             await browser.close();
           })().catch(err => { console.error(err); process.exit(1); });
