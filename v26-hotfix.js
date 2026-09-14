@@ -14,6 +14,7 @@ import './updates-pagination.js';
 import './mobile-dashboard-responsive.js';
 import './mobile-dashboard-visual-fix.js';
 import './mobile-dashboard-premium.js';
+import './mobile-dashboard-premium-v2.js';
 import './supabase-normalized.js';
 import './supabase-reward-log.js';
 import './v34-guest-avatar.js';
