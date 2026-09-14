@@ -41,6 +41,7 @@ jobs:
             {name:'1440', width:1440, height:1000},
           ];
           const slideSizes = sizes.filter(s => ['320','390','430','768'].includes(s.name));
+          const darkSizes = sizes.filter(s => ['320','430','768'].includes(s.name));
           const desktopSizes = sizes.filter(s => s.width >= 901);
 
           const sha = path => crypto.createHash('sha256').update(fs.readFileSync(path)).digest('hex');
@@ -77,6 +78,7 @@ jobs:
               const weather = document.querySelector('.weather-slide');
               return {
                 viewport:{width:innerWidth,height:innerHeight},
+                theme:document.documentElement.getAttribute('data-theme') || document.body.getAttribute('data-theme') || 'light',
                 bodyClass:document.body.className,
                 docScrollWidth:document.documentElement.scrollWidth,
                 bodyScrollWidth:document.body.scrollWidth,
@@ -86,7 +88,11 @@ jobs:
                 promo:rect('.home__promo-card'), promoViewport:rect('.home__promo-viewport'), bento:rect('.bento'), firstBento:rect('.bento__card'),
                 mobileStylePresent:!!document.getElementById('wagstack-mobile-dashboard-responsive'),
                 mobileFixPresent:!!document.getElementById('wagstack-mobile-dashboard-visual-fix'),
+                mobilePremiumPresent:!!document.getElementById('wagstack-mobile-dashboard-premium'),
+                mobilePremiumV2Present:!!document.getElementById('wagstack-mobile-dashboard-premium-v2'),
                 updatesEnhanced:!!document.querySelector('.home__promo-card.updates-enhanced'),
+                groomingMini:rect('.mobile-grooming-next'),
+                healthMini:rect('.mobile-health-summary'),
                 adoption:{
                   present:!!adoption,
                   imageSrc:adoptionImg?.getAttribute('src') || null,
@@ -118,7 +124,7 @@ jobs:
 
           (async()=>{
             const browser = await chromium.launch({headless:true});
-            const report = {createdAt:new Date().toISOString(), current:[], slides:[], desktopNoOp:[]};
+            const report = {createdAt:new Date().toISOString(), current:[], dark:[], slides:[], desktopNoOp:[]};
 
             for (const size of sizes) {
               const context = await browser.newContext({viewport:{width:size.width,height:size.height}, deviceScaleFactor:1});
@@ -128,6 +134,22 @@ jobs:
               diag.errors = errors;
               report.current.push({size,diag});
               await page.screenshot({path:`qa/screenshots/current-${size.name}.png`, fullPage:true});
+              await context.close();
+            }
+
+            for (const size of darkSizes) {
+              const context = await browser.newContext({viewport:{width:size.width,height:size.height}, deviceScaleFactor:1});
+              const page = await context.newPage();
+              const errors = await prepare(page);
+              await page.evaluate(() => {
+                document.documentElement.setAttribute('data-theme','dark');
+                document.body.setAttribute('data-theme','dark');
+              });
+              await page.waitForTimeout(250);
+              const diag = await diagnostics(page);
+              diag.errors = errors;
+              report.dark.push({size,diag});
+              await page.screenshot({path:`qa/screenshots/dark-${size.name}.png`, fullPage:true});
               await context.close();
             }
 
@@ -151,16 +173,20 @@ jobs:
               const context = await browser.newContext({viewport:{width:size.width,height:size.height}, deviceScaleFactor:1});
               const page = await context.newPage();
               const errors = await prepare(page);
-              await page.addStyleTag({content:'*,*::before,*::after{animation:none!important;transition:none!important;caret-color:transparent!important}'});
-              await page.waitForTimeout(100);
+              await page.addStyleTag({content:'*,*::before,*::after{animation:none!important;transition:none!important;caret-color:transparent!important}.hero-canvas{display:none!important}.home__promo-viewport{scroll-behavior:auto!important}'});
+              await page.evaluate(() => document.querySelector('[data-promo-viewport]')?.scrollTo({left:0,behavior:'instant'}));
+              await page.waitForTimeout(120);
               const before=`qa/screenshots/desktop-with-mobile-css-${size.name}.png`;
               const after=`qa/screenshots/desktop-without-mobile-css-${size.name}.png`;
               await page.screenshot({path:before, fullPage:true});
               await page.evaluate(() => {
                 document.getElementById('wagstack-mobile-dashboard-responsive')?.remove();
                 document.getElementById('wagstack-mobile-dashboard-visual-fix')?.remove();
+                document.getElementById('wagstack-mobile-dashboard-premium')?.remove();
+                document.getElementById('wagstack-mobile-dashboard-premium-v2')?.remove();
+                document.querySelector('[data-promo-viewport]')?.scrollTo({left:0,behavior:'instant'});
               });
-              await page.waitForTimeout(100);
+              await page.waitForTimeout(60);
               await page.screenshot({path:after, fullPage:true});
               report.desktopNoOp.push({size,beforeSha:sha(before),afterSha:sha(after),pixelFilesIdentical:sha(before)===sha(after),errors});
               await context.close();
