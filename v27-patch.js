@@ -1,7 +1,7 @@
 import { PRODUCTS } from './shop-catalog.js';
 import { observeUI } from './ui-lifecycle.js';
 (() => {
-  const STORE_KEY='tfa-clone-workspace-v3';
+  const STORE_KEY='brand-demo-workspace-v1';
   let shopFilter='All';
   let fileIntent=null;
   const read=()=>{try{return JSON.parse(localStorage.getItem(STORE_KEY)||'{}')}catch{return {}}};
@@ -10,7 +10,7 @@ import { observeUI } from './ui-lifecycle.js';
   const money=v=>'₱'+Number(v||0).toLocaleString('en-PH');
   const uid=()=>String(Date.now())+Math.random().toString(36).slice(2,7);
   const style=document.createElement('style');
-  style.id='wagstack-v27';
+  style.id='branddemo-v27';
   style.textContent=`
     .v27-actions{position:absolute;right:12px;top:12px;z-index:6;display:flex;gap:6px;opacity:0;transform:translateY(-3px);transition:.2s}.clone-card:hover>.v27-actions,.clone-card:focus-within>.v27-actions{opacity:1;transform:none}.v27-action{border:0;border-radius:999px;padding:7px 10px;background:rgba(255,255,255,.92);box-shadow:0 8px 22px -14px rgba(7,16,31,.55),inset 0 0 0 1px rgba(11,30,63,.12);color:var(--ink);font:700 8px/1 Poppins;cursor:pointer}.v27-action--delete{color:#b53a32}.clone-card.v27-managed{position:relative}.v27-photo-card .pet-gallery-image{cursor:zoom-in;display:block;width:100%;height:190px;object-fit:cover;border-radius:18px;transition:transform .25s ease,filter .25s ease}.v27-photo-card:hover .pet-gallery-image{transform:scale(1.012);filter:saturate(1.02)}
     .v27-lightbox{position:fixed;inset:0;z-index:999999;display:grid;place-items:center;padding:28px;background:rgba(4,10,21,.82);backdrop-filter:blur(18px)}.v27-lightbox__inner{position:relative;max-width:min(1000px,94vw);max-height:90vh}.v27-lightbox img{display:block;max-width:100%;max-height:86vh;object-fit:contain;border-radius:24px;box-shadow:0 38px 110px -35px #000}.v27-lightbox__close{position:absolute;right:-12px;top:-12px;width:38px;height:38px;border:0;border-radius:50%;background:#fff;color:#07101f;font-size:24px;line-height:1;cursor:pointer;box-shadow:0 12px 30px -14px #000}.v27-card-empty{display:grid;place-items:center;min-height:185px;text-align:center}
@@ -65,8 +65,8 @@ import { observeUI } from './ui-lifecycle.js';
   function patchShop(){
     if(location.pathname!='/shop')return;
     const glass=document.querySelector('#main-content .clone-glass');if(!glass)return;
-    if(window.WagStackCatalog?.status!=='ready'){
-      const status=window.WagStackCatalog?.status||'loading';
+    if(window.YourBrandCatalog?.status!=='ready'){
+      const status=window.YourBrandCatalog?.status||'loading';
       if(glass.dataset.catalogState===status)return;
       glass.dataset.catalogState=status;delete glass.dataset.v27Shop;
       glass.innerHTML=`<section class="clone-card clone-card--full" role="status"><h2>${status==='loading'?'Loading the shop…':'The shop couldn’t load'}</h2><p>${status==='loading'?'Getting the latest pet essentials.':'Check your connection and try again.'}</p>${status==='error'?'<button type="button" class="clone-btn" data-catalog-retry>Try again</button>':''}</section>`;return;
@@ -80,7 +80,7 @@ import { observeUI } from './ui-lifecycle.js';
     const visible=shopFilter==='All'?PRODUCTS:PRODUCTS.filter(p=>p.cat===shopFilter);
     const c=counts(s.cart),rows=Object.entries(c).map(([id,q])=>{const p=PRODUCTS.find(x=>x.id===id);return p?`<div class="v27-bag-row"><span>${esc(p.name)}</span><div class="v27-qty"><button data-v27-cart-minus="${esc(id)}">−</button><b>${q}</b><button data-v27-cart-plus="${esc(id)}">＋</button></div></div>`:''}).join('');
     const total=s.cart.reduce((sum,id)=>sum+(PRODUCTS.find(p=>p.id===id)?.price||0),0);
-    glass.innerHTML=`<div class="v27-shop"><section class="v27-shop-hero"><div class="v27-shop-intro"><div class="v27-shop-kicker">WagStack Shop</div><h2>Good things for everyday pet care.</h2><p>Grooming, play and travel essentials for their everyday routine.</p><div class="v27-filterbar">${cats.map(cat=>`<button class="v27-filter ${cat===shopFilter?'is-active':''}" data-v27-shop-filter="${esc(cat)}">${esc(cat)}</button>`).join('')}</div></div><aside class="v27-shop-bag"><div><div class="v27-shop-kicker">Your bag</div><div class="v27-bag-count">${s.cart.length}</div><div class="v27-bag-total">${money(total)}</div></div><div class="v27-bag-list">${rows||'<span style="font-size:9px;color:var(--muted)">Your bag is ready when you are.</span>'}</div>${s.cart.length?'<button class="pet-link-btn" data-v27-cart-clear>Clear bag →</button>':''}</aside></section><section class="v27-products">${visible.length?visible.map(p=>`<article class="v27-product"><div class="v27-product__visual" aria-hidden="true"></div><div class="v27-product__cat">${esc(p.cat)} · ${esc(p.eyebrow)}</div><h3>${esc(p.name)}</h3><p>${esc(p.desc)}</p><div class="v27-product__foot"><span class="v27-product__price">${money(p.price)}</span><button class="v27-add" data-v27-cart-add="${esc(p.id)}">Add to bag</button></div></article>`).join(''):'<div class="v27-empty-shop">No products in this category yet.</div>'}</section></div>`;
+    glass.innerHTML=`<div class="v27-shop"><section class="v27-shop-hero"><div class="v27-shop-intro"><div class="v27-shop-kicker">YourBrand Shop</div><h2>Good things for everyday pet care.</h2><p>Grooming, play and travel essentials for their everyday routine.</p><div class="v27-filterbar">${cats.map(cat=>`<button class="v27-filter ${cat===shopFilter?'is-active':''}" data-v27-shop-filter="${esc(cat)}">${esc(cat)}</button>`).join('')}</div></div><aside class="v27-shop-bag"><div><div class="v27-shop-kicker">Your bag</div><div class="v27-bag-count">${s.cart.length}</div><div class="v27-bag-total">${money(total)}</div></div><div class="v27-bag-list">${rows||'<span style="font-size:9px;color:var(--muted)">Your bag is ready when you are.</span>'}</div>${s.cart.length?'<button class="pet-link-btn" data-v27-cart-clear>Clear bag →</button>':''}</aside></section><section class="v27-products">${visible.length?visible.map(p=>`<article class="v27-product"><div class="v27-product__visual" aria-hidden="true"></div><div class="v27-product__cat">${esc(p.cat)} · ${esc(p.eyebrow)}</div><h3>${esc(p.name)}</h3><p>${esc(p.desc)}</p><div class="v27-product__foot"><span class="v27-product__price">${money(p.price)}</span><button class="v27-add" data-v27-cart-add="${esc(p.id)}">Add to bag</button></div></article>`).join(''):'<div class="v27-empty-shop">No products in this category yet.</div>'}</section></div>`;
   }
 
   document.addEventListener('click',e=>{

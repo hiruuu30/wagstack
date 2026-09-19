@@ -1,4 +1,4 @@
-/* WagStack: shared surfaces and responsive working layout. */
+/* YourBrand: shared surfaces and responsive working layout. */
 :root{--ws-bg:#f3f5f8;--ws-panel:#fff;--ws-raised:#edf2f8;--ws-text:#10233f;--ws-muted:#52637b;--ws-line:#ccd6e3;--ws-accent:#b94b08;--ws-action:#10233f;--ws-on-action:#fff;--ws-focus:#d85c15;--ws-danger:#ae2f35;--ws-good:#126345}
 html[data-theme="dark"]{color-scheme:dark;--ws-bg:#0c1421;--ws-panel:#152235;--ws-raised:#203149;--ws-text:#edf3fc;--ws-muted:#b2c2d8;--ws-line:#3c506b;--ws-accent:#ffad70;--ws-action:#ffb77f;--ws-on-action:#172235;--ws-focus:#ffc394;--ws-danger:#ffaaaa;--ws-good:#8be3b8;--ink:var(--ws-text)!important;--muted:var(--ws-muted)!important;--cream:var(--ws-bg)!important;--paper:var(--ws-panel)!important;--orange:var(--ws-accent)!important;--line:var(--ws-line)!important;--line2:var(--ws-line)!important;--dark-bg:var(--ws-bg)!important;--dark-surface:var(--ws-panel)!important;--dark-surface-2:var(--ws-panel)!important;--dark-surface-3:var(--ws-raised)!important;--dark-muted:var(--ws-muted)!important;--dark-text:var(--ws-text)!important}
 html body{background:var(--ws-bg);color:var(--ws-text)}
@@ -146,9 +146,9 @@ html .home__promo-card .home__promo-head{position:absolute!important;inset:14px 
 html .home__promo-card .home__promo-controls{position:static!important;margin-left:auto!important}
 html .home__promo-card .home__promo-viewport{margin:0!important}
 html[data-theme="dark"] .home__brand-slot{background:var(--ws-panel)!important;border-color:var(--ws-line)!important;box-shadow:inset 0 0 0 1px var(--ws-line)!important}
-html[data-theme="dark"] .home__brand-slot .wagstack-wordmark{color:var(--ws-text)!important}
-html[data-theme="dark"] .home__brand-slot .wagstack-brandmark{filter:brightness(0) invert(1)}
-html[data-theme="dark"] .home__brand-slot .wagstack-byline{color:var(--ws-muted)!important}
+html[data-theme="dark"] .home__brand-slot .branddemo-wordmark{color:var(--ws-text)!important}
+html[data-theme="dark"] .home__brand-slot .branddemo-brandmark{filter:brightness(0) invert(1)}
+html[data-theme="dark"] .home__brand-slot .branddemo-byline{color:var(--ws-muted)!important}
 @media(max-width:900px){html .home__brand-slot{display:none!important}html .home__promo-card{padding:0!important}html .home__promo-card .home__promo-viewport,html .home__promo-card .home__promo-slide{height:204px!important;min-height:204px!important}html .home__glass--showcase{border:0!important;box-shadow:none!important;background:transparent!important}}
 @media(max-width:360px){html .v27-products{grid-template-columns:1fr!important}html .mobile-more-links{grid-template-columns:1fr}html .rail__handle{max-width:120px}}
 html :is(.v27-shop,.v27-shop-hero,.v27-shop-intro,.v27-shop-bag,.v27-products,.v27-filterbar){min-width:0!important;max-width:100%!important}

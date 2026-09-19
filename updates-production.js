@@ -1,5 +1,5 @@
 import { observeUI } from './ui-lifecycle.js';
-import { SUPABASE_URL, SUPABASE_KEY } from './auth-config.js';
+
 
 const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({
   '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
@@ -10,9 +10,9 @@ let cachedContent=null;
 let loading=null;
 
 function installUpdateStyles() {
-  if (document.getElementById('wagstack-updates-enhanced')) return;
+  if (document.getElementById('branddemo-updates-enhanced')) return;
   const style = document.createElement('style');
-  style.id = 'wagstack-updates-enhanced';
+  style.id = 'branddemo-updates-enhanced';
   style.textContent = `
     .home__promo-card.updates-enhanced .home__promo-head .bento__title{display:none!important}
     .home__promo-card.updates-enhanced .home__promo-head{justify-content:flex-end!important}
@@ -127,8 +127,8 @@ function renderWeatherSlide(post) {
 
 async function fetchWeatherPost() {
   try {
-    const response = await fetch(`${SUPABASE_URL}/rest/v1/weather_carousel_posts?id=eq.${WEATHER_ID}&select=weather,published_at,last_checked_at`, {
-      headers: { apikey: SUPABASE_KEY },
+    const response = await fetch(`/demo-data/weather.json`, {
+      headers: {  },
       cache: 'no-store'
     });
     if (!response.ok) return null;
@@ -145,7 +145,7 @@ async function loadUpdates() {
     installUpdateStyles();
     if(!cachedContent){
       loading ||= Promise.all([
-        fetch(`${SUPABASE_URL}/rest/v1/updates_carousel?select=id,eyebrow,title,body,image_url,cta_label,cta_href,sort_order&active=eq.true&order=sort_order.asc,created_at.asc`, { headers: { apikey: SUPABASE_KEY } }).then(r=>r.ok?r.json():[]).catch(()=>[]),
+        fetch(`/demo-data/updates.json`, { headers: {  } }).then(r=>r.ok?r.json():[]).catch(()=>[]),
         fetchWeatherPost()
       ]).then(([updates,weatherPost])=>({updates:Array.isArray(updates)?updates:[],weatherPost})).finally(()=>{loading=null});
       cachedContent=await loading;
@@ -194,7 +194,7 @@ async function loadUpdates() {
       next?.removeAttribute('hidden');
     }
   } catch (error) {
-    console.error('[WagStack updates]', error);
+    console.error('[YourBrand updates]', error);
   }
 }
 

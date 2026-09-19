@@ -18,7 +18,7 @@ function mount(){
   const nav=document.createElement('nav');nav.className='mobile-nav';nav.setAttribute('aria-label','Main navigation');
   nav.innerHTML=[['/','Home'],['/pets','My Pets'],['/grooming','Book'],['/shop','Shop']].map(([path,label])=>`<a href="${path}" data-mobile-route="${path}">${icon(path)}<span>${label}</span></a>`).join('')+'<button type="button" data-mobile-more aria-controls="mobile-more" aria-haspopup="dialog" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg><span>More</span></button>';
   document.body.appendChild(nav);
-  const menu=document.createElement('dialog');menu.id='mobile-more';menu.className='mobile-more';menu.setAttribute('aria-label','More pet care options');menu.innerHTML='<header><h2>Your WagStack</h2><button type="button" data-close-more aria-label="Close menu">×</button></header><div class="mobile-more-links">'+[['/grooming','Grooming'],['/hotel','Pet hotel'],['/health','Health & care'],['/rewards','Rewards & membership'],['/profile','My account'],['/about','Help & contact']].map(([path,label])=>`<a href="${path}">${icon(path)}<span>${label}</span></a>`).join('')+'</div>';
+  const menu=document.createElement('dialog');menu.id='mobile-more';menu.className='mobile-more';menu.setAttribute('aria-label','More pet care options');menu.innerHTML='<header><h2>Your YourBrand</h2><button type="button" data-close-more aria-label="Close menu">×</button></header><div class="mobile-more-links">'+[['/grooming','Grooming'],['/hotel','Pet hotel'],['/health','Health & care'],['/rewards','Rewards & membership'],['/profile','My account'],['/about','Help & contact']].map(([path,label])=>`<a href="${path}">${icon(path)}<span>${label}</span></a>`).join('')+'</div>';
   const tools=document.createElement('div');tools.className='mobile-more-tools';menu.appendChild(tools);
   document.body.appendChild(menu);
   menu.addEventListener('click',e=>{if(e.target.closest('.wag-cloud-btn'))closeMore()},true);
@@ -32,7 +32,7 @@ function update(){
   document.querySelector('[data-mobile-more]')?.classList.toggle('is-active',!['/','/pets','/grooming','/hotel','/shop'].includes(path));
 }
 observeUI(update);
-document.addEventListener('wagstack:render',closeMore);
+document.addEventListener('branddemo:render',closeMore);
 // Consistent keyboard behavior for existing add-pet and editing dialogs.
 document.addEventListener('keydown',e=>{
   const overlay=document.querySelector('.wag-addpet-backdrop');if(!overlay)return;

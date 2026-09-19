@@ -21,7 +21,7 @@ import { observeUI } from './ui-lifecycle.js';
   @media(max-width:720px){.pet-stepper>span>b{font-size:8px!important}}
   `;
   const style=document.createElement('style');
-  style.id='wagstack-v29-critical';
+  style.id='branddemo-v29-critical';
   style.textContent=css;
   document.head.appendChild(style);
 

@@ -32,13 +32,13 @@ html.a11y-reduce-motion{scroll-behavior:auto!important}
 document.head.appendChild(style);
 
 let notice;
-window.addEventListener('wagstack:save-state',event=>{
+window.addEventListener('branddemo:save-state',event=>{
   if(location.pathname==='/admin')return;
   const state=event.detail.state;
   if(!notice&&state==='error'){
     notice=document.createElement('aside');notice.className='wag-save-status';notice.setAttribute('role','status');
     notice.innerHTML='<span>Couldn’t sync your account. Check your connection.</span><button type="button">Retry</button>';
-    notice.querySelector('button').onclick=async()=>{const button=notice.querySelector('button');button.disabled=true;await window.WagStackNormalized?.initialize?.();button.disabled=false;};
+    notice.querySelector('button').onclick=async()=>{const button=notice.querySelector('button');button.disabled=true;await window.YourBrandNormalized?.initialize?.();button.disabled=false;};
     document.body.appendChild(notice);
   }
   if(notice)notice.hidden=state!=='error';
@@ -69,7 +69,7 @@ observeUI(polishDialogs);
 
 function polishAccountSummary(){
   if(location.pathname!=='/')return;
-  let state;try{state=JSON.parse(localStorage.getItem('tfa-clone-workspace-v3')||'{}')}catch{return}
+  let state;try{state=JSON.parse(localStorage.getItem('brand-demo-workspace-v1')||'{}')}catch{return}
   const pets=Array.isArray(state.pets)?state.pets:[];
   const fan=document.querySelector('.bento__fan');
   const signature=JSON.stringify(pets.map(p=>[p.name,p.image]));

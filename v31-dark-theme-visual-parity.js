@@ -1,4 +1,4 @@
-(()=>{const id='wagstack-v31-dark-theme-visual-parity';document.getElementById(id)?.remove();const s=document.createElement('style');s.id=id;s.textContent=`
+(()=>{const id='branddemo-v31-dark-theme-visual-parity';document.getElementById(id)?.remove();const s=document.createElement('style');s.id=id;s.textContent=`
 /* v31 — dark theme visual parity: colors only */
 [data-theme="dark"]{
  --ink:#f6f8fc;--muted:#aebbd0;--paper:#0b1d35;--orange:#ff7a1a;

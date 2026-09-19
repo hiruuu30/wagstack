@@ -1,4 +1,4 @@
-(()=>{const id='wagstack-v30-dark-responsive-qa';document.getElementById(id)?.remove();const s=document.createElement('style');s.id=id;s.textContent=`
+(()=>{const id='branddemo-v30-dark-responsive-qa';document.getElementById(id)?.remove();const s=document.createElement('style');s.id=id;s.textContent=`
 /* v30: dark mode + responsive visual QA */
 *{box-sizing:border-box}html,body,#root,.shell{max-width:100%;overflow-x:hidden}.shell__panel,.home,.home__glass,.home__topbar,.bento,.bento__card,.clone-page,.clone-grid,.clone-card{min-width:0!important;max-width:100%!important}
 [data-theme="dark"]{--v30-surface:#0e2443;--v30-surface2:#122b4e;--v30-line:rgba(255,255,255,.15);--v30-muted:#aebbd0;--v30-text:#f7f8fb;--v30-input:#182f50}

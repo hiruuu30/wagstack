@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 160" role="img" aria-labelledby="title desc">
-  <title id="title">WagStack brandmark</title>
-  <desc id="desc">A rounded W whose rising right stroke becomes a wagging tail with orange motion echoes.</desc>
-  <path d="M28 45 C40 82 47 113 66 113 C84 113 91 73 100 46 C111 75 119 113 140 113 C161 113 173 76 184 39" fill="none" stroke="#071F43" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M169 76 C180 58 186 40 185 23" fill="none" stroke="#FFD3B0" stroke-width="22" stroke-linecap="round" opacity="0.95"/>
-  <path d="M177 72 C190 53 196 34 194 16" fill="none" stroke="#FFAE72" stroke-width="22" stroke-linecap="round" opacity="0.86"/>
-  <path d="M186 66 C199 47 204 29 202 12" fill="none" stroke="#FF7A1A" stroke-width="22" stroke-linecap="round"/>
-</svg>

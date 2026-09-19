@@ -1,7 +1,7 @@
 (()=>{
-  if (document.getElementById('wagstack-mobile-dashboard-responsive')) return;
+  if (document.getElementById('branddemo-mobile-dashboard-responsive')) return;
   const style=document.createElement('style');
-  style.id='wagstack-mobile-dashboard-responsive';
+  style.id='branddemo-mobile-dashboard-responsive';
   style.textContent=`
 /* Mobile/tablet dashboard refinement only. Desktop >=901px is intentionally untouched. */
 @media (max-width:900px){

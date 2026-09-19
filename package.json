@@ -1,13 +1,1 @@
-{
-  "name": "wagstack-brick-and-bond",
-  "private": true,
-  "version": "8.0.0",
-  "scripts": {
-    "dev": "npx serve -s . -l 4173",
-    "start": "npx serve -s . -l 4173"
-  },
-  "dependencies": {
-    "sharp": "^0.34.3"
-  },
-  "description": "WagStack by Brick & Bond — connected pet care workspace for cats and dogs"
-}
+{"name":"pet-care-client-demo","private":true,"version":"1.0.0","description":"Your Brand — isolated interactive pet-care sales demo","scripts":{"dev":"node scripts/serve.cjs","build":"node scripts/build.cjs"},"dependencies":{"@vercel/blob":"^2.3.0"}}

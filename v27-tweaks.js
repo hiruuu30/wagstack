@@ -22,7 +22,7 @@ import { observeUI } from './ui-lifecycle.js';
   @media(max-width:720px){.pet-stepper{gap:5px!important}.pet-stepper>span{height:44px!important;padding:0 5px!important}.pet-stepper>span b{font-size:8px!important}}
   @media(prefers-reduced-motion:reduce){.pet-option .wag-service-icon,.pet-option .wag-service-icon .ph-duo,.pet-option .wag-service-icon .ph-duo path{transition:none!important;animation:none!important;transform:none!important}}
   `;
-  const style=document.createElement('style');style.id='wagstack-v27-tweaks';style.textContent=css;document.head.appendChild(style);
+  const style=document.createElement('style');style.id='branddemo-v27-tweaks';style.textContent=css;document.head.appendChild(style);
 
   const ICONS={
     brush:`<svg aria-hidden="true" class="ph-duo ph-duo--dynamic" viewBox="0 0 256 256" fill="currentColor"><path d="M56 44h120a16 16 0 0 1 16 16v84a16 16 0 0 1-16 16H56a16 16 0 0 1-16-16V60a16 16 0 0 1 16-16Z" opacity="0.2"/><path d="M176 36H56a24 24 0 0 0-24 24v84a24 24 0 0 0 24 24h52v28a12 12 0 0 0 24 0v-28h44a24 24 0 0 0 24-24V60a24 24 0 0 0-24-24Zm8 108a8 8 0 0 1-8 8H56a8 8 0 0 1-8-8V60a8 8 0 0 1 8-8h120a8 8 0 0 1 8 8Zm-104-68v52a8 8 0 0 1-16 0V76a8 8 0 0 1 16 0Zm32 0v52a8 8 0 0 1-16 0V76a8 8 0 0 1 16 0Zm32 0v52a8 8 0 0 1-16 0V76a8 8 0 0 1 16 0Zm32 0v52a8 8 0 0 1-16 0V76a8 8 0 0 1 16 0Z"/></svg>`,

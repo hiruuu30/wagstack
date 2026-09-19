@@ -1,5 +1,5 @@
 (() => {
-  const STORE_KEY='tfa-clone-workspace-v3';
+  const STORE_KEY='brand-demo-workspace-v1';
   const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const read=()=>{try{return JSON.parse(localStorage.getItem(STORE_KEY)||'{}')}catch{return {}}};
 
@@ -80,7 +80,7 @@
   @media(max-width:900px){.pet-overview-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.pet-overview-grid>.pet-insight-card{grid-column:span 1!important}.wag-day-strip{grid-template-columns:repeat(4,minmax(0,1fr))}.wag-day:nth-child(n+5){display:none}}
   @media(max-width:620px){.home__promo-card .home__promo-head{left:18px!important;right:16px!important;top:16px!important}.home__promo-card .home__promo-slide{padding:52px 18px 22px!important}.pet-overview-grid{grid-template-columns:1fr!important}.pet-overview-grid>.pet-insight-card{grid-column:1!important;min-height:138px!important}.wag-schedule-native{grid-template-columns:1fr!important}.wag-day-strip{grid-template-columns:repeat(4,minmax(0,1fr))}}
   `;
-  const style=document.createElement('style');style.id='wagstack-v28-polish';style.textContent=css;document.head.appendChild(style);
+  const style=document.createElement('style');style.id='branddemo-v28-polish';style.textContent=css;document.head.appendChild(style);
 
   function syncHomePets(){
     const card=document.querySelector('a.bento__card[href="/pets"]'); if(!card)return;

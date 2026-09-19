@@ -4,7 +4,7 @@ let observer;
 function flush() {
   pending = false;
   observer?.disconnect();
-  try { for (const patch of patches) { try { patch(); } catch (error) { console.error('WagStack UI update', error); } } }
+  try { for (const patch of patches) { try { patch(); } catch (error) { console.error('YourBrand UI update', error); } } }
   finally { observer?.observe(document.body, { childList: true, subtree: true }); }
 }
 export function scheduleUI() {
@@ -21,4 +21,4 @@ function start() {
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start, {once:true}); else start();
 addEventListener('popstate', scheduleUI);
 addEventListener('storage', scheduleUI);
-document.addEventListener('wagstack:render', scheduleUI);
+document.addEventListener('branddemo:render', scheduleUI);

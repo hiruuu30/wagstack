@@ -8,11 +8,11 @@
   const main = qs('#main-content');
   if(!main)return; // The separate admin application owns its document.
   const HOME_HTML = main.innerHTML;
-  const HOME_TITLE = 'WagStack — Pet care, connected';
-  const STORE_KEY = 'tfa-clone-workspace-v3';
+  const HOME_TITLE = 'Your Brand — Pet care, connected';
+  const STORE_KEY = 'brand-demo-workspace-v1';
 
   const defaultState = {
-    profile: {name:'Fur Parent', image:'/assets/fur-parent-avatar.svg', email:'', phone:'0906 022 1773'},
+    profile: {name:'Fur Parent', image:'/assets/fur-parent-avatar.svg', email:'', phone:'0900 000 0000'},
     messages: [
       {id:1, from:'venue', text:"Hi! Biscuit’s Full Grooming is confirmed for Sep 18 at 10:00.", time:'9:12 AM', unread:true},
       {id:2, from:'parent', text:'Thank you! See you then.', time:'9:18 AM', unread:false}
@@ -56,12 +56,20 @@
     membership: {active:true, since:'Aug 2026', tier:'Club Member'},
     cart: [],
     pawTab: 'overview',
-    bookingDraft: {step:1, pet:'Biscuit', service:'Full Grooming', date:'2026-09-20', time:'10:00', owner:'Fur Parent', phone:'0906 022 1773', notes:''},
-    hotelDraft: {step:1, pet:'Biscuit', checkIn:'2026-09-24', checkOut:'2026-09-27', checkInTime:'14:00', checkOutTime:'12:00', feeding:'Usual meals', owner:'Fur Parent', phone:'0906 022 1773', notes:'Sensitive skin — mild shampoo only'}
+    bookingDraft: {step:1, pet:'Biscuit', service:'Full Grooming', date:'2026-09-20', time:'10:00', owner:'Fur Parent', phone:'0900 000 0000', notes:''},
+    hotelDraft: {step:1, pet:'Biscuit', checkIn:'2026-09-24', checkOut:'2026-09-27', checkInTime:'14:00', checkOutTime:'12:00', feeding:'Usual meals', owner:'Fur Parent', phone:'0900 000 0000', notes:'Sensitive skin — mild shampoo only'}
   };
 
-  if(localStorage.getItem('wagstack-guest-mode-v1')!=='1'){
-    Object.assign(defaultState,{profile:{name:'Fur Parent',image:'/assets/fur-parent-avatar.svg',email:'',phone:''},messages:[],notifications:[],activePet:'',pets:[],bookings:[],healthByPet:{},notes:[],documents:[],points:0,membership:{active:false,since:'',tier:'Wag Club'}});
+  // Rolling sample dates keep the demo useful whenever it is opened.
+  const demoDate=days=>{const d=new Date();d.setDate(d.getDate()+days);return d.toISOString().slice(0,10)};
+  defaultState.profile={name:'Alex Santos',image:'/assets/fur-parent-avatar.svg',email:'alex@example.test',phone:'09000000000'};
+  defaultState.bookings.forEach((b,i)=>{b.date=demoDate(i+2);if(b.endDate)b.endDate=demoDate(i+4)});
+  defaultState.bookingDraft={...defaultState.bookingDraft,date:demoDate(2),owner:'Alex Santos',phone:'09000000000'};
+  defaultState.hotelDraft={...defaultState.hotelDraft,checkIn:demoDate(4),checkOut:demoDate(6),owner:'Alex Santos',phone:'09000000000'};
+  defaultState.messages=[{id:1,from:'venue',text:'Biscuit’s next grooming appointment is confirmed. We look forward to seeing you!',time:'9:12 AM',unread:true}];
+  defaultState.notifications=[{id:1,title:'Grooming confirmed',text:'Biscuit · Full Grooming · '+demoDate(2),unread:true}];
+  if(localStorage.getItem('branddemo-guest-mode-v1')!=='1'){
+    Object.assign(defaultState,{profile:{name:'Fur Parent',image:'/assets/fur-parent-avatar.svg',email:'',phone:''},messages:[],notifications:[],activePet:'',pets:[],bookings:[],healthByPet:{},notes:[],documents:[],points:0,membership:{active:false,since:'',tier:'Care Club'}});
     defaultState.bookingDraft={step:1,pet:'',service:'Full Grooming',date:'',time:'10:00',owner:'',phone:'',notes:''};
     defaultState.hotelDraft={step:1,pet:'',checkIn:'',checkOut:'',checkInTime:'14:00',checkOutTime:'12:00',feeding:'Usual meals',owner:'',phone:'',notes:''};
   }
@@ -84,8 +92,9 @@
     } catch (_) { return cloneDefault(); }
   }
   let state = loadState();
+  window.DemoWorkspace={get:()=>JSON.parse(JSON.stringify(state)),set:value=>{state=JSON.parse(JSON.stringify(value));save()},refresh:()=>render(location.pathname,false)};
   try { if(!localStorage.getItem(STORE_KEY))localStorage.setItem(STORE_KEY,JSON.stringify(state)); } catch {}
-  function save(){ try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch(_){} syncRail(); }
+  function save(){ try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch(_){} syncRail(); window.dispatchEvent(new CustomEvent("demo:workspace-saved")); }
   function pet(){ return state.pets.find(p=>p.name===state.activePet) || state.pets[0]; }
   function fmtDate(v){ if(!v) return ''; const d=new Date(v+'T00:00:00'); return d.toLocaleDateString('en-PH',{month:'short',day:'numeric',year:'numeric'}); }
   function money(v){ return '₱'+Number(v).toLocaleString('en-PH'); }
@@ -177,14 +186,14 @@
     const stepLabels=['Pet','Service','Schedule','Details','Review'];
     let content='';
     if(step===1) content=`<div class="pet-choice-grid">${petChoices}</div>`;
-    if(step===2) content=`<div class="pet-option-grid">${services.map((service)=>`<button class="pet-option ${d.service===service?'is-selected':''}" data-draft-service="${esc(service)}">${icon('scissors')}<span><strong>${esc(service)}</strong><small>Professional grooming booked through WagStack</small></span></button>`).join('')}</div>`;
+    if(step===2) content=`<div class="pet-option-grid">${services.map((service)=>`<button class="pet-option ${d.service===service?'is-selected':''}" data-draft-service="${esc(service)}">${icon('scissors')}<span><strong>${esc(service)}</strong><small>Professional grooming booked through YourBrand</small></span></button>`).join('')}</div>`;
     if(step===3) content=`<div class="pet-form-grid"><label>Date<input class="pet-input" type="date" data-draft="date" value="${esc(d.date)}"></label><label>Time<select class="pet-input" data-draft="time"><option ${d.time==='09:00'?'selected':''}>09:00</option><option ${d.time==='10:00'?'selected':''}>10:00</option><option ${d.time==='13:00'?'selected':''}>13:00</option><option ${d.time==='15:00'?'selected':''}>15:00</option></select></label></div>`;
     if(step===4) content=`<div class="pet-form-grid"><label>Fur Parent<input class="pet-input" data-draft="owner" value="${esc(d.owner)}"></label><label>Mobile number<input class="pet-input" data-draft="phone" value="${esc(d.phone)}"></label><label class="pet-field-full">Grooming notes<textarea class="pet-input pet-textarea" data-draft="notes" placeholder="Skin sensitivity, preferred cut, coat notes…">${esc(d.notes)}</textarea></label></div>`;
     if(step===5) content=`<div class="pet-review"><div><small>Pet</small><strong>${esc(d.pet)}</strong></div><div><small>Grooming</small><strong>${esc(d.service)}</strong></div><div><small>Schedule</small><strong>${fmtDate(d.date)} · ${esc(d.time)}</strong></div><div><small>Fur Parent</small><strong>${esc(d.owner)}</strong></div></div><div class="clone-note">Submitting adds this grooming request to the local demo workspace. No real appointment is sent to the shop.</div>`;
     const controls=`<div class="pet-book-controls">${step>1?'<button class="clone-btn clone-btn--ghost" data-book-prev>← Back</button>':'<span></span>'}<button class="clone-btn" ${step===5?'data-book-submit':'data-book-next'}>${step===5?'Request grooming':'Continue →'}</button></div>`;
     const body=`<div class="clone-glass"><div class="pet-stepper">${stepLabels.map((label,i)=>`<span class="${step===i+1?'is-active':step>i+1?'is-done':''}">${i+1}<b>${label}</b></span>`).join('')}</div><article class="clone-card clone-card--full pet-book-card"><div class="clone-card__no">Step ${step} of 5</div><h2>${['Who are we grooming?','Choose a grooming service','Pick a schedule','Add contact & grooming notes','Review the request'][step-1]}</h2>${content}${controls}</article></div>`;
     const upcoming=state.bookings.filter(b=>b.type==='Grooming').map(b=>`<article class="clone-card"><div class="clone-row">${icon(bookingIconName(b))}<div class="clone-row__body"><div class="clone-card__no">Grooming</div><h3>${esc(b.service)}</h3><p>${esc(b.pet)} · ${fmtDate(b.date)} · ${esc(b.time)}</p><div class="clone-tags">${status(b.status,b.status==='Confirmed'?'good':'due')}</div></div></div></article>`).join('');
-    return pageShell('Grooming appointments','Grooming.','Choose a pet, grooming service and schedule without leaving WagStack.',body+`<h2 class="clone-section-title">Upcoming grooming</h2><div class="clone-grid">${upcoming || emptyCard('No grooming appointments yet','Choose a service to make a request.')}</div>`,`<a class="clone-btn clone-btn--ghost" href="tel:+639060221773">Call the shop</a>`);
+    return pageShell('Grooming appointments','Grooming.','Choose a pet, grooming service and schedule without leaving YourBrand.',body+`<h2 class="clone-section-title">Upcoming grooming</h2><div class="clone-grid">${upcoming || emptyCard('No grooming appointments yet','Choose a service to make a request.')}</div>`,`<a class="clone-btn clone-btn--ghost" href="tel:+639000000000">Call the shop</a>`);
   }
 
 
@@ -201,9 +210,9 @@
     return `<article class="clone-card pet-health-add"><div>${icon('heart')}</div><div class="clone-card__no">Add health detail</div><h3>Choose a record type</h3><p>Each fixed category has its own icon. Only Other lets you customize the title.</p><details class="pet-health-picker"><summary>Choose health detail <span>⌄</span></summary><div class="pet-health-menu">${options}</div></details></article>`;
   }
   function aboutPage(){
-    const brand=`<div class="wagstack-about-brand"><img src="/assets/wagstack-brandmark.svg" alt="" aria-hidden="true"><div><div class="wagstack-wordmark wagstack-wordmark--about" aria-label="WagStack">wagstack<span class="wagstack-wordmark__dot">.</span></div><div class="wagstack-byline wagstack-byline--about">by Brick &amp; Bond</div></div></div>`;
-    const body=`<div class="clone-glass"><div class="clone-grid"><article class="clone-card clone-card--full pet-about-hero pet-about-hero--wagstack">${brand}<div><div class="clone-card__no">A Brick &amp; Bond project</div><h2>Everyday pet care, stacked in one place.</h2><p>WagStack connects cat and dog profiles, health records, grooming, hotel stays, rewards, shopping, documents and care history in one playful, organized workspace.</p><div class="clone-tags">${tag('Cats + Dogs')}${tag('Health Records')}${tag('Bookings')}${tag('Rewards')}${tag('Care History')}</div></div></article><article class="clone-card"><div class="clone-card__no">Why WagStack</div><h3>Care should follow the pet.</h3><p>Preferences, health details, bookings and history stay attached to each individual pet so every interaction starts with context.</p></article><article class="clone-card"><div class="clone-card__no">Built by Brick &amp; Bond</div><h3>Playful on the surface. Structured underneath.</h3><p>WagStack is a Brick &amp; Bond product concept designed to make pet care easier to organize without turning it into another cold dashboard.</p></article></div></div>`;
-    return pageShell('About WagStack','WagStack.','One connected care space for cats, dogs and the people who look after them.',body);
+    const brand=`<div class="branddemo-about-brand"><img src="/assets/branddemo-brandmark.svg" alt="" aria-hidden="true"><div><div class="branddemo-wordmark branddemo-wordmark--about" aria-label="YourBrand">branddemo<span class="branddemo-wordmark__dot">.</span></div><div class="branddemo-byline branddemo-byline--about">by Brick &amp; Bond</div></div></div>`;
+    const body=`<div class="clone-glass"><div class="clone-grid"><article class="clone-card clone-card--full pet-about-hero pet-about-hero--branddemo">${brand}<div><div class="clone-card__no">A Brick &amp; Bond project</div><h2>Everyday pet care, stacked in one place.</h2><p>YourBrand connects cat and dog profiles, health records, grooming, hotel stays, rewards, shopping, documents and care history in one playful, organized workspace.</p><div class="clone-tags">${tag('Cats + Dogs')}${tag('Health Records')}${tag('Bookings')}${tag('Rewards')}${tag('Care History')}</div></div></article><article class="clone-card"><div class="clone-card__no">Why YourBrand</div><h3>Care should follow the pet.</h3><p>Preferences, health details, bookings and history stay attached to each individual pet so every interaction starts with context.</p></article><article class="clone-card"><div class="clone-card__no">Built by Brick &amp; Bond</div><h3>Playful on the surface. Structured underneath.</h3><p>YourBrand is a Brick &amp; Bond product concept designed to make pet care easier to organize without turning it into another cold dashboard.</p></article></div></div>`;
+    return pageShell('About YourBrand','YourBrand.','One connected care space for cats, dogs and the people who look after them.',body);
   }
   function profilePage(){
     const p=state.profile||defaultState.profile;
@@ -258,7 +267,7 @@
     const controls=`<div class="pet-book-controls">${step>1?'<button class="clone-btn clone-btn--ghost" data-hotel-prev>← Back</button>':'<span></span>'}<button class="clone-btn" ${blocked?'disabled':''} ${step===5?'data-hotel-submit':'data-hotel-next'}>${step===5?'Request hotel stay':'Continue →'}</button></div>`;
     const booking=`<div class="clone-glass"><div class="pet-stepper">${steps.map((label,i)=>`<span class="${step===i+1?'is-active':step>i+1?'is-done':''}">${i+1}<b>${label}</b></span>`).join('')}</div><article class="clone-card clone-card--full pet-book-card"><div class="clone-card__no">Hotel booking · Step ${step} of 5</div><h2>${['Who is staying with us?','Choose check-in and check-out','Add the care routine','Add contact details','Review the stay'][step-1]}</h2>${content}${controls}</article></div>`;
     const upcoming=`<h2 class="clone-section-title">Upcoming hotel stays</h2><div class="clone-grid">${hotelBookings.map(bookingCard).join('') || emptyCard('No hotel stays yet','Choose dates to request a stay.')}</div>`;
-    return pageShell('Hotel stays','Pet Hotel.','Book multi-day stays with separate check-in and check-out dates, care instructions and owner details.',booking+upcoming,`<a class="clone-btn clone-btn--ghost" href="tel:+639060221773">Ask about availability</a>`);
+    return pageShell('Hotel stays','Pet Hotel.','Book multi-day stays with separate check-in and check-out dates, care instructions and owner details.',booking+upcoming,`<a class="clone-btn clone-btn--ghost" href="tel:+639000000000">Ask about availability</a>`);
   }
 
   const products=[
@@ -270,7 +279,7 @@
   function clubPage(){
     const cartTotal=state.cart.reduce((sum,id)=>sum+(products.find(p=>p.id===id)?.price||0),0);
     const body=`<div class="clone-glass"><div class="clone-grid">${products.map(p=>`<article class="clone-card clone-card--third">${icon('shopping-bag')}<div class="clone-card__no">${esc(p.tag)}</div><h3>${esc(p.name)}</h3><div class="pet-price">${money(p.price)}</div><button class="clone-btn clone-btn--ghost" data-add-cart="${p.id}">Add to bag</button></article>`).join('')}<article class="clone-card clone-card--full"><div class="clone-card__no">Bag</div><h2>${state.cart.length} item${state.cart.length===1?'':'s'} · ${money(cartTotal)}</h2><p>Your saved shop bag is part of the Pawfile summary.</p><div class="clone-tags">${state.cart.length?state.cart.map(id=>tag(products.find(p=>p.id===id)?.name||id)).join(''):tag('Your bag is empty')}</div>${state.cart.length?'<button class="pet-link-btn" data-clear-cart>Clear bag →</button>':''}</article></div></div>`;
-    return pageShell('Pet essentials','Shop.','Curated grooming, care, wellness and play essentials inside WagStack.',body,`<a class="clone-btn" href="/rewards" data-spa>Rewards & Club ↗</a>`);
+    return pageShell('Pet essentials','Shop.','Curated grooming, care, wellness and play essentials inside YourBrand.',body,`<a class="clone-btn" href="/rewards" data-spa>Rewards & Club ↗</a>`);
   }
 
   const rewards=[
@@ -280,7 +289,7 @@
   ];
   function rewardsPage(){
     const next=Math.max(0,200-state.points); const pct=Math.min(100,Math.round(state.points/200*100));
-    const membership=`<article class="clone-card clone-card--full pet-member-card"><div>${icon('crown')}</div><div><div class="clone-card__no">WagStack Club</div><h2>${state.membership.active?'Club Member':'Join the Pet Club'}</h2><p>${state.membership.active?`Member since ${state.membership.since}. Grooming perks and Paw Points are active.`:'Unlock club perks and Paw Points.'}</p><div class="clone-tags">${tag('Paw Points')}${tag('Member perks')}${tag('Care history')}</div></div></article>`;
+    const membership=`<article class="clone-card clone-card--full pet-member-card"><div>${icon('crown')}</div><div><div class="clone-card__no">YourBrand Club</div><h2>${state.membership.active?'Club Member':'Join the Pet Club'}</h2><p>${state.membership.active?`Member since ${state.membership.since}. Grooming perks and Paw Points are active.`:'Unlock club perks and Paw Points.'}</p><div class="clone-tags">${tag('Paw Points')}${tag('Member perks')}${tag('Care history')}</div></div></article>`;
     const body=`<div class="clone-glass"><div class="clone-grid">${membership}<article class="clone-card clone-card--full pet-reward-hero"><div>${icon('trophy')}</div><div><div class="clone-card__no">Club Rewards</div><div class="clone-metric">${state.points}</div><p>Paw Points available</p><div class="pet-progress"><span style="width:${pct}%"></span></div><small>${next?`${next} points to the 200-point milestone`:'200-point milestone reached'}</small></div></article>${rewards.map(r=>`<article class="clone-card clone-card--third"><div class="clone-card__no">${r.cost} points</div><h3>${esc(r.name)}</h3><p>Redeem from this demo workspace.</p><button class="clone-btn ${state.points<r.cost?'clone-btn--ghost':''}" data-redeem="${r.id}" ${state.points<r.cost?'disabled':''}>${state.points>=r.cost?'Redeem':'Need more points'}</button></article>`).join('')}</div></div>`;
     return pageShell('Loyalty & membership','Rewards & Club.','See club status, Paw Points, milestones and rewards in one place.',body,`<a class="clone-btn clone-btn--ghost" href="/shop" data-spa>Open Shop ↗</a>`);
   }
@@ -305,14 +314,14 @@
     state.notifications=(state.notifications||[]).map(n=>({...n,unread:false})); save();
     const rows=(state.notifications||[]).map(n=>`<article class="clone-card clone-card--full pet-notification"><div class="clone-row">${icon('bell')}<div class="clone-row__body"><div class="clone-card__no">Notification</div><h3>${esc(n.title)}</h3><p>${esc(n.text)}</p></div></div></article>`).join('');
     const body=`<div class="clone-glass"><div class="clone-grid">${rows||emptyCard('No notifications','You are all caught up.')}</div></div>`;
-    return pageShell('Updates & reminders','Notifications.','Booking updates, care reminders and WagStack notices in one place.',body);
+    return pageShell('Updates & reminders','Notifications.','Booking updates, care reminders and YourBrand notices in one place.',body);
   }
 
   function messagesPage(){
     state.messages=(state.messages||[]).map(m=>({...m,unread:m.from==='venue'?false:m.unread})); save();
-    const bubbles=state.messages.map(m=>`<div class="pet-message ${m.from==='parent'?'is-parent':'is-venue'}"><div class="pet-message__who">${m.from==='parent'?'You':'WagStack'}</div><p>${esc(m.text)}</p><small>${esc(m.time||'')}</small></div>`).join('');
-    const body=`<div class="clone-glass pet-messages"><div class="pet-thread">${bubbles||'<div class="pet-message is-venue"><p>Start a conversation with WagStack.</p></div>'}</div><form class="pet-message-compose" data-message-form><input class="pet-input" name="message" autocomplete="off" placeholder="Message WagStack…" aria-label="Message"><button class="clone-btn" type="submit">Send</button></form><div class="clone-note">Demo workspace · messages are saved on this device.</div></div>`;
-    return pageShell('Fur Parent inbox','Messages.','A shared conversation between the Fur Parent and WagStack.',body,`<a class="clone-btn clone-btn--ghost" href="tel:+639060221773">Call instead</a>`);
+    const bubbles=state.messages.map(m=>`<div class="pet-message ${m.from==='parent'?'is-parent':'is-venue'}"><div class="pet-message__who">${m.from==='parent'?'You':'YourBrand'}</div><p>${esc(m.text)}</p><small>${esc(m.time||'')}</small></div>`).join('');
+    const body=`<div class="clone-glass pet-messages"><div class="pet-thread">${bubbles||'<div class="pet-message is-venue"><p>Start a conversation with YourBrand.</p></div>'}</div><form class="pet-message-compose" data-message-form><input class="pet-input" name="message" autocomplete="off" placeholder="Message YourBrand…" aria-label="Message"><button class="clone-btn" type="submit">Send</button></form><div class="clone-note">Demo workspace · messages are saved on this device.</div></div>`;
+    return pageShell('Fur Parent inbox','Messages.','A shared conversation between the Fur Parent and YourBrand.',body,`<a class="clone-btn clone-btn--ghost" href="tel:+639000000000">Call instead</a>`);
   }
 
   function syncHomeSummary(){
@@ -376,9 +385,9 @@
       main.className='shell__panel'; main.removeAttribute('data-fixed');
       const noPets=!state.pets.length&&['/pets','/health'].includes(path);
       const html = noPets?`<section class="clone-page"><header class="clone-page__head"><h1>${path==='/health'?'Health & Care':'My Pets'}</h1></header><div class="clone-glass"><article class="clone-card clone-card--full"><h2>No pets yet</h2><p>Add your pet to keep care records and bookings together.</p><button class="clone-btn" type="button" data-add-pet-main>Add pet</button></article></div></section>`:path==='/grooming'?bookingPage():path==='/pets'?pawfilePage():path==='/health'?healthPage():path==='/hotel'?hotelPage():path==='/shop'?clubPage():path==='/messages'?messagesPage():path==='/notifications'?notificationsPage():path==='/about'?aboutPage():path==='/profile'?profilePage():rewardsPage();
-      main.innerHTML=html; document.title=`${routeTitles[path]} | WagStack`;
+      main.innerHTML=html; document.title=`${routeTitles[path]} | YourBrand`;
     }
-    setActive(path); syncRail(); main.scrollTop=0; window.scrollTo(0,0); document.dispatchEvent(new CustomEvent('wagstack:render',{detail:{path}}));
+    setActive(path); syncRail(); main.scrollTop=0; window.scrollTo(0,0); document.dispatchEvent(new CustomEvent('branddemo:render',{detail:{path}}));
   }
 
   function toast(message){
@@ -484,10 +493,10 @@
   applyTheme(storedTheme==='dark'?'dark':'light');
   themeBtn?.addEventListener('click',()=>applyTheme(document.documentElement.dataset.theme==='dark'?'light':'dark'));
 
-  // Rail chat box: a real Fur Parent ↔ WagStack local conversation.
+  // Rail chat box: a real Fur Parent ↔ YourBrand local conversation.
   const kape=qs('.kape'), panel=qs('.kape__panel'), thread=qs('[data-parent-chat-thread]'), form=qs('.kape__form'), input=qs('.kape__input'), send=qs('.kape__send');
   const closeTool=qsa('.kape__tool').find(b=>/close/i.test(b.getAttribute('aria-label')||''));
-  function renderParentChat(){ if(!thread)return; thread.innerHTML=(state.messages||[]).map(m=>`<li class="kape__msg${m.from==='parent'?' kape__msg--user':''}"><div class="kape__bubble">${esc(m.text)}</div><span class="kape__meta">${m.from==='parent'?'You':'WagStack'} · ${esc(m.time||'')}</span></li>`).join('')||'<li class="kape__msg"><div class="kape__bubble">Start a conversation with WagStack.</div></li>'; thread.scrollTop=thread.scrollHeight; }
+  function renderParentChat(){ if(!thread)return; thread.innerHTML=(state.messages||[]).map(m=>`<li class="kape__msg${m.from==='parent'?' kape__msg--user':''}"><div class="kape__bubble">${esc(m.text)}</div><span class="kape__meta">${m.from==='parent'?'You':'YourBrand'} · ${esc(m.time||'')}</span></li>`).join('')||'<li class="kape__msg"><div class="kape__bubble">Start a conversation with YourBrand.</div></li>'; thread.scrollTop=thread.scrollHeight; }
   function openKape(){ state.messages=(state.messages||[]).map(m=>m.from==='venue'?{...m,unread:false}:m); save(); renderParentChat(); kape?.classList.add('is-open'); panel?.removeAttribute('inert'); setTimeout(()=>input?.focus(),40); }
   function closeKape(){ kape?.classList.remove('is-open'); panel?.setAttribute('inert',''); }
   document.addEventListener('click',e=>{const b=e.target.closest('[data-open-kape]');if(b){e.preventDefault();kape?.classList.contains('is-open')?closeKape():openKape();}});
@@ -507,7 +516,7 @@
   a11ySwitches.forEach((b,i)=>b.addEventListener('click',()=>{const on=b.getAttribute('aria-pressed')==='true';b.setAttribute('aria-pressed',on?'false':'true');document.documentElement.classList.toggle(switchClasses[i],!on);if(a11yReset)a11yReset.disabled=false;}));
   a11yReset?.addEventListener('click',()=>{document.documentElement.classList.remove(...switchClasses);a11ySwitches.forEach(x=>x.setAttribute('aria-pressed','false'));a11yReset.disabled=true;});
 
-  // WagStack HeroCanvas background is mounted by /wagstack-background.js using the supplied Three.js bundle.
+  // YourBrand HeroCanvas background is mounted by /branddemo-background.js using the supplied Three.js bundle.
 
   // Same clone cursor ring.
   const ring=qs('.cursor-ring');

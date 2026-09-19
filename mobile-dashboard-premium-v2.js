@@ -1,7 +1,7 @@
 import { observeUI } from './ui-lifecycle.js';
 
 (()=>{
-  const STYLE_ID='wagstack-mobile-dashboard-premium-v2';
+  const STYLE_ID='branddemo-mobile-dashboard-premium-v2';
   const media=window.matchMedia('(max-width:900px)');
   const compact=window.matchMedia('(max-width:620px)');
 
