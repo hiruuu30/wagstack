@@ -15,6 +15,7 @@ import { observeUI } from './ui-lifecycle.js';
   style.textContent=`
     body.wag-public-mode{background:#f5f6f2!important;color:#0b1e3f!important}
     body.wag-public-mode .rail{display:none!important}
+    body.wag-public-mode .mobile-nav{display:none!important}
     body.wag-public-mode .shell{display:block!important;min-height:100vh!important}
     body.wag-public-mode .shell__panel{width:100%!important;max-width:none!important;height:auto!important;min-height:100vh!important;overflow:visible!important;border-radius:0!important;margin:0!important;padding:0!important;background:transparent!important;box-shadow:none!important}
     body.wag-public-mode .hero-canvas{opacity:.58}
