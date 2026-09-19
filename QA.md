@@ -77,3 +77,7 @@ Generated catalog and banner visuals are illustrative assets for the existing co
 - `tests/auth-confirm.cjs` passed with intercepted Auth responses: successful and expired tokens, server errors, rate limiting, unsupported types, invalid session rejection, root callback forwarding, signup/resend parameters and the resend UI. No real accounts or emails were created.
 - Inspected the email at 320 and 600 pixels and the callback in light/dark themes at 320, 390 and 900 pixels, with no horizontal overflow or uncaught JavaScript errors. This is browser rendering QA, not Gmail/Outlook inbox rendering verification.
 - Hosted Supabase sender/template/URL settings and real email delivery still require an authenticated dashboard session and the authorized SMTP provider configuration. Repository changes alone do not change those settings.
+
+## Production polish — September 19, 2026
+
+See `PRODUCTION-POLISH.md` for the baseline, implemented fixes, reproducible browser checks, and release requirements. The pass preserves the existing design and carousel dimensions while correcting authentication, data synchronization, route lifecycle, mobile admin overflow, loading/error states and keyboard behavior. Production schema/data and hosted email settings were not changed.

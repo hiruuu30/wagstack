@@ -15,6 +15,6 @@
 
   const params = new URLSearchParams(location.hash.slice(1));
   if (['access_token', 'refresh_token', 'token_hash', 'error_code', 'error_description'].some(key => params.has(key))) {
-    location.replace('/auth/confirm.html' + location.hash);
+    location.replace((params.get('type') === 'recovery' ? '/auth/reset.html' : '/auth/confirm.html') + location.hash);
   }
 })();

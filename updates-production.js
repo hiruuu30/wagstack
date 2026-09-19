@@ -1,3 +1,4 @@
+import { observeUI } from './ui-lifecycle.js';
 import { SUPABASE_URL, SUPABASE_KEY } from './auth-config.js';
 
 const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({
@@ -5,6 +6,8 @@ const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => 
 }[char]));
 
 const WEATHER_ID = 'quezon-city';
+let cachedContent=null;
+let loading=null;
 
 function installUpdateStyles() {
   if (document.getElementById('wagstack-updates-enhanced')) return;
@@ -44,7 +47,7 @@ function installUpdateStyles() {
 
 function renderDbUpdate(item) {
   const href = String(item.cta_href || '').trim();
-  const allowedHref = href.startsWith('/') ? href : '#';
+  const allowedHref = /^\/(?![\/\\])/.test(href) ? href : '#';
   return `<article class="home__promo-slide" data-update-id="${escapeHtml(item.id)}">
     <div class="update-copy">
       ${item.eyebrow ? `<span>${escapeHtml(item.eyebrow)}</span>` : ''}
@@ -90,14 +93,11 @@ function renderAdoptionSlide() {
 }
 
 function weatherIcon(weather) {
-  const condition = String(weather?.condition || '').toLowerCase();
-  if (condition.includes('thunder')) return '⛈';
-  if (condition.includes('heavy') || condition.includes('rain')) return '🌧';
-  if (condition.includes('fog')) return '🌫';
-  if (condition.includes('cloud')) return '☁️';
-  if (weather?.hot) return '☀️';
-  if (weather?.windy) return '💨';
-  return '⛅';
+  const condition=String(weather?.condition||'').toLowerCase();
+  const cloud='<path d="M6 17a4 4 0 0 1-1-7.87A6 6 0 0 1 17 9a4 4 0 0 1 1 8Z" fill="currentColor" opacity=".2"/><path d="M6 17a4 4 0 0 1-1-7.87A6 6 0 0 1 17 9a4 4 0 0 1 1 8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>';
+  const detail=condition.includes('thunder')?'<path d="m13 14-3 5h4l-3 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>':condition.includes('rain')?'<path d="m8 19-1 2m6-2-1 2m6-2-1 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>':'';
+  const sun='<circle cx="12" cy="12" r="5" fill="currentColor" opacity=".2"/><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="5"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></g>';
+  return `<svg viewBox="0 0 24 24" aria-hidden="true">${weather?.hot&&!/cloud|rain|thunder/.test(condition)?sun:cloud+detail}</svg>`;
 }
 
 function renderWeatherSlide(post) {
@@ -108,18 +108,20 @@ function renderWeatherSlide(post) {
   const rain = Number(weather.rain);
   if (![temperature, wind, rain].every(Number.isFinite)) return '';
   const condition = escapeHtml(weather.condition || 'Weather update');
+  const checked=Date.parse(post.last_checked_at||post.published_at||'');
+  const stale=!Number.isFinite(checked)||Date.now()-checked>2*60*60*1000;
   const reason = weather.reason === 'Conditions easing' ? 'Conditions have eased' : weather.reason === 'Temperature shifted' ? 'A noticeable temperature shift was detected' : 'A meaningful weather change was detected';
   return `<article class="home__promo-slide weather-slide" data-update-id="weather-${WEATHER_ID}">
     <div class="update-copy">
       <span>QUEZON CITY · WEATHER</span>
       <strong>${condition}</strong>
-      <small>${escapeHtml(reason)}. Plan walks, pickups and pet travel accordingly.</small>
+      <small>${stale?'Last reported conditions. Check the latest forecast before heading out.':escapeHtml(weather.hot?'Plan walks for cooler hours and keep water handy':String(weather.condition).toLowerCase().includes('rain')||String(weather.condition).toLowerCase().includes('thunder')?'Keep walks brief and plan indoor play':reason)+'.'}</small>
     </div>
     <div class="weather-art" aria-label="${condition}, ${Math.round(temperature)} degrees Celsius, wind ${Math.round(wind)} kilometers per hour">
       <div class="weather-icon" aria-hidden="true">${weatherIcon(weather)}</div>
       <div class="weather-metrics"><b>${Math.round(temperature)}°</b><span>${Math.round(wind)} km/h wind</span><span>${rain.toFixed(rain >= 1 ? 1 : 1)} mm rain</span></div>
     </div>
-    <span class="weather-source">Forecast · Quezon City</span>
+    <span class="weather-source">${stale?'Last report':'Checked'} · ${Number.isFinite(checked)?escapeHtml(new Date(checked).toLocaleString('en-PH',{timeZone:'Asia/Manila',month:'short',day:'numeric',hour:'numeric',minute:'2-digit'})):'Time unavailable'}</span>
   </article>`;
 }
 
@@ -141,16 +143,19 @@ async function loadUpdates() {
   if (location.pathname !== '/') return;
   try {
     installUpdateStyles();
-    const [response, weatherPost] = await Promise.all([
-      fetch(`${SUPABASE_URL}/rest/v1/updates_carousel?select=id,eyebrow,title,body,image_url,cta_label,cta_href,sort_order&active=eq.true&order=sort_order.asc,created_at.asc`, { headers: { apikey: SUPABASE_KEY } }),
-      fetchWeatherPost()
-    ]);
-    if (!response.ok) return;
-    const updates = await response.json();
-
+    if(!cachedContent){
+      loading ||= Promise.all([
+        fetch(`${SUPABASE_URL}/rest/v1/updates_carousel?select=id,eyebrow,title,body,image_url,cta_label,cta_href,sort_order&active=eq.true&order=sort_order.asc,created_at.asc`, { headers: { apikey: SUPABASE_KEY } }).then(r=>r.ok?r.json():[]).catch(()=>[]),
+        fetchWeatherPost()
+      ]).then(([updates,weatherPost])=>({updates:Array.isArray(updates)?updates:[],weatherPost})).finally(()=>{loading=null});
+      cachedContent=await loading;
+    }
+    const {updates,weatherPost}=cachedContent;
+    if(location.pathname!=='/')return;
     const track = document.querySelector('[data-promo-track]');
     const viewport = document.querySelector('[data-promo-viewport]');
-    if (!track || !viewport) return;
+    if (!track || !viewport || track.dataset.contentReady==='true') return;
+    track.dataset.contentReady='true';
     const card = viewport.closest('.home__promo-card');
     card?.classList.add('updates-enhanced');
     const title = card?.querySelector('.home__promo-head .bento__title');
@@ -178,7 +183,7 @@ async function loadUpdates() {
     const next = oldNext?.cloneNode(true);
     if (oldPrev && prev) oldPrev.replaceWith(prev);
     if (oldNext && next) oldNext.replaceWith(next);
-    const step = (direction) => viewport.scrollBy({ left: direction * viewport.clientWidth, behavior: 'smooth' });
+    const step = (direction) => viewport.scrollBy({ left: direction * viewport.clientWidth, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches||document.documentElement.classList.contains('a11y-reduce-motion')?'auto':'smooth' });
     prev?.addEventListener('click', () => step(-1));
     next?.addEventListener('click', () => step(1));
     if (slides.length < 2) {
@@ -198,3 +203,7 @@ if (document.readyState === 'loading') {
 } else {
   loadUpdates();
 }
+
+// App navigation replaces the home DOM without reloading modules.
+observeUI(()=>{if(location.pathname==='/'&&document.querySelector('[data-promo-track]:not([data-content-ready])'))loadUpdates()});
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&location.pathname==='/'){cachedContent=null;const track=document.querySelector('[data-promo-track]');if(track)delete track.dataset.contentReady;loadUpdates()}});

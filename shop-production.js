@@ -1,7 +1,9 @@
+import { observeUI } from './ui-lifecycle.js';
 import { PRODUCTS } from './shop-catalog.js';
 import { SUPABASE_URL, SUPABASE_KEY } from './auth-config.js';
 
 let productImages = new Map();
+window.WagStackCatalog={status:'loading',retry:loadCatalog};
 let imageRefreshQueued = false;
 let shopObserver = null;
 
@@ -15,20 +17,23 @@ photoStyle.textContent=`
 document.head.appendChild(photoStyle);
 
 async function loadCatalog() {
+  window.WagStackCatalog.status='loading';forceShopRefresh();
   try {
     const response = await fetch(
       `${SUPABASE_URL}/rest/v1/products?select=id,name,description,price,image_url,stock,active,category&active=eq.true&order=created_at.asc`,
       { headers: { apikey: SUPABASE_KEY } }
     );
-    if (!response.ok) return;
+    if (!response.ok) throw new Error('catalog_unavailable');
     const rows = await response.json();
-    if (!rows.length) return;
+    if (!Array.isArray(rows))throw new Error('catalog_unavailable');
+    window.WagStackCatalog.status='ready';
 
     productImages = new Map(rows.map((row) => [row.name, row.image_url]));
     PRODUCTS.splice(0, PRODUCTS.length, ...rows.map((row) => ({
       id: String(row.id),
       name: row.name,
       price: Number(row.price || 0),
+      stock: Number(row.stock || 0),
       cat: row.category || 'Essentials',
       eyebrow: Number(row.stock || 0) > 0 ? `${Number(row.stock)} IN STOCK` : 'OUT OF STOCK',
       desc: row.description || ''
@@ -36,7 +41,7 @@ async function loadCatalog() {
 
     forceShopRefresh();
   } catch (error) {
-    console.error('[WagStack shop catalog]', error);
+    window.WagStackCatalog.status='error';forceShopRefresh();
   }
 }
 
@@ -91,11 +96,13 @@ function applyProductImages() {
       image = document.createElement('img');
       image.className = 'v32-product-photo wag-db-product-photo';
       image.alt = name || 'Product';
+      image.loading='lazy';image.decoding='async';image.width=320;image.height=320;
       visual.appendChild(image);
     }
 
     if (image.getAttribute('src') !== imageUrl) image.setAttribute('src', imageUrl);
     if (image.alt !== (name || 'Product')) image.alt = name || 'Product';
+      image.loading='lazy';image.decoding='async';image.width=320;image.height=320;
   });
 }
 
@@ -141,3 +148,7 @@ if (document.readyState === 'loading') {
 }
 window.addEventListener('popstate', onRouteChange);
 window.addEventListener('hashchange', onRouteChange);
+
+observeUI(()=>{if(location.pathname==='/shop'){queueImageRefresh();const root=document.querySelector('#main-content .clone-glass');if(root&&!root.dataset.catalogObserved){root.dataset.catalogObserved='true';attachShopObserver()}}});
+
+document.addEventListener('click',event=>{if(event.target.closest('[data-catalog-retry]'))loadCatalog()});

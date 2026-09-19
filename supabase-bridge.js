@@ -1,6 +1,7 @@
-import { SUPABASE_URL, SUPABASE_KEY, SESSION_KEY, CONFIRM_REDIRECT_URL, resendConfirmation } from './auth-config.js';
+import { SUPABASE_URL, SUPABASE_KEY, SESSION_KEY, CONFIRM_REDIRECT_URL, resendConfirmation, requestPasswordReset } from './auth-config.js';
 const nativeSetItem=Storage.prototype.setItem;
 let session=null;
+let refreshPromise=null;
 
 const headers=(token,extra={})=>({
   apikey:SUPABASE_KEY,
@@ -14,13 +15,24 @@ function writeSession(value){session=value;nativeSetItem.call(localStorage,SESSI
 function clearSession(){session=null;localStorage.removeItem(SESSION_KEY)}
 function tokenExpiring(s){
   if(!s?.access_token)return true;
-  try{const payload=JSON.parse(atob(s.access_token.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')));return !payload.exp||payload.exp*1000-Date.now()<60000}catch{return false}
+  try{const payload=JSON.parse(atob(s.access_token.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')));return !payload.exp||payload.exp*1000-Date.now()<60000}catch{return true}
 }
 async function refreshSession(){
-  if(!session?.refresh_token)return null;
-  const r=await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=refresh_token`,{method:'POST',headers:headers(),body:JSON.stringify({refresh_token:session.refresh_token})});
-  if(!r.ok){clearSession();renderAccount();return null}
-  const data=await r.json();writeSession(data);return data;
+  if(refreshPromise)return refreshPromise;
+  if(!session?.refresh_token){clearSession();renderAccount();announceAuth();return null}
+  const original=session;
+  refreshPromise=(async()=>{
+    const r=await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=refresh_token`,{method:'POST',headers:headers(),body:JSON.stringify({refresh_token:original.refresh_token})});
+    if(session!==original)return session; // Ignore responses after logout/account change.
+    if(!r.ok){
+      if([400,401,403].includes(r.status)){clearSession();renderAccount();announceAuth();return null}
+      throw new Error('We couldn’t reconnect. Please try again.');
+    }
+    const data=await r.json();
+    if(session===original)writeSession(data);
+    return session;
+  })().finally(()=>{refreshPromise=null});
+  return refreshPromise;
 }
 async function ensureSession(){session=session||readSession();if(session&&tokenExpiring(session))await refreshSession();return session}
 async function authRequest(path,options={}){
@@ -57,13 +69,16 @@ async function signUp(email,password,fullName=''){
   return data;
 }
 async function signOut(){
-  const s=await ensureSession();if(s?.access_token){try{await fetch(`${SUPABASE_URL}/auth/v1/logout`,{method:'POST',headers:headers(s.access_token)})}catch{}}
-  clearSession();renderAccount();announceAuth();
+  const previous=session||readSession();
+  clearSession();localStorage.removeItem('wagstack-guest-mode-v1');localStorage.removeItem('tfa-clone-workspace-v3');localStorage.removeItem('wagstack-pre-guest-workspace-v1');localStorage.removeItem('wagstack-pending-owner-v1');renderAccount();announceAuth();
+  if(previous?.access_token)fetch(`${SUPABASE_URL}/auth/v1/logout`,{method:'POST',headers:headers(previous.access_token),keepalive:true}).catch(()=>{});
+  location.replace('/');
 }
 
 function setCloudState(state){
+  window.dispatchEvent(new CustomEvent('wagstack:save-state',{detail:{state}}));
   const dot=document.querySelector('.wag-cloud-dot'),label=document.querySelector('.wag-cloud-state');if(!dot||!label)return;
-  dot.dataset.state=state;label.textContent=state==='synced'?'Database synced':state==='syncing'?'Saving…':state==='error'?'Sync issue':'Cloud';
+  dot.dataset.state=state;label.textContent=state==='synced'?'Saved':state==='syncing'?'Saving…':state==='error'?'Sync issue':'Cloud';
 }
 function escapeHtml(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function injectStyles(){
@@ -73,11 +88,35 @@ function injectStyles(){
   `;document.head.appendChild(s);
 }
 function openAuth(){
-  document.querySelector('.wag-auth-backdrop')?.remove();const signed=!!session?.user;const wrap=document.createElement('div');wrap.className='wag-auth-backdrop';
-  wrap.innerHTML=signed?`<div class="wag-auth"><button class="wag-auth-close" aria-label="Close">×</button><h2>WagStack Cloud</h2><p>Your pets, care records and bookings, together in one account.</p><div class="wag-auth-account">${escapeHtml(session.user.email||'Signed in')}</div><div class="wag-auth-actions"><button class="wag-auth-secondary" data-sync>Refresh data</button><button class="wag-auth-danger" data-signout>Sign out</button></div><p class="wag-auth-msg" role="status" aria-live="polite"></p></div>`:`<div class="wag-auth"><button class="wag-auth-close" aria-label="Close">×</button><h2>WagStack Cloud</h2><p>Sign in or create an account to keep your pets, care records and bookings together.</p><label for="wag-auth-name">Name</label><input id="wag-auth-name" name="name" autocomplete="name" placeholder="Fur parent name"><label for="wag-auth-email">Email</label><input required id="wag-auth-email" name="email" type="email" autocomplete="email" placeholder="you@example.com"><label for="wag-auth-password">Password</label><input required minlength="6" id="wag-auth-password" name="password" type="password" autocomplete="current-password" placeholder="At least 6 characters"><div class="wag-auth-actions"><button class="wag-auth-primary" data-signin>Sign in</button><button class="wag-auth-secondary" data-signup>Create account</button></div><button class="wag-auth-resend" data-resend>Resend confirmation email</button><p class="wag-auth-msg" role="status" aria-live="polite"></p></div>`;
+  const returnFocus=document.activeElement;document.querySelector('.wag-auth-backdrop')?.remove();const signed=!!session?.user;const wrap=document.createElement('div');wrap.className='wag-auth-backdrop';
+  wrap.innerHTML=signed?`<div class="wag-auth" role="dialog" aria-modal="true" aria-labelledby="wag-auth-title" tabindex="-1"><button class="wag-auth-close" aria-label="Close">×</button><h2 id="wag-auth-title">Your WagStack account</h2><p>Your pets, care records and bookings, together in one account.</p><div class="wag-auth-account">${escapeHtml(session.user.email||'Signed in')}</div><div class="wag-auth-actions"><button class="wag-auth-secondary" data-sync>Refresh data</button><button class="wag-auth-danger" data-signout>Sign out</button></div><p class="wag-auth-msg" role="status" aria-live="polite"></p></div>`:`<div class="wag-auth" role="dialog" aria-modal="true" aria-labelledby="wag-auth-title" tabindex="-1"><button class="wag-auth-close" aria-label="Close">×</button><h2 id="wag-auth-title">Your WagStack account</h2><p>Sign in or create an account to keep your pets, care records and bookings together.</p><label for="wag-auth-name">Name</label><input id="wag-auth-name" name="name" autocomplete="name" placeholder="Fur parent name"><label for="wag-auth-email">Email</label><input required id="wag-auth-email" name="email" type="email" autocomplete="email" placeholder="you@example.com"><label for="wag-auth-password">Password</label><input required minlength="6" id="wag-auth-password" name="password" type="password" autocomplete="current-password" placeholder="At least 6 characters"><div class="wag-auth-actions"><button class="wag-auth-primary" data-signin>Sign in</button><button class="wag-auth-secondary" data-signup>Create account</button></div><button class="wag-auth-resend" data-reset>Forgot password?</button><button class="wag-auth-resend" data-resend>Resend confirmation email</button><p class="wag-auth-msg" role="status" aria-live="polite"></p></div>`;
   document.body.appendChild(wrap);const msg=wrap.querySelector('.wag-auth-msg');
-  wrap.addEventListener('click',e=>{if(e.target===wrap||e.target.closest('.wag-auth-close'))wrap.remove()});
-  wrap.querySelector('[data-signin]')?.addEventListener('click',async()=>{try{msg.textContent='Signing in…';await signIn(wrap.querySelector('[name=email]').value.trim(),wrap.querySelector('[name=password]').value);msg.textContent='Loading account data…';setTimeout(()=>location.reload(),250)}catch(err){msg.textContent=err.message}});
+  const close=()=>{wrap.remove();if(returnFocus?.isConnected)returnFocus.focus()};
+  wrap.addEventListener('click',e=>{if(e.target===wrap||e.target.closest('.wag-auth-close'))close()});
+  wrap.addEventListener('keydown',e=>{
+    if(e.key==='Escape'){e.preventDefault();e.stopPropagation();close();return}
+    if(e.key==='Enter'&&e.target.matches('input')){e.preventDefault();wrap.querySelector('[data-signin]')?.click();return}
+    if(e.key!=='Tab')return;
+    const items=[...wrap.querySelectorAll('button:not(:disabled),input:not(:disabled),a[href]')].filter(el=>el.getClientRects().length);
+    const first=items[0],last=items.at(-1);
+    if(e.shiftKey&&document.activeElement===first){e.preventDefault();last?.focus()}
+    else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first?.focus()}
+  });
+  requestAnimationFrame(()=>(wrap.querySelector('[name=email]')||wrap.querySelector('.wag-auth-close'))?.focus());
+  wrap.querySelector('[data-signin]')?.addEventListener('click',async event=>{
+    const button=event.currentTarget,email=wrap.querySelector('[name=email]'),password=wrap.querySelector('[name=password]');
+    if(button.disabled||!email.reportValidity()||!password.reportValidity())return;
+    button.disabled=true;
+    try{msg.textContent='Signing in…';await signIn(email.value.trim(),password.value);msg.textContent='Loading your account…';setTimeout(()=>location.reload(),250)}
+    catch(err){msg.textContent=err instanceof TypeError?'We couldn’t connect. Please try again.':err.message;button.disabled=false}
+  });
+  wrap.querySelector('[data-reset]')?.addEventListener('click',async event=>{
+    const button=event.currentTarget,email=wrap.querySelector('[name=email]');
+    if(button.disabled||!email.reportValidity())return;
+    button.disabled=true;msg.textContent='Sending your reset link…';
+    try{await requestPasswordReset(email.value.trim());msg.textContent='If this email has an account, a password reset link is on its way. Check your inbox and spam folder.';setTimeout(()=>{button.disabled=false},60000)}
+    catch(err){msg.textContent=err instanceof TypeError?'We couldn’t connect. Please try again.':err.message;button.disabled=false}
+  });
   wrap.querySelector('[data-signup]')?.addEventListener('click',async event=>{const button=event.currentTarget;if(button.disabled||!wrap.querySelector('[name=email]').reportValidity()||!wrap.querySelector('[name=password]').reportValidity())return;button.disabled=true;try{msg.textContent='Creating account…';const data=await signUp(wrap.querySelector('[name=email]').value.trim(),wrap.querySelector('[name=password]').value,wrap.querySelector('[name=name]').value.trim());msg.textContent=data.access_token?'Account created. Loading your WagStack data…':'Check your inbox to confirm your email. Open the newest confirmation email to finish setting up your account.';if(data.access_token)setTimeout(()=>location.reload(),350)}catch(err){msg.textContent=err.message}finally{button.disabled=false}});
   wrap.querySelector('[data-resend]')?.addEventListener('click',async event=>{
     const input=wrap.querySelector('[name=email]'),button=event.currentTarget;
@@ -86,13 +125,13 @@ function openAuth(){
     try{await resendConfirmation(input.value.trim());msg.textContent='If this email has an unconfirmed account, a new link is on its way. Check your inbox and spam folder, then open the newest email.';setTimeout(()=>{button.disabled=false},60000)}
     catch(err){msg.textContent=err instanceof TypeError?'We couldn’t connect. Please try again.':err.message;button.disabled=false}
   });
-  wrap.querySelector('[data-sync]')?.addEventListener('click',async()=>{try{msg.textContent='Refreshing…';await window.WagStackNormalized?.refresh?.();msg.textContent='Loaded from Supabase.';setTimeout(()=>location.reload(),250)}catch(err){msg.textContent=err.message}});
+  wrap.querySelector('[data-sync]')?.addEventListener('click',async()=>{try{msg.textContent='Refreshing…';await window.WagStackNormalized?.refresh?.();msg.textContent='Your account is up to date.';setTimeout(()=>location.reload(),250)}catch(err){msg.textContent=err.message}});
   wrap.querySelector('[data-signout]')?.addEventListener('click',async()=>{await signOut();wrap.remove()});
 }
 function renderAccount(){
   injectStyles();session=session||readSession();let btn=document.querySelector('.wag-cloud-btn');
   if(!btn){btn=document.createElement('button');btn.className='wag-cloud-btn';btn.type='button';btn.addEventListener('click',openAuth);document.body.appendChild(btn)}
-  const email=session?.user?.email;btn.innerHTML=`<span class="wag-cloud-dot" data-state="${email?'synced':'off'}"></span><span class="wag-cloud-state">${email?'Database synced':'Sign in'}</span>${email?`<span class="wag-cloud-email">${escapeHtml(email)}</span>`:''}`;
+  const email=session?.user?.email;btn.innerHTML=`<span class="wag-cloud-dot" data-state="${email?'synced':'off'}"></span><span class="wag-cloud-state">${email?'Account':'Sign in'}</span>${email?`<span class="wag-cloud-email">${escapeHtml(email)}</span>`:''}`;
 }
 
 window.WagStackSupabase={url:SUPABASE_URL,signIn,signUp,resendConfirmation,signOut,ensureSession,setCloudState,get session(){return session},db:{get:getJson,insert:insertJson,update:patchJson,delete:deleteJson}};
@@ -102,3 +141,5 @@ async function boot(){
   if(session){try{await ensureSession();renderAccount();announceAuth();setCloudState('syncing')}catch(err){console.error('[WagStack auth boot]',err);setCloudState('error')}}
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
+
+window.addEventListener('storage',event=>{if(event.key===SESSION_KEY){session=readSession();renderAccount();announceAuth();if(!session)location.replace('/')}});

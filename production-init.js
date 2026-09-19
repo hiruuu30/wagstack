@@ -6,6 +6,10 @@ try {
   if(account?.user?.id && workspace && !sessionStorage.getItem('wagstack-prod-init')) {
     const names=(workspace.pets||[]).map(p=>String(p.name||'').toLowerCase()).sort().join('|');
     if(names==='biscuit|bubbles|mochi') {
+      workspace.messages=[];workspace.notifications=[];workspace.notes=[];workspace.documents=[];
+      workspace.profile={name:'Fur Parent',image:'/assets/fur-parent-avatar.svg',email:account.user.email||'',phone:''};
+      workspace.bookingDraft={step:1,pet:'',service:'Full Grooming',date:'',time:'10:00',owner:'',phone:'',notes:''};
+      workspace.hotelDraft={step:1,pet:'',checkIn:'',checkOut:'',checkInTime:'14:00',checkOutTime:'12:00',owner:'',phone:'',notes:''};
       workspace.pets=[];
       workspace.bookings=[];
       workspace.healthByPet={};

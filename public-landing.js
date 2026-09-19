@@ -8,7 +8,7 @@ import { observeUI } from './ui-lifecycle.js';
   let rendering=false;
 
   const session=()=>{try{return window.WagStackSupabase?.session||JSON.parse(localStorage.getItem(SESSION_KEY)||'null')}catch{return null}};
-  const signedIn=()=>!!session()?.user?.id;
+  const signedIn=()=>!!session()?.access_token&&!!session()?.user?.id||localStorage.getItem('wagstack-guest-mode-v1')==='1';
 
   const style=document.createElement('style');
   style.id='wag-public-landing-style';

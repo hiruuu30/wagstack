@@ -16,3 +16,14 @@ export async function resendConfirmation(email) {
       : 'We couldn’t send the email. Please try again shortly.');
   }
 }
+
+export const RESET_REDIRECT_URL = 'https://wagstack.brickand.bond/auth/reset.html';
+export async function requestPasswordReset(email) {
+  const response = await fetch(`${SUPABASE_URL}/auth/v1/recover?redirect_to=${encodeURIComponent(RESET_REDIRECT_URL)}`, {
+    method: 'POST', headers: { apikey: SUPABASE_KEY, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email })
+  });
+  if (!response.ok) throw new Error(response.status === 429
+    ? 'Please wait a minute before requesting another email.'
+    : 'We couldn’t send the reset email. Please try again shortly.');
+}

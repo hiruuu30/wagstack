@@ -1,3 +1,4 @@
+import { observeUI } from './ui-lifecycle.js';
 let paginationFrame = 0;
 
 function syncUpdatePagination() {
@@ -25,13 +26,13 @@ function syncUpdatePagination() {
     if (dot.dataset.enhancedBound === 'true') return;
     dot.dataset.enhancedBound = 'true';
     dot.addEventListener('click', () => {
-      viewport.scrollTo({ left: viewport.clientWidth * index, behavior: 'smooth' });
+      viewport.scrollTo({ left: viewport.clientWidth * index, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches||document.documentElement.classList.contains('a11y-reduce-motion')?'auto':'smooth' });
     });
   });
 
   const width = Math.max(1, viewport.clientWidth);
   const active = Math.max(0, Math.min(slides.length - 1, Math.round(viewport.scrollLeft / width)));
-  dots.forEach((dot, index) => dot.classList.toggle('is-active', index === active));
+  dots.forEach((dot, index) => {dot.classList.toggle('is-active', index === active);dot.setAttribute('aria-pressed',String(index===active));});
 }
 
 function schedulePaginationSync() {
@@ -48,7 +49,7 @@ function bootUpdatePagination() {
   if (viewport.dataset.enhancedPagination !== 'true') {
     viewport.dataset.enhancedPagination = 'true';
     viewport.addEventListener('scroll', schedulePaginationSync, { passive: true });
-    addEventListener('resize', schedulePaginationSync, { passive: true });
+
   }
 
   if (track.dataset.enhancedPaginationObserver !== 'true') {
@@ -62,3 +63,6 @@ if (document.readyState === 'loading') {
 } else {
   bootUpdatePagination();
 }
+
+addEventListener('resize', schedulePaginationSync, { passive: true });
+observeUI(bootUpdatePagination);

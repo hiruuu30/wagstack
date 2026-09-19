@@ -22,23 +22,23 @@
       scrollbar-width:thin;
     }
     .wag-auth h2{margin:0 0 6px!important;font-size:21px!important;line-height:1.15!important}
-    .wag-auth>p:not(.wag-auth-msg):not(.wag-auth-guest-note){margin:0 0 14px!important;font-size:10.5px!important;line-height:1.5!important}
-    .wag-auth label{margin:9px 0 5px!important;font-size:9px!important;line-height:1.2!important}
-    .wag-auth input{min-height:48px!important;padding:11px 13px!important;font-size:13px!important}
+    .wag-auth>p:not(.wag-auth-msg):not(.wag-auth-guest-note){margin:0 0 14px!important;font-size:14px!important;line-height:1.5!important}
+    .wag-auth label{margin:9px 0 5px!important;font-size:12px!important;line-height:1.2!important}
+    .wag-auth input{min-height:48px!important;padding:11px 13px!important;font-size:16px!important}
     .wag-auth-actions{gap:8px!important;margin-top:15px!important}
     .wag-auth button{min-height:40px!important}
     .wag-auth-primary,.wag-auth-secondary{padding:10px 13px!important}
     .wag-auth-guest{margin-top:8px!important;min-height:38px!important}
-    .wag-auth-guest-note{margin:6px 0 0!important;font-size:9px!important;line-height:1.45!important}
-    .wag-auth-resend{display:block!important;width:100%!important;margin:8px 0 0!important;padding:8px 0!important;text-align:left!important;font-size:9px!important;min-height:32px!important;opacity:.82}
-    .wag-auth-msg{margin:8px 0 0!important;min-height:0!important;font-size:9.5px!important;line-height:1.45!important}
+    .wag-auth-guest-note{margin:6px 0 0!important;font-size:12px!important;line-height:1.45!important}
+    .wag-auth-resend{display:block!important;width:100%!important;margin:8px 0 0!important;padding:8px 0!important;text-align:left!important;font-size:12px!important;min-height:32px!important;opacity:.82}
+    .wag-auth-msg{margin:8px 0 0!important;min-height:0!important;font-size:13px!important;line-height:1.45!important}
     .wag-auth a[href="/admin"],.wag-auth .admin-demo-link{
       display:block!important;
       margin:8px 0 0!important;
       padding:8px 0!important;
       text-align:center!important;
       color:#59687c!important;
-      font-size:9px!important;
+      font-size:12px!important;
       font-weight:700!important;
       text-decoration:none!important;
     }

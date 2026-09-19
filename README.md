@@ -1,3 +1,5 @@
+> Current production-polish status: see [PRODUCTION-POLISH.md](PRODUCTION-POLISH.md) for current behavior, checks, and release requirements. The v20–v23 notes below describe the historical local-demo baseline and are not a current backend specification.
+
 # WagStack — Brick & Bond pet-care workspace v23
 
 This build starts from v20 and applies the full queued markup/instruction set approved before the user said “Do the build now.”

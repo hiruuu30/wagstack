@@ -29,3 +29,9 @@ The template links to the production callback with Supabase's `TokenHash` in the
 Old emails may retain localhost links or already-expired tokens. Request a new email after applying the hosted settings. Confirm live delivery and the full flow using a recipient authorized for testing; local QA uses intercepted Auth API responses and sends no emails.
 
 References: [Email templates](https://supabase.com/docs/guides/auth/auth-email-templates), [redirect URLs](https://supabase.com/docs/guides/auth/redirect-urls), [custom SMTP](https://supabase.com/docs/guides/auth/auth-smtp).
+
+## Password recovery
+
+Add `https://wagstack.brickand.bond/auth/reset.html` to Authentication → URL Configuration redirect allowlist. Set the Reset password email subject to `Reset your WagStack password` and body to `reset-password.html`. The callback supports the existing implicit recovery redirect as well as the template's recovery token hash. Token hashes are consumed only after pressing Continue with reset.
+
+Hosted SMTP, redirect allowlist and email templates must be applied in Supabase; repository edits do not change them. No real recipient emails were sent during this polish pass.

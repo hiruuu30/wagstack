@@ -300,6 +300,7 @@ import { observeUI } from './ui-lifecycle.js';
     if(!media.matches)return;
     const card=document.querySelector('.bento__card[data-summary-card="grooming"]');
     if(!card)return;
+    if(!card.querySelector('.bento__booking-pet')){card.querySelector('.mobile-grooming-next')?.remove();return;}
     let mini=card.querySelector('.mobile-grooming-next');
     if(!mini){
       mini=document.createElement('div');

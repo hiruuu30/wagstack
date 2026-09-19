@@ -6,6 +6,7 @@
   const qsa = (s, root = document) => [...root.querySelectorAll(s)];
   const esc = (v='') => String(v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const main = qs('#main-content');
+  if(!main)return; // The separate admin application owns its document.
   const HOME_HTML = main.innerHTML;
   const HOME_TITLE = 'WagStack — Pet care, connected';
   const STORE_KEY = 'tfa-clone-workspace-v3';
@@ -59,6 +60,11 @@
     hotelDraft: {step:1, pet:'Biscuit', checkIn:'2026-09-24', checkOut:'2026-09-27', checkInTime:'14:00', checkOutTime:'12:00', feeding:'Usual meals', owner:'Fur Parent', phone:'0906 022 1773', notes:'Sensitive skin — mild shampoo only'}
   };
 
+  if(localStorage.getItem('wagstack-guest-mode-v1')!=='1'){
+    Object.assign(defaultState,{profile:{name:'Fur Parent',image:'/assets/fur-parent-avatar.svg',email:'',phone:''},messages:[],notifications:[],activePet:'',pets:[],bookings:[],healthByPet:{},notes:[],documents:[],points:0,membership:{active:false,since:'',tier:'Wag Club'}});
+    defaultState.bookingDraft={step:1,pet:'',service:'Full Grooming',date:'',time:'10:00',owner:'',phone:'',notes:''};
+    defaultState.hotelDraft={step:1,pet:'',checkIn:'',checkOut:'',checkInTime:'14:00',checkOutTime:'12:00',feeding:'Usual meals',owner:'',phone:'',notes:''};
+  }
   function cloneDefault(){ return JSON.parse(JSON.stringify(defaultState)); }
   function loadState(){
     try {
@@ -191,7 +197,7 @@
   function bookingActionCard(){ return `<article class="clone-card pet-action-card pet-action-card--booking"><div class="pet-action-card__copy"><div>${icon('calendar-check')}</div><div class="clone-card__no">New appointment</div><h3>Book care</h3><p>Choose the right booking flow for ${esc(pet().name)}.</p></div><div class="pet-action-buttons pet-action-buttons--primary"><a class="clone-btn" href="/grooming" data-spa>Book grooming ↗</a><a class="clone-btn clone-btn--hotel" href="/hotel" data-spa>Book hotel stay ↗</a></div></article>`; }
   const healthDetailTypes=['Allergy','Medication','Surgery','Condition','Vet Visit','Weight Record','Dental Care','Lab / Test Result','Other'];
   function addHealthCard(){
-    const options=healthDetailTypes.map(type=>`<button type="button" class="pet-health-option" data-add-health-type="${esc(type)}">${icon(healthIconForCategory(type))}<span><strong>${esc(type)}</strong><small>${type==='Other'?'Custom health record title':'Fixed health record type'}</small></span></button>`).join('');
+    const options=healthDetailTypes.map(type=>`<button type="button" class="pet-health-option" aria-label="Add ${esc(type)}" data-add-health-type="${esc(type)}">${icon(healthIconForCategory(type))}<span><strong>${esc(type)}</strong><small>${type==='Other'?'Custom health record title':'Fixed health record type'}</small></span></button>`).join('');
     return `<article class="clone-card pet-health-add"><div>${icon('heart')}</div><div class="clone-card__no">Add health detail</div><h3>Choose a record type</h3><p>Each fixed category has its own icon. Only Other lets you customize the title.</p><details class="pet-health-picker"><summary>Choose health detail <span>⌄</span></summary><div class="pet-health-menu">${options}</div></details></article>`;
   }
   function aboutPage(){
@@ -315,7 +321,7 @@
     const due=healthRecords(state.activePet).find(h=>h.tone==='due');
     const set=(key,text)=>{const el=qs(`[data-summary="${key}"]`,main); if(el) el.textContent=text;};
     set('grooming',grooming?`${grooming.service} · ${fmtDate(grooming.date)} · ${grooming.time} · ${grooming.status}.`:'No grooming booked yet.');
-    set('health',due?`${due.title} ${due.status}. Other preventive care is current.`:'Preventive care is currently up to date.');
+    set('health',due?`${due.title} ${due.status}.`:healthRecords(state.activePet).length?'View your pet’s recorded care.':'No health records yet.');
     set('hotel',hotel?`${fmtDate(hotel.date)}${hotel.endDate?' – '+fmtDate(hotel.endDate):''} · ${hotel.status}.`:'No hotel stay booked yet.');
     set('rewards',`${state.points} Paw Points · ${state.membership.active?'Club Member active':'Club membership inactive'}.`);
     set('shop',`${state.cart.length} item${state.cart.length===1?'':'s'} in bag · Care essentials.`);
@@ -368,7 +374,8 @@
       main.className='shell__panel lenis'; main.dataset.fixed='true'; main.innerHTML=HOME_HTML; document.title=HOME_TITLE; syncHomeSummary(); initPromoCarousel();
     } else {
       main.className='shell__panel'; main.removeAttribute('data-fixed');
-      const html = path==='/grooming'?bookingPage():path==='/pets'?pawfilePage():path==='/health'?healthPage():path==='/hotel'?hotelPage():path==='/shop'?clubPage():path==='/messages'?messagesPage():path==='/notifications'?notificationsPage():path==='/about'?aboutPage():path==='/profile'?profilePage():rewardsPage();
+      const noPets=!state.pets.length&&['/pets','/health'].includes(path);
+      const html = noPets?`<section class="clone-page"><header class="clone-page__head"><h1>${path==='/health'?'Health & Care':'My Pets'}</h1></header><div class="clone-glass"><article class="clone-card clone-card--full"><h2>No pets yet</h2><p>Add your pet to keep care records and bookings together.</p><button class="clone-btn" type="button" data-add-pet-main>Add pet</button></article></div></section>`:path==='/grooming'?bookingPage():path==='/pets'?pawfilePage():path==='/health'?healthPage():path==='/hotel'?hotelPage():path==='/shop'?clubPage():path==='/messages'?messagesPage():path==='/notifications'?notificationsPage():path==='/about'?aboutPage():path==='/profile'?profilePage():rewardsPage();
       main.innerHTML=html; document.title=`${routeTitles[path]} | WagStack`;
     }
     setActive(path); syncRail(); main.scrollTop=0; window.scrollTo(0,0); document.dispatchEvent(new CustomEvent('wagstack:render',{detail:{path}}));
@@ -392,23 +399,25 @@
     if(t.dataset.pawTab){ state.pawTab=t.dataset.pawTab; save(); render('/pets',false); }
     if(t.dataset.draftPet){ state.bookingDraft.pet=t.dataset.draftPet; state.activePet=t.dataset.draftPet; save(); render('/grooming',false); }
     if(t.dataset.draftService){ state.bookingDraft.service=t.dataset.draftService; save(); render('/grooming',false); }
-    if(t.hasAttribute('data-book-next')){ state.bookingDraft.step=Math.min(5,(state.bookingDraft.step||1)+1); save(); render('/grooming',false); }
+    if(t.hasAttribute('data-book-next')){ if(!state.pets.length){toast('Add a pet in My Pets before booking.');return;} state.bookingDraft.step=Math.min(5,(state.bookingDraft.step||1)+1); save(); render('/grooming',false); }
     if(t.hasAttribute('data-book-prev')){ state.bookingDraft.step=Math.max(1,(state.bookingDraft.step||1)-1); save(); render('/grooming',false); }
     if(t.hasAttribute('data-book-submit')){
       const d=state.bookingDraft; const type='Grooming';
+      if(!state.pets.some(p=>p.name===d.pet)||!d.date||!d.time){toast('Choose a pet, date and time before sending your request.');return;}
+      if(d.date<new Date().toLocaleDateString('en-CA')){toast('Choose today or a future booking date.');return;}
       state.bookings.unshift({id:Date.now(),type,service:d.service,date:d.date,time:d.time,status:'Pending',pet:d.pet});
       state.points+=10; state.bookingDraft={...defaultState.bookingDraft,pet:state.activePet,step:1}; save(); render('/grooming',false); toast('Grooming request saved · +10 Paw Points');
     }
     if(t.dataset.bookService){ state.bookingDraft.service=t.dataset.bookService; state.bookingDraft.step=3; save(); render('/grooming',true); }
     if(t.dataset.hotelPet){ state.hotelDraft.pet=t.dataset.hotelPet; state.activePet=t.dataset.hotelPet; save(); render('/hotel',false); }
-    if(t.hasAttribute('data-hotel-next')){ if(state.hotelDraft.step===2&&hotelNights(state.hotelDraft)<1){toast('Choose a check-out date after check-in.');}else{state.hotelDraft.step=Math.min(5,(state.hotelDraft.step||1)+1);save();render('/hotel',false);} }
+    if(t.hasAttribute('data-hotel-next')){ if(!state.pets.length){toast('Add a pet in My Pets before booking.');return;} if(state.hotelDraft.step===2&&hotelNights(state.hotelDraft)<1){toast('Choose a check-out date after check-in.');}else{state.hotelDraft.step=Math.min(5,(state.hotelDraft.step||1)+1);save();render('/hotel',false);} }
     if(t.hasAttribute('data-hotel-prev')){ state.hotelDraft.step=Math.max(1,(state.hotelDraft.step||1)-1); save(); render('/hotel',false); }
     if(t.hasAttribute('data-hotel-submit')){
-      const d=state.hotelDraft, nights=hotelNights(d); if(nights<1){toast('Choose a valid hotel stay date range.');return;}
+      const d=state.hotelDraft, nights=hotelNights(d); if(!state.pets.some(p=>p.name===d.pet)){toast('Choose a pet before sending your request.');return;} if(!d.checkIn||!d.checkOut||d.checkIn<new Date().toLocaleDateString('en-CA')||nights<1){toast('Choose a valid hotel stay date range.');return;}
       state.bookings.unshift({id:Date.now(),type:'Hotel',service:`Pet Hotel Stay · ${nights} night${nights===1?'':'s'}`,date:d.checkIn,endDate:d.checkOut,time:`Check-in ${d.checkInTime} · Pick-up ${d.checkOutTime}`,status:'Pending',pet:d.pet,feeding:d.feeding,notes:d.notes});
       state.points+=20; state.hotelDraft={...defaultState.hotelDraft,pet:state.activePet,step:1}; save(); render('/hotel',false); toast('Hotel stay request saved · +20 Paw Points');
     }
-    if(t.dataset.healthDone){ const h=healthRecords().find(x=>String(x.id)===String(t.dataset.healthDone)); if(h){h.status='Completed Sep 11, 2026';h.note='Preventive care marked complete';h.tone='good';save();render(location.pathname,false);toast('Health record updated.');} }
+    if(t.dataset.healthDone){ const h=healthRecords().find(x=>String(x.id)===String(t.dataset.healthDone)); if(h){h.status='Completed '+new Date().toLocaleDateString('en-PH',{month:'short',day:'numeric',year:'numeric'});h.note='Preventive care marked complete';h.tone='good';save();render(location.pathname,false);toast('Health record updated.');} }
     if(t.hasAttribute('data-add-note')){ const val=qs('#new-note')?.value.trim(); if(val){state.notes.push(val);save();render('/pets',false);toast('Care note saved.');} }
     if(t.hasAttribute('data-add-photo')) toast('Photo upload is a demo placeholder in this static build.');
     if(t.hasAttribute('data-add-document')) toast('Document upload is a demo placeholder in this static build.');

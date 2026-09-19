@@ -65,9 +65,17 @@ import { observeUI } from './ui-lifecycle.js';
   function patchShop(){
     if(location.pathname!='/shop')return;
     const glass=document.querySelector('#main-content .clone-glass');if(!glass)return;
+    if(window.WagStackCatalog?.status!=='ready'){
+      const status=window.WagStackCatalog?.status||'loading';
+      if(glass.dataset.catalogState===status)return;
+      glass.dataset.catalogState=status;delete glass.dataset.v27Shop;
+      glass.innerHTML=`<section class="clone-card clone-card--full" role="status"><h2>${status==='loading'?'Loading the shop…':'The shop couldn’t load'}</h2><p>${status==='loading'?'Getting the latest pet essentials.':'Check your connection and try again.'}</p>${status==='error'?'<button type="button" class="clone-btn" data-catalog-retry>Try again</button>':''}</section>`;return;
+    }
+    delete glass.dataset.catalogState;
     const s=read();s.cart=Array.isArray(s.cart)?s.cart:[];
     if(glass.dataset.v27Shop===shopFilter+':'+s.cart.join('|'))return;
     glass.dataset.v27Shop=shopFilter+':'+s.cart.join('|');
+    if(!PRODUCTS.length){if(glass.dataset.v27Shop!=='empty'){glass.dataset.v27Shop='empty';glass.innerHTML='<section class="clone-card clone-card--full"><h2>No products available yet</h2><p>Check back soon for pet essentials.</p></section>';}return;}
     const cats=['All',...new Set(PRODUCTS.map(p=>p.cat))];
     const visible=shopFilter==='All'?PRODUCTS:PRODUCTS.filter(p=>p.cat===shopFilter);
     const c=counts(s.cart),rows=Object.entries(c).map(([id,q])=>{const p=PRODUCTS.find(x=>x.id===id);return p?`<div class="v27-bag-row"><span>${esc(p.name)}</span><div class="v27-qty"><button data-v27-cart-minus="${esc(id)}">−</button><b>${q}</b><button data-v27-cart-plus="${esc(id)}">＋</button></div></div>`:''}).join('');

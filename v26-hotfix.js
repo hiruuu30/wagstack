@@ -27,4 +27,5 @@ import './admin-theme.js';
 import './admin-content-management.js';
 import './v37-admin-entry-cleanup.js';
 import './auth-modal-polish.js';
+import './production-polish.js';
 setTimeout(() => import('./v29-critical.js'), 0);

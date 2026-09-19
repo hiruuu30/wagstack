@@ -25,6 +25,8 @@ function recovery(heading, message) {
 function saveSession(data) {
   if (!data.access_token || !data.refresh_token || !data.user?.id) throw new Error('invalid_session');
   try {
+    const previous=JSON.parse(localStorage.getItem(SESSION_KEY)||'null');
+    if(previous?.user?.id&&previous.user.id!==data.user.id){localStorage.removeItem('tfa-clone-workspace-v3');localStorage.removeItem('wagstack-pending-owner-v1');}
     localStorage.setItem(SESSION_KEY, JSON.stringify(data));
     description.textContent = 'You’re all set. Your pet’s care, bookings and everyday moments are waiting in WagStack.';
   } catch {
